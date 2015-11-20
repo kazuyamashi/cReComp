@@ -1,0 +1,35 @@
+
+// control block for FIFO of 8bit
+
+// processor => fpga
+// If you have asserted "data_rcv_8", data will be incomming
+// fpga => processor
+// If you have asserted "data_snd_8", data will go out
+assign full_8 = ~data_rcv_8;
+assign empty_8 = ~data_snd_8;
+
+// receive data from processor
+always @(posedge clk) begin
+	if (rst_8) begin
+/*user defined init*/
+	end
+	else if (wr_en_8) begin
+/*user defined rcv*/
+	end
+	else begin
+/*user defined */
+	end
+end
+
+// send data to processor
+always @(posedge clk) begin
+	if (rst_8) begin
+/*user defined init*/
+	end
+	else if (rd_en_8) begin
+/*user defined snd*/
+	end
+	else begin
+/*user defined */
+	end
+end

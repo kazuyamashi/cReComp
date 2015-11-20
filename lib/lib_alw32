@@ -1,0 +1,35 @@
+
+// control block for FIFO of 32bit
+
+// processor => fpga
+// If you have asserted "data_rcv_32", data will be incomming
+// fpga => processor
+// If you have asserted "data_snd_32", data will go out
+assign full_32 = ~data_rcv_32;
+assign empty_32 = ~data_snd_32;
+
+// receive data from processor
+always @(posedge clk) begin
+	if (rst_32) begin
+/*user defined init*/
+	end
+	else if (wr_en_32) begin
+/*user defined rcv*/
+	end
+	else begin
+/*user defined */
+	end
+end
+
+// send data to processor
+always @(posedge clk) begin
+	if (rst_32) begin
+/*user defined init*/
+	end
+	else if (rd_en_32) begin
+/*user defined snd*/
+	end
+	else begin
+/*user defined */
+	end
+end
