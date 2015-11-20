@@ -9,8 +9,6 @@
 # 
 # (c) Kazshi Yamashina
 
-require 'io/console'
-
 # sub function
 module Judge # Judge yed or no
 	def yes_no(flag)
@@ -108,6 +106,7 @@ if ans_o == "y" then
 		ix = ix + 1
 		port_stack_max = ix
 		print "If you finished, please type \"e\"\n"
+		print "If you continue, please type Enter\n"
 		l = STDIN.gets.chomp
 		if l == "e" then
 			fo.puts("\n")
