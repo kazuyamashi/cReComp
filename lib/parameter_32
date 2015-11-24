@@ -1,0 +1,7 @@
+
+parameter 	INIT_32 = 0,
+			READ_32 = 1,
+			WRITE_32 = 2;
+
+reg [2:0] state_32;
+

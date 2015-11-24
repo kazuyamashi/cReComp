@@ -21,28 +21,25 @@ always @(posedge clk) begin
 	end
 end
 
-// send data to processor
+/*user assign*/
+
+// state unit for FIFO
 always @(posedge clk) begin
 	if (rst_32) begin
-/*user defined init*/
+		data_rcv_32 <= 0;
+		data_snd_32 <= 0;
+		state_32 <= INIT_32;
 	end
-	else if (rd_en_32) begin
-/*user defined snd*/
+	else if (state_32 == INIT_32)
+		state_32 <= READ_32;
+	else if (state_32 <= READ_32 && wr_en_32) begin
+		data_rcv_32 <= 1;
+		data_snd_32 <= 0;
+		state_32 <= WRITE_32;
 	end
-	else begin
-/*user defined */
-	end
-end
-
-always @(posedge clk) begin
-	if (rst_32) begin
-		data_rcv_32 <= 0
-		data_snd_32 <= 0
-	end
-	else if () begin
-
-	end
-	else begin
-
+	else if (state_32 <= WRITE_32 && rd_en_32) begin
+		data_rcv_32 <= 0;
+		data_snd_32 <= 1;
+		state_32 <= INIT_32;
 	end
 end

@@ -56,7 +56,7 @@ end
 Adv.out("Type your module name")
 module_name = STDIN.gets.chomp
 
-fo = open("#{module_name}.v" , "w")
+fo = open("devel/#{module_name}.v" , "w")
 
 # select use of FIFO 8bit and 32bit
 Adv.out("Do you use 32bit FIFO? [y/n]")
@@ -183,6 +183,16 @@ if ans_o == "y" then
 end
 fo.puts "\n// );\n\n\n"
 
+# generate parameter for FIFO state
+if ans_32 == "y" then
+	fi = open("lib/parameter_32")
+	fo.write(fi.read)
+end
+if ans_8 == "y" then
+	fi = open("lib/parameter_8")
+	fo.write(fi.read)
+end
+
 # generate register for 32bit FIFO
 if ans_32 == "y" then
 	Adv.out("Do you make always block\nfor control 32bit FIFO? [y/n]")
@@ -250,10 +260,10 @@ if ans_32_alw == "y" then
 	end
 	ix = 0
 	cur = 0
-	Adv.out("You will set register to send\n to the 32bit FIFO\n")
+	Adv.out("You will assign wire to send\n to the 32bit FIFO\n")
 	while true
-		print "Please type arbitrary bit width and register name\n"
-		print "[bit width],[register name],[w(wire)/r(register)] default setting is \"reg\"\n"
+		print "Please type arbitrary bit width and wire name\n"
+		print "[bit width],[wire name],[w(wire)/r(register)] default setting is \"wire\"\n"
 		print "If you finished, please type \"e\"\n\n"
 		l = STDIN.gets.chomp
 
@@ -285,7 +295,7 @@ if ans_32_alw == "y" then
 			elsif reg2fifo[2] == "w"
 				fo.puts "wire [#{reg2fifo[0].to_i-1}:0] #{reg2fifo[1]};\n"
 			else
-				fo.puts "reg [#{reg2fifo[0].to_i-1}:0] #{reg2fifo[1]};\n"
+				fo.puts "wire [#{reg2fifo[0].to_i-1}:0] #{reg2fifo[1]};\n"
 			end
 		end
 
@@ -362,10 +372,10 @@ if ans_8_alw == "y" then
 	end
 	ix = 0
 	cur = 0
-	Adv.out("You will set register to send\n to the 8bit FIFO\n")
+	Adv.out("You will set wire to send\n to the 8bit FIFO\n")
 	while true
-		print "Please type arbitrary bit width and register name\n"
-		print "[bit width],[register name],[w(wire)/r(register)] default setting is \"reg\"\n"
+		print "Please type arbitrary bit width and wire name\n"
+		print "[bit width],[wire name],[w(wire)/r(register)] default setting is \"wire\"\n"
 		print "If you finished, please type \"e\"\n\n"
 		l = STDIN.gets.chomp
 		if l == "e" then break end
@@ -392,7 +402,7 @@ if ans_8_alw == "y" then
 			elsif reg2fifo[2] == "w"
 				fo.puts "wire [#{reg2fifo[0].to_i-1}:0] #{reg2fifo[1]};\n"
 			else
-				fo.puts "reg [#{reg2fifo[0].to_i-1}:0] #{reg2fifo[1]};\n"
+				fo.puts "wire [#{reg2fifo[0].to_i-1}:0] #{reg2fifo[1]};\n"
 			end
 		end
 		ix = ix + 1
@@ -413,7 +423,7 @@ if ans_sub == "y" then
 			break
 		end
 
-		fo_s = open("#{sub_module_name}.v" , "r")
+		fo_s = open("devel/#{sub_module_name}.v" , "r")
 		fo.puts "\n\n//instance for sub_module_name"
 		l = ""
 		while true
@@ -488,23 +498,8 @@ if ans_32_alw == "y" then
 	end
 	while true
 		l = fi.gets.chomp
-		if l == "/*user defined init*/"
+		if l == "/*user assign*/"
 			fo.puts(l)
-			break
-		end
-		fo.puts(l)
-	end
-	i = 0
-	if reg2fifo_32_max_s > 0
-		while i < reg2fifo_32_max_s
-			fo.puts("\t\t#{reg2fifo_stack_32_s[i]} <= 0;\n")
-			i = i + 1
-		end
-	end
-	while true
-		l = fi.gets.chomp
-		if l == "/*user defined snd*/"
-			 fo.puts(l)
 			break
 		end
 		fo.puts(l)
@@ -514,7 +509,7 @@ if ans_32_alw == "y" then
 	if reg2fifo_32_max_s > 0
 		while i < reg2fifo_32_max_s
 			bitmax = bitmin.to_i + bit_witdh_32_s[i].to_i - 1;
-			fo.puts("\t\tdout_32[#{bitmax}:#{bitmin}] <= #{reg2fifo_stack_32_s[i]};\n")
+			fo.puts("assign dout_32[#{bitmax}:#{bitmin}] = #{reg2fifo_stack_32_s[i]};\n")
 			i = i + 1
 			bitmin = bitmax.to_i + 1
 		end
@@ -564,23 +559,8 @@ if ans_8_alw == "y" then
 	end
 	while true
 		l = fi.gets.chomp
-		if l == "/*user defined init*/"
+		if l == "/*user assign*/"
 			fo.puts(l)
-			break
-		end
-		fo.puts(l)
-	end
-	i = 0
-	if reg2fifo_8_max_s > 0
-		while i < reg2fifo_8_max_s
-			fo.puts("\t\t#{reg2fifo_stack_8_s[i]} <= 0;\n")
-			i = i + 1
-		end
-	end
-	while true
-		l = fi.gets.chomp
-		if l == "/*user defined snd*/"
-			 fo.puts(l)
 			break
 		end
 		fo.puts(l)
@@ -590,7 +570,7 @@ if ans_8_alw == "y" then
 	if reg2fifo_8_max_s > 0
 		while i < reg2fifo_8_max_s
 			bitmax = bitmin.to_i + bit_witdh_8_s[i].to_i - 1;
-			fo.puts("\t\tdout_8[#{bitmax}:#{bitmin}] <= #{reg2fifo_stack_8_s[i]};\n")
+			fo.puts("assign dout_8[#{bitmax}:#{bitmin}] = #{reg2fifo_stack_8_s[i]};\n")
 			i = i + 1
 			bitmin = bitmax.to_i + 1
 		end

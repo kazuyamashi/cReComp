@@ -8,7 +8,7 @@ postgraduate Kazushi Yamashina
 kazushi@virgo.is.utsunomiya-u.ac.jp  
   
 # Update
-ver 1.0 relase firt version
+ver 1.0 relase first version
 ver 2.0 add error check
 
 # Readme

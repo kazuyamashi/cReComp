@@ -1,7 +1,7 @@
-//    .rst_8(!user_w_write_8_open && !user_r_read_8_open),
-//    .din_8(user_w_write_8_data),
-//    .wr_en_8(user_w_write_8_wren),
-//    .rd_en(user_r_read_8_rden),
-//    .rd_en_8(user_r_read_8_data),
-//    .dout_8(user_w_write_8_full),
-//    .empty_8(user_r_read_8_empty)
+//     .rst_8(!user_w_write_8_open && !user_r_read_8_open),
+//     .din_8(user_w_write_8_data),
+//     .wr_en_8(user_w_write_8_wren),
+//     .rd_en_8(user_r_read_8_rden),
+//     .dout_8(user_r_read_8_data),
+//     .full_8(user_w_write_8_full),
+//     .empty_8(user_r_read_8_empty)

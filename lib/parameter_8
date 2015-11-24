@@ -1,0 +1,7 @@
+
+parameter 	INIT_8 = 0,
+			READ_8 = 1,
+			WRITE_8 = 2;
+
+reg [2:0] state_8;
+
