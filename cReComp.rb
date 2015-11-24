@@ -7,7 +7,7 @@
 # VERSION
 #         1.0 20, Nov, 2015
 # 
-# (c) Kazshi Yamashina
+# (c) Kazushi Yamashina
 
 # sub function
 module Judge # Judge yed or no
@@ -120,7 +120,7 @@ fo.puts ");\n\n"
 
 # generate instance for top module
 fo.puts "// //copy this instance to top module"
-fo.puts "//\#{module_name} #{module_name}\n"
+fo.puts "//#{module_name} #{module_name}\n"
 fo.puts "//(\n"
 fo.puts "//.clk(bus_clk),\n"
 
