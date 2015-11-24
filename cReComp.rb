@@ -5,12 +5,13 @@
 # DESCRIPTION
 #         This is a code generator for Xillinux
 # VERSION
-#         1.0 20, Nov, 2015
+#         2.0 24, Nov, 2015
 # 
 # (c) Kazushi Yamashina
 
 # sub function
-module Judge # Judge yed or no
+module Judge
+# Judge yed or no
 	def yes_no(flag)
 		flag = STDIN.gets.chomp
 		while flag != "y" && flag != "n"
@@ -19,7 +20,26 @@ module Judge # Judge yed or no
 		end
 		return flag
 	end
+
+	# Integer() int or string. if "str" is int  Integer() returns true
+	def integer_string?(str)
+	  Integer(str)
+	  true
+	rescue ArgumentError
+	  false
+	end
+
+	# Integer() int or string. if "str" is int  Integer() returns true
+	def float_string?(str)
+	  Float(str)
+	  true
+	rescue ArgumentError
+	  false
+	end
+
 	module_function :yes_no
+	module_function :integer_string?
+	module_function :float_string?
 end
 
 module Adv # output advertisment
@@ -79,14 +99,24 @@ if ans_o == "y" then
 	if ans_32 == "y" || ans_8 == "y" then
 		fo.puts(",\n")
 	elsif ans_32 == "n" && ans_8 == "n" then
-		fo.puts("input [0:0] reset,\n")
+		fo.puts("input [0:0] rst,\n")
 	end
 	l = ""
 	while true
 		print  "\nType [\"i\"/\"o\"/\"io\"],[bus width],[port name]\n"
 		l = STDIN.gets.chomp
+
 		print "\n"
+
 		port = l.split(",")
+		
+		if Judge.integer_string?(port[1].to_s) == false && port[0] != "e"
+			print "error ports declaration\n"
+			next
+		elsif port[2] == nil
+			print "please define port name\n"
+			next
+		end
 
 		case port[0]
 		when "i" then
@@ -98,6 +128,7 @@ if ans_o == "y" then
 		else
 			if port[0] != "e" then
 				print "error ports declaration\n"
+				next
 			end
 		end
 
@@ -140,7 +171,7 @@ if ans_o == "y" then
 	if ans_32 == "y" || ans_8 == "y" then
 		fo.puts("")
 	else
-		fo.puts("// .reset(reset),\n")
+		fo.puts("// .rst(rst),\n")
 	end
 	ix = 0
 	while ix < port_stack_max
@@ -183,12 +214,25 @@ if ans_32_alw == "y" then
 		print "[bit width],[register name],[w(wire)/r(register)] default setting is \"reg\"\n"
 		print "If you finished, please type \"e\"\n\n"
 		l = STDIN.gets.chomp
+		
 		if l == "e" then break end
 		print "\n"
+		
 		reg2fifo = l.split(",")
+
+		# error check
+		if Judge.integer_string?(reg2fifo[0].to_s) == false && reg2fifo[0] != "e"
+			print "error ports declaration\n\n"
+			next
+		elsif reg2fifo[1] == nil
+			print "please define name\n"
+			next
+		end
+
 		cur = cur +  reg2fifo[0].to_i
+
 		if cur > 32 then
-			print "error! Uupper limit of 32bit FIFO was exceeded\n"
+			print "error! Upper limit of 32bit FIFO was exceeded\n"
 		elsif 
 			bit_witdh_32_r[ix] = reg2fifo[0]
 			reg2fifo_stack_32_r[ix] = reg2fifo[1]
@@ -212,13 +256,27 @@ if ans_32_alw == "y" then
 		print "[bit width],[register name],[w(wire)/r(register)] default setting is \"reg\"\n"
 		print "If you finished, please type \"e\"\n\n"
 		l = STDIN.gets.chomp
+
 		if l == "e" then break end
+
 		print "\n"
+		
 		reg2fifo = l.split(",")
+
+		# error check
+		if Judge.integer_string?(reg2fifo[0].to_s) == false && reg2fifo[0] != "e"
+			print "error ports declaration\n\n"
+			next
+		elsif reg2fifo[1] == nil
+			print "please define name\n"
+			next
+		end
+
+
 		cur = cur +  reg2fifo[0].to_i
 
 		if cur > 32 then
-			print "error! Uupper limit of 32bit FIFO was exceeded\n\n"
+			print "error! Upper limit of 32bit FIFO was exceeded\n\n"
 		elsif 
 			bit_witdh_32_s[ix] = reg2fifo[0]
 			reg2fifo_stack_32_s[ix] = reg2fifo[1]
@@ -230,9 +288,11 @@ if ans_32_alw == "y" then
 				fo.puts "reg [#{reg2fifo[0].to_i-1}:0] #{reg2fifo[1]};\n"
 			end
 		end
+
 		ix = ix + 1
 		reg2fifo_32_max_s = ix
 		if cur == 32 then break end
+
 	end
 end
 
@@ -268,11 +328,22 @@ if ans_8_alw == "y" then
 		print "If you finished, please type \"e\"\n\n"
 		l = STDIN.gets.chomp
 		if l == "e" then break end
+		
 		print "\n"
 		reg2fifo = l.split(",")
+
+		# error check
+		if Judge.integer_string?(reg2fifo[0].to_s) == false && reg2fifo[0] != "e"
+			print "error ports declaration\n\n"
+			next
+		elsif reg2fifo[1] == nil
+			print "please define name\n"
+			next
+		end
+
 		cur = cur +  reg2fifo[0].to_i
 		if cur > 8 then
-			print "error! Uupper limit of 8bit FIFO was exceeded\n"
+			print "error! Upper limit of 8bit FIFO was exceeded\n"
 		elsif 
 			bit_witdh_8_r[ix] = reg2fifo[0]
 			reg2fifo_stack_8_r[ix] = reg2fifo[1]
@@ -300,9 +371,19 @@ if ans_8_alw == "y" then
 		if l == "e" then break end
 		print "\n"
 		reg2fifo = l.split(",")
+
+		# error check
+		if Judge.integer_string?(reg2fifo[0].to_s) == false && reg2fifo[0] != "e"
+			print "error ports declaration\n\n"
+			next
+		elsif reg2fifo[1] == nil
+			print "please define name\n"
+			next
+		end
+
 		cur = cur +  reg2fifo[0].to_i
 		if cur > 8 then
-			print "error! Uupper limit of 8bit FIFO was exceeded\n\n"
+			print "error! Upper limit of 8bit FIFO was exceeded\n\n"
 		elsif 
 			bit_witdh_8_s[ix] = reg2fifo[0]
 			reg2fifo_stack_8_s[ix] = reg2fifo[1]
@@ -321,7 +402,7 @@ if ans_8_alw == "y" then
 end
 
 # generate sub module instance
-Adv.out("Do you make instancd sub module? [y/n]")
+Adv.out("Do you make instance sub module? [y/n]")
 ans_sub = ""
 ans_sub = Judge.yes_no(ans_o)
 if ans_sub == "y" then
@@ -357,7 +438,6 @@ if ans_sub == "y" then
 				fo.print ".#{sub_port[2].to_s.delete(",")}()"
 				once = 1;
 			end
-			
 		end
 		fo.puts "\n);"
 	end
