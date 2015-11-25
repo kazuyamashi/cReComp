@@ -239,10 +239,12 @@ if ans_32_alw == "y" then
 			next
 		end
 
-		cur = cur +  reg2fifo[0].to_i
+		cur = cur + reg2fifo[0].to_i
 
 		if cur > 32 then
 			print "error! Upper limit of 32bit FIFO was exceeded\n"
+			cur = cur - reg2fifo[0].to_i
+			next	
 		elsif 
 			bit_witdh_32_r[ix] = reg2fifo[0]
 			reg2fifo_stack_32_r[ix] = reg2fifo[1]
@@ -287,6 +289,8 @@ if ans_32_alw == "y" then
 
 		if cur > 32 then
 			print "error! Upper limit of 32bit FIFO was exceeded\n\n"
+			cur = cur - reg2fifo[0].to_i
+			next
 		elsif 
 			bit_witdh_32_s[ix] = reg2fifo[0]
 			reg2fifo_stack_32_s[ix] = reg2fifo[1]
@@ -354,6 +358,8 @@ if ans_8_alw == "y" then
 		cur = cur +  reg2fifo[0].to_i
 		if cur > 8 then
 			print "error! Upper limit of 8bit FIFO was exceeded\n"
+			cur = cur - reg2fifo[0].to_i
+			next
 		elsif 
 			bit_witdh_8_r[ix] = reg2fifo[0]
 			reg2fifo_stack_8_r[ix] = reg2fifo[1]
@@ -394,6 +400,8 @@ if ans_8_alw == "y" then
 		cur = cur +  reg2fifo[0].to_i
 		if cur > 8 then
 			print "error! Upper limit of 8bit FIFO was exceeded\n\n"
+			cur = cur - reg2fifo[0].to_i
+			next
 		elsif 
 			bit_witdh_8_s[ix] = reg2fifo[0]
 			reg2fifo_stack_8_s[ix] = reg2fifo[1]
