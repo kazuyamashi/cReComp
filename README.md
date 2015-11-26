@@ -33,7 +33,7 @@ cReComp/
 - cReComp.rb
  - Main Tool
 - config_sample.ymc
- - An exsample of ymc file
+ - An example of ymc file
 - README.md
 
 Tutorial
