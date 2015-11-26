@@ -1,0 +1,17 @@
+module_name sample
+module_type if
+use_fifo_32
+use_fifo_8 
+option_port{
+	i,4,start
+}
+make_32_alw{
+	r,32,in_
+	w,8,out_,x4
+}
+make_8_alw{
+	r,8,in_8
+	w,8,out_8_,x4
+}
+sub_module_name adder
+end
