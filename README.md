@@ -3,8 +3,9 @@ cReComp
 creator for Reconfigurable HW component  
 Copyright (C) 2015 Kazushi Yamashina  
   
-Utsunomiya Univ information engineering  
-postgraduate Kazushi Yamashina  
+Utsunomiya Univ  
+Graduate School of Engineering  
+Kazushi Yamashina  
 kazushi@virgo.is.utsunomiya-u.ac.jp  
   
 Update
