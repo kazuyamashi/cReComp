@@ -9,9 +9,9 @@ kazushi@virgo.is.utsunomiya-u.ac.jp
   
 Update
 =================================
-ver 1.0 relase first version
-ver 2.0 add error check
-ver 3.0 Support DSL. ".ymc" file is format to config for cReComp
+ver 1.0 relase first version 
+ver 2.0 add error check 
+ver 3.0 Support DSL. ".ymc" file is format to config for cReComp 
 
 Contents
 =================================
