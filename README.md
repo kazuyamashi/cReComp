@@ -1,4 +1,4 @@
-# cReComp
+cReComp
 creator for Reconfigurable HW component  
 Copyright (C) 2015 Kazushi Yamashina  
   
@@ -7,13 +7,13 @@ Utsunomiya Univ information engineering
 postgraduate Kazushi Yamashina  
 kazushi@virgo.is.utsunomiya-u.ac.jp  
   
-# Update
+Update
 
 ver 1.0 relase first version
 ver 2.0 add error check
 ver 3.0 Support DSL. ".ymc" file is format to config for cReComp
 
-# Contents
+Contents
 
 ```
 cReComp/
@@ -35,6 +35,6 @@ cReComp/
  - An exsample of ymc file
 - README.md
 
-# Tutorial
+Tutorial
 
 Please click following URL
