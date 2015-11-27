@@ -1,0 +1,7 @@
+module_name adder
+module_type hs_slv
+option_port{
+	i,4,d_in,x2
+	o,8,d_out
+}
+end

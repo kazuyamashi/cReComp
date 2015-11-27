@@ -1,0 +1,4 @@
+reg [0:0] req
+wire [0:0] busy
+wire [0:0] finish
+assign req = req

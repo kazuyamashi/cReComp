@@ -1,0 +1,9 @@
+module_name top
+module_type hs_mst
+use_fifo_8
+make_8_alw{
+	r,4,d_in,x2
+	w,8,d_out
+}
+sub_module_name adder
+end
