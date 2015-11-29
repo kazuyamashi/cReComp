@@ -1,22 +1,20 @@
 
-//Please set wire for your sub module
+//Please set sign for your sub module
 always @(posedge clk) begin
 	if (rst_32) begin
 		data_rcv_32 <= 0;
 		data_snd_32 <= 0;
-/*user define request*/
-		/*req <= 0;*/
+		/*req*/ <= 0;
 	end
 	else if (!/*busy*/) begin
 		data_rcv_32 <= 1;
 		data_snd_32 <= 0;
-/*user define request*/
+		/*req*/ <= 1;
 	end
 	else if (/*finish*/) begin
 		data_rcv_32 <= 0;
 		data_snd_32 <= 1;
-/*user define request*/
 	end
 	else
-		/*req <= 0;*/
+		/*req*/ <= 0;
 end

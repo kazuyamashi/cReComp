@@ -10,7 +10,7 @@ kazushi@virgo.is.utsunomiya-u.ac.jp
   
 Update
 =================================
-ver 3.0 Support DSL. ".ymc" file is format to config for cReComp  
+ver 3.0 Support DSL. ".scrp" file is format to config for cReComp  
 ver 2.0 add error check  
 ver 1.0 relase first version  
 
@@ -21,9 +21,8 @@ Contents
 cReComp/
 |--devel/
 |--lib/
+|--scrp/
 |--cReComp.rb
-|--config_sample.ymc
-|--ymc_conf.rb
 |--README.md
 ```
 
@@ -31,11 +30,24 @@ cReComp/
  - this directry is location of the generated code　by cReComp
 - lib/
  - library
+- scrp/
+ - location of file.scrp
 - cReComp.rb
  - Main Tool
-- config_sample.ymc
- - An example of ymc file
 - README.md
+
+Run & Help
+===============================
+
+```
+./cReComp [option] [name of scrp file]
+
+option list
+nothing		: Normal mode. Generate verilog file 
+-h			 : show help of cReComp
+-s 			: Generate template of setting file(.srcp)
+-l 			: Show setting file list in scrp/
+```
 
 Tutorial
 ===============================

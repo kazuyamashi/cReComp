@@ -1,0 +1,9 @@
+
+./cReComp [option] [name of scrp file]
+
+option list
+nothing			: Normal mode. Generate verilog file 
+-h			: show help of cReComp
+-s 			: Generate template of setting file(.srcp)
+-l 			: Show setting file list in scrp/
+

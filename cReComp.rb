@@ -1,15 +1,14 @@
-#!/bin/ruby
-
+#!/usr/bin/ruby
 # NAME
 #         "cReComp.rb"
 # DESCRIPTION
 #         This is a code generator for Xillinux
 # 		  creator Reconfigurable HW componet
 # VERSION
-#         3.0  27th Nov 2015
+#         3.2  29th Nov 2015
 # 
 # (c) Kazushi Yamashina
-
+require "./lib/check_option"
 require "./lib/scrp_conf"
 module Read
 	def lib(fo, str)
@@ -33,8 +32,13 @@ module Judge
 end
 
 
+check = Check.new()
 flag = ConfigFlag.new()
+
+check.option(ARGV[0],ARGV[1])
+
 dsl_file = ARGV[0]
+
 # dsl_file = "dsl_sample0"
 flag.set(dsl_file)
 
@@ -212,16 +216,16 @@ if ans_hs_s
 	Read.lib(fo,"lib/hs_slv_para")
 end
 
-if ans_hs_m
+if ans_hs_m && ans_sub
 	i = 0
-	while i < ans_sub.count	
-		fi = open("lib/hs_mst_para")
-		fo.puts "//for sub_module \"#{ans_sub[i]}\""
-		while l = fi.gets
-			fo.print "#{l.delete("\n")}_#{ans_sub[i]};\n"
+		while i < ans_sub.count	
+			fi = open("lib/hs_mst_para")
+			fo.puts "\n//for sub_module \"#{ans_sub[i]}\""
+			while l = fi.gets
+				fo.print "#{l.delete("\n")}_#{ans_sub[i]};\n"
+			end
+			i = i + 1
 		end
-		i = i + 1
-	end
 end
 
 # generate register for 32bit FIFO
@@ -496,8 +500,18 @@ if ans_32_alw  then
 		end
 	end
 
-	if ans_hs_m
-		Read.lib(fo,"lib/hs_mst_alw")
+	if ans_hs_m && ans_sub
+		i = 0
+		while i < ans_sub.count 
+			fi = open("lib/hs_mst_alw")
+			while l = fi.gets
+				l = l.sub("/*req*/","req_#{ans_sub[i]}")
+				l = l.sub("/*busy*/","busy_#{ans_sub[i]}")
+				l = l.sub("/*finish*/","finish_#{ans_sub[i]}")
+				fo.puts(l)
+			end
+			i = i + 1
+		end
 	else
 		while l = fi.gets
 			fo.puts(l)
@@ -562,8 +576,18 @@ if ans_8_alw  then
 			bitmin = bitmax.to_i + 1
 		end
 	end
-	if ans_hs_m
-		Read.lib(fo,"lib/hs_mst_alw")
+	if ans_hs_m && ans_sub
+		i = 0
+		while i < ans_sub.count 
+			fi = open("lib/hs_mst_alw")
+			while l = fi.gets
+				l = l.sub("/*req*/","req_#{ans_sub[i]}")
+				l = l.sub("/*busy*/","busy_#{ans_sub[i]}")
+				l = l.sub("/*finish*/","finish_#{ans_sub[i]}")
+				fo.puts(l)
+			end
+			i = i + 1
+		end
 	else
 		while l = fi.gets
 			fo.puts(l)
@@ -574,10 +598,10 @@ end
 
 # generate always block of hand shake slave
 if ans_hs_s
-	fi = open("lib/hs_slv_alw")
-	fo.write(fi.read)
+	Read.lib(fo,"lib/hs_slv_alw")
 end
 
 fo.puts "\n\nendmodule"
 
 puts "Generate #{module_name}.v in ./devel"
+

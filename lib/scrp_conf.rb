@@ -94,10 +94,13 @@ class ConfigFlag
 					i_sub = i_sub + 1
 				when "end"
 					break
-
+				when state[0].index("//")
+					next
 				else
-					puts "\nSyntax Error line #{@line} in #{dsl_file}"
-					break
+					if state[0].index("//") == false
+						puts "\nSyntax Error line #{@line} in #{dsl_file}"
+						break
+					end
 			end
 			@line = @line + 1
 		end
