@@ -14,6 +14,14 @@ ver 3.0 Support DSL. ".scrp" file is format to config for cReComp
 ver 2.0 add error check  
 ver 1.0 relase first version  
 
+Install
+
+================================
+
+```
+git clone https://github.com/kazuyamashi/cReComp.git
+```
+
 Contents
 =================================
 
