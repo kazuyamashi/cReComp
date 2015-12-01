@@ -10,6 +10,7 @@ kazushi@virgo.is.utsunomiya-u.ac.jp
   
 Update
 =================================
+ver.3.5 bug fix
 ver 3.0 Support DSL. ".scrp" file is format to config for cReComp  
 ver 2.0 add error check  
 ver 1.0 relase first version  
@@ -29,6 +30,7 @@ cReComp/
 |--devel/
 |--lib/
 |--scrp/
+|--sample/
 |--cReComp.rb
 |--README.md
 ```
@@ -39,6 +41,8 @@ cReComp/
  - library
 - scrp/
  - location of file.scrp
+- sample/
+ - sample project
 - cReComp.rb
  - Main Tool
 - README.md

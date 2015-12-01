@@ -123,10 +123,10 @@ if ans_o
 
 		if Judge.integer_string?(port[1].to_s) == false && port[0] != "e"
 			print "error ports declaration\n"
-			next
+			exit(0)
 		elsif port[2] == nil
 			print "please define port name\n"
-			next
+			exit(0)
 		end
 
 		case port[0]

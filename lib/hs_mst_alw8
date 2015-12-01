@@ -1,7 +1,7 @@
 
 //Please set sign for your sub module
 always @(posedge clk) begin
-	if (rst_32) begin
+	if (rst_8) begin
 		/*req*/ <= 0;
 	end
 	else if (/*busy*/  == 0) begin

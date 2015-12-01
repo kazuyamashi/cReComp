@@ -1,0 +1,14 @@
+module_name adder
+module_type hs_slv
+option_port{
+	i,4,para_,x2
+	o,8,result
+}
+//use_fifo_8
+//use_fifo_32
+//make_8_alw{
+//}
+//make_32_alw{
+//}
+//sub_module_name
+end
