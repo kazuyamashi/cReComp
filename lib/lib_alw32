@@ -2,44 +2,35 @@
 // control block for FIFO of 32bit
 
 // processor => fpga
-// If you have asserted "data_rcv_32", data will be incomming
+// If you have asserted "fifo_ctl_32" positive, data will be incomming
 // fpga => processor
-// If you have asserted "data_snd_32", data will go out
-assign full_32 = ~data_rcv_32;
-assign empty_32 = ~data_snd_32;
+// If you have asserted "fifo_ctl_32" negative, data will go out
+assign full_32 = fifo_ctl_32;
+assign empty_32 = ~fifo_ctl_32;
 
 // receive data from processor
 always @(posedge clk) begin
 	if (rst_32) begin
+		fifo_ctl_32 <= 0;
 /*user defined init*/
 	end
-	else if (wr_en_32) begin
+	else if (wr_en_32 /*busy*/) begin
+		fifo_ctl_32 <= 1;
 /*user defined rcv*/
 	end
-	else begin
+	else if (rd_en_8 /*finish*/)begin
+		fifo_ctl_32 <= 0;
 /*user defined */
 	end
 end
 
 /*user assign*/
 
-// state unit for FIFO
 always @(posedge clk) begin
 	if (rst_32) begin
-		data_rcv_32 <= 0;
-		data_snd_32 <= 0;
-		state_32 <= INIT_32;
+
 	end
-	else if (state_32 == INIT_32)
-		state_32 <= READ_32;
-	else if (state_32 == READ_32 && wr_en_32) begin
-		data_rcv_32 <= 1;
-		data_snd_32 <= 0;
-		state_32 <= WRITE_32;
-	end
-	else if (state_32 == WRITE_32 && rd_en_32) begin
-		data_rcv_32 <= 0;
-		data_snd_32 <= 1;
-		state_32 <= INIT_32;
-	end
+	else if() begin
+	
+	end		
 end

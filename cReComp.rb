@@ -5,9 +5,10 @@
 #         This is a code generator for Xillinux
 # 		  creator Reconfigurable HW componet
 # VERSION
-#         3.2  29th Nov 2015
+#         3.5  30th Dec 2015
 # 
 # (c) Kazushi Yamashina
+
 require "./lib/check_option"
 require "./lib/scrp_conf"
 module Read
@@ -201,17 +202,6 @@ if ans_o  then
 end
 fo.puts "\n//);\n"
 
-# set state and parameter
-if ans_32_alw && module_type == "nomal"
-	fi = open("lib/parameter_32")
-	fo.write(fi.read)
-end
-
-if ans_8_alw && module_type == "nomal"
-	fi = open("lib/parameter_8")
-	fo.write(fi.read)
-end
-
 if ans_hs_s
 	Read.lib(fo,"lib/hs_slv_para")
 end
@@ -232,8 +222,7 @@ end
 if ans_32_alw then
 	fo.puts "\n\n"
 	fo.puts "//for 32bit FIFO;"
-	fo.puts "reg data_rcv_32;"
-	fo.puts "reg data_snd_32;"
+	fo.puts "reg fifo_ctl_32;"
 	fo.puts "\n"
 end
 
@@ -318,8 +307,7 @@ end
 if ans_8_alw then
 	fo.puts "\n\n"
 	fo.puts "//for 8bit FIFO;"
-	fo.puts "reg data_rcv_8;"
-	fo.puts "reg data_snd_8;"
+	fo.puts "reg fifo_ctl_8;"
 	fo.puts "\n"
 end
 
@@ -503,7 +491,7 @@ if ans_32_alw  then
 	if ans_hs_m && ans_sub
 		i = 0
 		while i < ans_sub.count 
-			fi = open("lib/hs_mst_alw")
+			fi = open("lib/hs_mst_alw32")
 			while l = fi.gets
 				l = l.sub("/*req*/","req_#{ans_sub[i]}")
 				l = l.sub("/*busy*/","busy_#{ans_sub[i]}")
@@ -579,7 +567,7 @@ if ans_8_alw  then
 	if ans_hs_m && ans_sub
 		i = 0
 		while i < ans_sub.count 
-			fi = open("lib/hs_mst_alw")
+			fi = open("lib/hs_mst_alw8")
 			while l = fi.gets
 				l = l.sub("/*req*/","req_#{ans_sub[i]}")
 				l = l.sub("/*busy*/","busy_#{ans_sub[i]}")

@@ -2,44 +2,35 @@
 // control block for FIFO of 8bit
 
 // processor => fpga
-// If you have asserted "data_rcv_8", data will be incomming
+// If you have asserted "fifo_ctl_8" positive, data will be incomming
 // fpga => processor
-// If you have asserted "data_snd_8", data will go out
-assign full_8 = ~data_rcv_8;
-assign empty_8 = ~data_snd_8;
+// If you have asserted "fifo_ctl_8" negative, data will go out
+assign full_8 = fifo_ctl_8;
+assign empty_8 = ~fifo_ctl_8;
 
 // receive data from processor
 always @(posedge clk) begin
 	if (rst_8) begin
+		fifo_ctl_8 <= 0;
 /*user defined init*/
 	end
-	else if (wr_en_8) begin
+	else if (wr_en_8 /*busy*/) begin
+		fifo_ctl_8 <= 1;
 /*user defined rcv*/
 	end
-	else begin
+	else if (rd_en_8 /*finish*/)begin
+		fifo_ctl_8 <= 0;
 /*user defined */
 	end
 end
 
 /*user assign*/
 
-// state unit for FIFO
 always @(posedge clk) begin
 	if (rst_8) begin
-		data_rcv_8 <= 0;
-		data_snd_8 <= 0;
-		state_8 <= INIT_8;
+
 	end
-	else if (state_8 == INIT_8)
-		state_8 <= READ_8;
-	else if (state_8 == READ_8 && wr_en_8) begin
-		data_rcv_8 <= 1;
-		data_snd_8 <= 0;
-		state_8 <= WRITE_8;
-	end
-	else if (state_8 == WRITE_8 && rd_en_8) begin
-		data_rcv_8 <= 0;
-		data_snd_8 <= 1;
-		state_8 <= INIT_8;
-	end
+	else if() begin
+	
+	end		
 end
