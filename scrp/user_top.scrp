@@ -1,0 +1,14 @@
+module_name top
+module_type hs_mst
+//option_port{
+//}
+use_fifo_8
+//use_fifo_32
+make_8_alw{
+	r,8,data_in
+	w,8,data_out
+}
+//make_32_alw{
+//}
+sub_module_name sub
+end

@@ -1,0 +1,15 @@
+module_name kimura
+module_type normal
+option_port{
+	o,16,x
+	o,16,y
+	o,16,z
+}
+//use_fifo_8
+//use_fifo_32
+//make_8_alw{
+//}
+//make_32_alw{
+//}
+//sub_module_name
+end
