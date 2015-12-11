@@ -1,0 +1,44 @@
+parameter INIT_8 = 0,
+			READY_RCV_8 	= 1,
+			RCV_DATA_8 	= 2,
+			POSE_8		= 3,
+			READY_SND_8	= 4,
+			SND_DATA_8	= 5;
+
+// for input fifo
+wire [31:0] rcv_data_8;
+reg rcv_en_8;
+wire data_empty_8;
+// for output fifo
+wire [31:0] snd_data_8;
+reg snd_en_8;
+wire data_full_8;
+// state register
+reg [3:0] state_8;
+
+////fifo 8bit
+fifo_8x2048 input_fifo_8(
+	.clk(clk),
+	.srst(rst_8),
+	
+	.din(din_8),
+	.wr_en(wr_en_8),
+	.full(full_8),
+	
+	.dout(rcv_data_8),
+	.rd_en(rcv_en_8),
+	.empty(data_empty_8)
+	);
+	
+fifo_8x2048 output_fifo_8(
+	.clk(clk),
+	.srst(rst_8),
+	
+	.din(snd_data_8),
+	.wr_en(snd_en_8),
+	.full(data_full_8),
+	
+	.dout(dout_8),
+	.rd_en(rd_en_8),
+	.empty(empty_8)
+	);

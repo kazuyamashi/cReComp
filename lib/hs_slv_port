@@ -2,5 +2,4 @@
 input [0:0] rst,
 input [0:0] req,
 output [0:0] busy,
-output [0:0] finish,
-
+output [0:0] finish

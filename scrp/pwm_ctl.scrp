@@ -1,9 +1,9 @@
-module_name kimura
+module_name pwm_ctl
 module_type normal
 option_port{
-	o,16,x
-	o,16,y
-	o,16,z
+	i,16,para_in
+	o,1,direction
+	o,1,enable
 }
 //use_fifo_8
 //use_fifo_32

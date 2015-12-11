@@ -8,15 +8,14 @@ class ConfigFlag
 		@use_fifo_8 = false
 		@option_port = false
 		@port_stack = []
-		# @port_stack_size = 0
 		@make_32_alw = false
 		@alw32_stack = []
-		# @alw32_stack_size = 0
 		@make_8_alw = false
 		@alw8_stack = []
-		# @alw8_stack_size = 0
 		@sub_module = false
 		@sub_module_name = []
+		@assign_target_module = []
+		@assign_port_stack = []
 		@fi=""
 	end
 	
@@ -50,15 +49,16 @@ class ConfigFlag
 	
 	# state unit
 	def set(dsl_file)
-		check_format(dsl_file)
+		# check_format(dsl_file)
 		@fi = open(dsl_file)
 		@line = 1
 		i_sub = 0
 		i_alw32 = 0
 		i_alw8 = 0
 		i_op = 0
+		i_assign = 0
 		while l = @fi.gets.to_s.chomp
-			state = l.delete("{").split(" ")
+			state = l.delete("{"+"\t").split(" ")
 			case state[0].to_s
 				when "module_name" then
 					@module_name = state[1]
@@ -89,9 +89,25 @@ class ConfigFlag
 					i_alw8 = i_alw8 + 1
 				when "sub_module_name" then
 					@sub_module = true
-					@sub_module_name[i_sub] = state[1]
+					@sub_module_name[i_sub] = "#{state[1]} #{state[2]}"
 					# puts "#{@sub_module_name[i_sub]}"
 					i_sub = i_sub + 1
+				when "assign_port"then
+					# if i_sub > 0
+					# 	@assign_target_module[i_sub] = i_assign.to_i
+					# end
+					while true
+						l = @fi.gets.chomp
+						if l == "}"
+							@line = @line + 1
+							break
+						elsif l != "{" && l != "}"
+							@assign_port_stack[i_assign] = l.delete("\t"+" ")
+						end
+						@line = @line + 1
+						i_assign = i_assign + 1
+					end
+					# puts @assign_target_module
 				when "end"
 					break
 				when state[0].index("//")
@@ -154,7 +170,20 @@ class ConfigFlag
 			return false
 		end
 	end
-
+	def get_assign_port
+		if @assign_port_stack != nil
+			return @assign_port_stack
+		else
+			return false
+		end
+	end
+	def get_assign_target_module
+		if @assign_target_module != nil
+			return @assign_target_module
+		else
+			false
+		end
+	end
 end
 
 # debug main
@@ -171,3 +200,5 @@ end
 # puts flag.get_make_32_alw
 # puts flag.get_make_8_alw
 # puts flag.get_sub_module
+# puts flag.get_assign_target_module
+# str =  flag.get_assign_port[0].to_s.delete("\""+"["+"]").split("=")

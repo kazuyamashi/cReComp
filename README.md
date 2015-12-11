@@ -11,6 +11,7 @@ kazushi@virgo.is.utsunomiya-u.ac.jp
 Update
 =================================
 ver 0.35 bug fix
+ver 0.35 bug fix
 ver 0.30 Supported DSL. ".scrp" file is format to config for cReComp  
 ver 0.20 added error check  
 ver 0.10 released first version  
