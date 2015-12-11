@@ -1,4 +1,4 @@
-input [0:0] rst_32,
+input rst_32,
 input [31:0] din_32,
 input [0:0] wr_en_32,
 input [0:0] rd_en_32,

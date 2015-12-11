@@ -36,24 +36,41 @@ class SubModule
 							fo.print ",\n"
 						end
 					end
+					
 					if sub_port[0] == "input" || sub_port[0] == "output" || sub_port[0] == "inout"
 						str = assign_port[j].to_s.delete("\""+"["+"]").split("=")
-						if str[0] == sub_port[2].to_s.delete(",")
-							fo.print ".#{sub_port[2].to_s.delete(",")}(#{str[1]})"
-							j = j + 1
-						elsif sub_port[2].to_s.delete(",") == "rst"
-							if flag.get_use_fifo_32
-								fo.print ".#{sub_port[2].to_s.delete(",")}(rst_32)"
-							elsif flag.get_use_fifo_8
-								fo.print ".#{sub_port[2].to_s.delete(",")}(rst_8)"
+
+						if sub_port[2] != nil
+							if str[0] == sub_port[2].to_s.delete(",")
+								fo.print ".#{sub_port[2].to_s.delete(",")}(#{str[1]})"
+								j = j + 1
+							elsif sub_port[2].to_s.delete(",") == "rst" 
+								if flag.get_use_fifo_32
+									fo.print ".#{sub_port[2].to_s.delete(",")}(rst_32)"
+								elsif flag.get_use_fifo_8
+									fo.print ".#{sub_port[2].to_s.delete(",")}(rst_8)"
+								end
+							elsif sub_port[2].to_s.delete(",") != "clk" && str[0] != "rst"
+								fo.print ".#{sub_port[2].to_s.delete(",")}(#{sub_port[2].to_s.delete(",")}_#{sub_module_name[1]})"
+							else
+								fo.print ".#{sub_port[2].to_s.delete(",")}(#{sub_port[2].to_s.delete(",")})"
 							end
-						elsif sub_port[2].to_s.delete(",") != "clk" && str[0] != "rst"
-							fo.print ".#{sub_port[2].to_s.delete(",")}(#{sub_port[2].to_s.delete(",")}_#{sub_module_name[1]})"
+						
 						else
-							fo.print ".#{sub_port[2].to_s.delete(",")}(#{sub_port[2].to_s.delete(",")})"
+							if sub_port[1].to_s.delete(",") == "rst" 
+								if flag.get_use_fifo_32
+									fo.print ".#{sub_port[1].to_s.delete(",")}(rst_32)"
+								elsif flag.get_use_fifo_8
+									fo.print ".#{sub_port[1].to_s.delete(",")}(rst_8)"
+								end
+							else
+								fo.print ".#{sub_port[1].to_s.delete(",")}(#{sub_port[1].to_s.delete(",")})"
+							end
 						end
+						
 						once = 1;
 					end
+
 				end
 				fo.puts "\n);"
 			end

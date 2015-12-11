@@ -1,5 +1,5 @@
 
-input [0:0] rst_8,
+input rst_8,
 input [7:0] din_8,
 input [0:0] wr_en_8,
 input [0:0] rd_en_8,

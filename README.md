@@ -10,7 +10,7 @@ kazushi@virgo.is.utsunomiya-u.ac.jp
   
 Update
 =================================
-ver 0.35 bug fix
+ver 0.40 Supported automatic assignment to your sub module
 ver 0.35 bug fix
 ver 0.30 Supported DSL. ".scrp" file is format to config for cReComp  
 ver 0.20 added error check  
@@ -31,7 +31,6 @@ cReComp/
 |--devel/
 |--lib/
 |--scrp/
-|--sample/
 |--cReComp.rb
 |--README.md
 ```
@@ -42,8 +41,6 @@ cReComp/
  - library
 - scrp/
  - location of file.scrp
-- sample/
- - sample project
 - cReComp.rb
  - Main Tool
 - README.md
