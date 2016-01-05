@@ -1,0 +1,19 @@
+module_name sensor_ctl
+module_type normal
+option_port{
+	i
+}
+//use_fifo_8
+use_fifo_32
+//make_8_alw{
+//}
+make_32_alw{
+}
+sub_module_name sonic_sensor
+assign_port sub{
+	para_in=para_right
+	dir_in=dir_right
+	dir_out=dir_out_r
+	en_out=en_out_r
+}
+end
