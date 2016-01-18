@@ -1,19 +1,17 @@
 module_name sensor_ctl
-module_type normal
+module_type hs_mst
 option_port{
-	i
+	io,1,sig
+	o,32,out_data
+	o,4,led
 }
-//use_fifo_8
 use_fifo_32
-//make_8_alw{
-//}
 make_32_alw{
+	w,32,out_data
 }
 sub_module_name sonic_sensor
-assign_port sub{
-	para_in=para_right
-	dir_in=dir_right
-	dir_out=dir_out_r
-	en_out=en_out_r
+assign_port sonic_sensor{
+	sig=sig
+	led=led
 }
 end
