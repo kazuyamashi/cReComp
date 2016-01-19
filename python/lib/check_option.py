@@ -15,7 +15,7 @@ def option(argv0, argv1):
 	elif argv0 == "-s":
 		if not argv1:
 			print "Please type name of SCRP file"
-			sys.exit()
+			quit()
 		fi = open("lib/template.scrp")
 		fo = open("scrp/%s.scrp" % argv1,"w")
 		for line in fi:
