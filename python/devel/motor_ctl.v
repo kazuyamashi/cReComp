@@ -34,3 +34,53 @@ output [0:0] en_out_l
 // .en_out_r(en_out_r),
 // .en_out_l(en_out_l)
 //);
+parameter INIT_32 = 0,
+			READY_RCV_32 	= 1,
+			RCV_DATA_32 	= 2,
+			POSE_32		= 3,
+			READY_SND_32	= 4,
+			SND_DATA_32	= 5;
+
+// for input fifo
+wire [31:0] rcv_data_32;
+wire rcv_en_32;
+wire data_empty_32;
+// for output fifo
+wire [31:0] snd_data_32;
+wire snd_en_32;
+wire data_full_32;
+// state register
+reg [3:0] state_32;
+
+////fifo 32bit
+fifo_32x512 input_fifo_32(
+	.clk(clk),
+	.srst(rst_32),
+	
+	.din(din_32),
+	.wr_en(wr_en_32),
+	.full(full_32),
+	
+	.dout(rcv_data_32),
+	.rd_en(rcv_en_32),
+	.empty(data_empty_32)
+	);
+	
+fifo_32x512 output_fifo_32(
+	.clk(clk),
+	.srst(rst_32),
+	
+	.din(snd_data_32),
+	.wr_en(snd_en_32),
+	.full(data_full_32),
+	
+	.dout(dout_32),
+	.rd_en(rd_en_32),
+	.empty(empty_32)
+	);
+
+//for 32bbit FIFO
+reg[0:0] dir_right;
+reg[14:0] para_right;
+reg[0:0] dir_left;
+reg[14:0] para_left;

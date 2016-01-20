@@ -12,6 +12,7 @@ make_32_alw{
 	r,15,para_right
 	r,1,dir_left
 	r,15,para_left
+	//r,2,dir_right,x4
 }
 sub_module_name pwm_ctl right
 assign_port sub{

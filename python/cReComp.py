@@ -17,6 +17,7 @@ import check_option
 import scrp_conf
 import option_port
 import common
+import fifo_32
 # 		self.module_name = ""
 # 		self.module_type = ""
 # 		self.use_fifo_32 = False
@@ -54,8 +55,11 @@ if __name__ == "__main__":
 	flag.check_format(dsl_file)
 	flag.set(dsl_file)
 	module_name = flag.module_name
+
 	fo = open("devel/%s.v" % module_name,"w")
+	
 	module_type = flag.module_type
+	
 	if module_type == "normal":
 		ans_hs_s = False
 		ans_hs_m = False
@@ -141,4 +145,6 @@ if __name__ == "__main__":
 		common.read_lib(fo,"lib/fifo_8_para")
 
 	# generate register for 32bit FIFO
-	
+	if ans_32_alw:
+		fifo32 = fifo_32.Fifo_32()
+		fifo32.gen_reg(flag,fo)
