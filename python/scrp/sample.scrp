@@ -7,13 +7,18 @@ option_port{
 	o,1,en_out_l
 }
 use_fifo_32
+//use_fifo_8
 make_32_alw{
 	r,1,dir_right
 	r,15,para_right
 	r,1,dir_left
 	r,15,para_left
-	//r,2,dir_right,x4
+	w,8,out_put,x4
 }
+//make_8_alw{
+//	r,8,in_put
+//	w,8,out_put
+//}
 sub_module_name pwm_ctl right
 assign_port sub{
 	para_in=para_right

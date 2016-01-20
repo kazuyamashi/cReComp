@@ -50,6 +50,7 @@ class ConfigFlag(object):
 			state = line.rstrip().split(" ")
 			# print state
 			if "//" in state[0]:
+				# print state[0]
 				pass
 			elif "module_name" == state[0]:
 				self.module_name = state[1]

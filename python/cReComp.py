@@ -18,6 +18,7 @@ import scrp_conf
 import option_port
 import common
 import fifo_32
+import fifo_8
 # 		self.module_name = ""
 # 		self.module_type = ""
 # 		self.use_fifo_32 = False
@@ -73,7 +74,8 @@ if __name__ == "__main__":
 	
 	ans_32 = flag.use_fifo_32
 	ans_8 = flag.use_fifo_8
-	
+	ans_32_alw = False
+	ans_8_alw = False
 	if flag.option_port:
 		ans_o = True
 	else:
@@ -148,3 +150,24 @@ if __name__ == "__main__":
 	if ans_32_alw:
 		fifo32 = fifo_32.Fifo_32()
 		fifo32.gen_reg(flag,fo)
+	# generate register for 8bit FIFO
+	if ans_8_alw:
+		fifo8 = fifo_8.Fifo_8()
+		fifo8.gen_reg(flag,fo)
+	# generate sub module instance
+	if ans_sub:
+		sub = sub_module.SubModule()
+		sub.gen_inst(flag,fo)
+	# generate always block for 32bit FIFO
+	if ans_32_alw:
+		fifo32.gen_alw(flag,fo)
+	# generate always block for 8bit FIFO
+	if ans_8_alw:
+		fifo8.gen_alw(flag,fo)
+	# generate always block of hand shake slave
+	if ans_hs_s:
+		common.read_lib(fo,"lib/hs_slv_alw")
+	
+	fo.write("\n\nendmodule")
+
+	print "Generate %s.v in ./devel"%flag.module_name

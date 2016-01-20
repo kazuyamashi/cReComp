@@ -84,3 +84,53 @@ reg[0:0] dir_right;
 reg[14:0] para_right;
 reg[0:0] dir_left;
 reg[14:0] para_left;
+reg [7:0] out_put_0;
+reg [7:0] out_put_1;
+reg [7:0] out_put_2;
+reg [7:0] out_put_3;
+
+always @(posedge clk)begin
+	if(rst_32)
+		state_32 <= 0;
+	else
+		case (state_32)
+			INIT_32: 										state_32 <= READY_RCV_32;
+			READY_RCV_32: if(data_empty_32 == 0) 	state_32 <= RCV_DATA_32;
+			RCV_DATA_32: 									state_32 <= POSE_32;
+			POSE_32:											state_32 <= READY_SND_32;
+			READY_SND_32: if(data_full_32 == 0)		state_32 <= SND_DATA_32;
+			SND_DATA_32:									state_32 <= READY_RCV_32;
+		endcase
+end
+
+assign rcv_en_32 = (state_32 == RCV_DATA_32);
+assign snd_en_32 = (state_32 == SND_DATA_32);
+
+always @(posedge clk)begin
+	if(rst_32)begin
+/*user defined init*/
+		dir_right <= 0;
+		para_right <= 0;
+		dir_left <= 0;
+		para_left <= 0;
+	end
+	else if (state_32 == READY_SND_32)begin
+/*user defined rcv*/
+		dir_right <= rcv_data_32[0:0];
+		para_right <= rcv_data_32[15:1];
+		dir_left <= rcv_data_32[16:16];
+		para_left <= rcv_data_32[31:17];
+	end
+	else if (state_32 == READY_RCV_32)begin
+/*user defined */
+	end
+end
+
+/*user assign*/
+assign snd_data_32[7:0] = out_put_0;
+assign snd_data_32[15:8] = out_put_1;
+assign snd_data_32[23:16] = out_put_2;
+assign snd_data_32[31:24] = out_put_3;
+
+
+endmodule
