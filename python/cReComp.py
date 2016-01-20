@@ -131,3 +131,14 @@ if __name__ == "__main__":
 			if ix < len(port_stack):
 				fo.write(",\n")
 	fo.write("\n//);\n")
+
+	# define prameter
+	if ans_hs_s:
+		common.read_lib(fo,"lib/hs_slv_para")
+	if ans_32:
+		common.read_lib(fo,"lib/fifo_32_para")
+	if ans_8:
+		common.read_lib(fo,"lib/fifo_8_para")
+
+	# generate register for 32bit FIFO
+	
