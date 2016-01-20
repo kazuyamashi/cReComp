@@ -89,6 +89,28 @@ reg [7:0] out_put_1;
 reg [7:0] out_put_2;
 reg [7:0] out_put_3;
 
+
+//instance for pwm_ctl
+pwm_ctl right(
+.clk(clk),
+.rst(rst_32),
+.para_in(para_right),
+.dir_in(dir_right),
+.dir_out(dir_out_r),
+.en_out(en_out_r),
+);
+
+
+//instance for pwm_ctl
+pwm_ctl left(
+.clk(clk),
+.rst(rst_32),
+.para_in(para_left),
+.dir_in(dir_left),
+.dir_out(dir_out_l),
+.en_out(en_out_l),
+);
+
 always @(posedge clk)begin
 	if(rst_32)
 		state_32 <= 0;

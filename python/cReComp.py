@@ -11,6 +11,7 @@
 #		  new BSD
 #
 # (c) Kazushi Yamashina
+
 import sys
 sys.path.append("lib/")
 import check_option
@@ -19,22 +20,7 @@ import option_port
 import common
 import fifo_32
 import fifo_8
-# 		self.module_name = ""
-# 		self.module_type = ""
-# 		self.use_fifo_32 = False
-# 		self.use_fifo_8 = False
-# 		self.option_port = False
-# 		self.port_stack = []
-# 		self.make_32_alw = False
-# 		self.alw32_stack = []
-# 		self.make_8_alw = False
-# 		self.alw8_stack = []
-# 		self.sub_module = False
-# 		self.sub_module_name = []
-# 		self.assign_target_module = []
-# 		self.assign_port_stack = []
-# 		self.fi=dsl_file
-# 		self.line = 1
+import sub_module
 
 if __name__ == "__main__":
 	
@@ -156,8 +142,7 @@ if __name__ == "__main__":
 		fifo8.gen_reg(flag,fo)
 	# generate sub module instance
 	if ans_sub:
-		sub = sub_module.SubModule()
-		sub.gen_inst(flag,fo)
+		sub_module.gen_inst(flag,fo)
 	# generate always block for 32bit FIFO
 	if ans_32_alw:
 		fifo32.gen_alw(flag,fo)
