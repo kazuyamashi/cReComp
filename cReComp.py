@@ -6,7 +6,7 @@
 #         This is a code generator for Reconfigurable Component
 # 		  creator Reconfigurable HW componet
 # VERSION
-#         0.0.3
+#         0.5.0
 # LICENCE
 #		  new BSD
 #

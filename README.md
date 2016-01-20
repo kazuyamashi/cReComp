@@ -10,6 +10,7 @@ kazushi@virgo.is.utsunomiya-u.ac.jp
   
 Update
 =================================
+ver 0.50 renew ruby to python
 ver 0.40 Supported automatic assignment to your sub module  
 ver 0.35 bug fix  
 ver 0.30 Supported DSL. ".scrp" file is format to config for cReComp  
@@ -31,7 +32,7 @@ cReComp/
 |--devel/
 |--lib/
 |--scrp/
-|--cReComp.rb
+|--cReComp.py
 |--README.md
 ```
 
@@ -41,7 +42,7 @@ cReComp/
  - library
 - scrp/
  - location of file.scrp
-- cReComp.rb
+- cReComp.py
  - Main Tool
 - README.md
 

@@ -8,7 +8,5 @@ module_type normal
 //}
 //make_32_alw{
 //}
-//sub_module_name sub uut
-//assign_port{
-//}
+//sub_module_name
 end
