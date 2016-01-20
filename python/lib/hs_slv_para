@@ -1,0 +1,7 @@
+parameter INIT 	= 0, 
+		READY 	= 1,
+		PROCESS = 2,
+		FINISH 	= 3;
+
+reg [3:0] hs_state;
+

@@ -1,0 +1,30 @@
+
+always @(posedge clk)begin
+	if(rst_8)
+		state_8 <= 0;
+	else
+		case (state_8)
+			INIT_8: 										state_8 <= READY_RCV_8;
+			READY_RCV_8: if(data_empty_8 == 0) 	state_8 <= RCV_DATA_8;
+			RCV_DATA_8: 									state_8 <= BUSY_8;
+			BUSY_8:											state_8 <= READY_SND_8;
+			READY_SND_8: if(data_full_8 == 0)		state_8 <= SND_DATA_8;
+			SND_DATA_8:									state_8 <= READY_RCV_8;
+		endcase
+end
+
+assign rcv_en_8 = (state_8 == RCV_DATA_8);
+assign snd_en_8 = (state_8 == SND_DATA_8);
+
+always @(posedge clk)begin
+	if(rst_8)begin
+/*user defined init*/
+	end
+	else if (state_8 == READY_SND_8)begin
+/*user defined rcv*/
+	end
+	else if (state_8 == READY_RCV_8)
+/*user defined */
+end
+
+/*user assign*/

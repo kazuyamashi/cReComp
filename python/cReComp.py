@@ -101,5 +101,33 @@ if __name__ == "__main__":
 		if ans_o:
 			fo.write(",\n\n")
 	#generate option port
-	option_port.make(flag,fo)
+	port_stack = []
+	if ans_o:
+		port_stack = option_port.make(flag,fo)
+	fo.write(");\n")
 
+	# generate instance for top module
+	fo.write ("// //copy this instance to top module\n")
+	fo.write ("//%s %s(\n"%(module_name,module_name))
+	fo.write ("//.clk(bus_clk),\n")
+	if ans_32:
+		common.read_lib(fo,"lib/lib32inst")
+		if ans_8 or ans_o:
+			fo.write(",\n//")
+	if ans_8:
+		common.read_lib(fo,"lib/lib8inst")
+	if ans_hs_s:
+		common.read_lib(fo,"lib/hs_slv_inst")
+	if ans_o:
+		if ans_32 or ans_8:
+			fo.write("\n")
+		else:
+			fo.write("// .rst(rst),\n")
+		ix = 0
+		while ix < len(port_stack):
+			inst = str(port_stack[ix]).split(" ")
+			fo.write("// .%s(%s)"%(inst[2],inst[2]))
+			ix = ix + 1
+			if ix < len(port_stack):
+				fo.write(",\n")
+	fo.write("\n//);\n")
