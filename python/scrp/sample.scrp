@@ -1,7 +1,7 @@
 module_name motor_ctl
 module_type normal
 option_port{
-	o,1,dir_out_r
+	o,1,dir_out_r,x3
 	o,1,dir_out_l
 	o,1,en_out_r
 	o,1,en_out_l

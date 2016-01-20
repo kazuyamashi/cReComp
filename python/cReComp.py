@@ -16,13 +16,7 @@ sys.path.append("lib/")
 import check_option
 import scrp_conf
 import option_port
-
-def read_lib(fo,str):
-	fi = open(str,"r")
-	for line in fi:
-		fo.write(line)
-		fi.close
-
+import common
 # 		self.module_name = ""
 # 		self.module_type = ""
 # 		self.use_fifo_32 = False
@@ -95,15 +89,15 @@ if __name__ == "__main__":
 	if ans_32 == False and ans_8 == False:
 		fo.write("input rst,\n")
 	if ans_32:
-		read_lib(fo,"lib/lib32")
+		common.read_lib(fo,"lib/lib32")
 		if ans_8 or ans_o:
 			fo.write(",\n")
 	if ans_8:
-		read_lib(fo,"lib/lib8")
+		common.read_lib(fo,"lib/lib8")
 		if ans_o:
 			fo.write(",\n")
 	if ans_hs_s:
-		read_lib(fo,"lib/hs_slv_port")
+		common.read_lib(fo,"lib/hs_slv_port")
 		if ans_o:
 			fo.write(",\n\n")
 	#generate option port
