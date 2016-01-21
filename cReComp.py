@@ -31,9 +31,10 @@ if __name__ == "__main__":
 	module_name = flag.module_name
 
 	fo = open("devel/%s.v" % module_name,"w")
-	
+	ans_hs_s=""
+	ans_hs_m=""
 	module_type = flag.module_type
-	
+	print module_type
 	if module_type == "normal":
 		ans_hs_s = False
 		ans_hs_m = False

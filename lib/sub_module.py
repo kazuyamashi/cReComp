@@ -23,7 +23,7 @@ def gen_inst(flag,fo):
 		fo.write("%s %s(\n"%(sub_module_name[0],sub_module_name[1]))
 		while True:
 			l = fi.readline().rstrip()
-			sub_port = l.translate(None,",").split(" ")
+			sub_port = l.translate(None,",\t").split(" ")
 			
 			if sub_port[0] == "input" or sub_port[0] == "output" or sub_port[0] == "inout":
 				if once == 0:

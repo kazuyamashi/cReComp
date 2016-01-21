@@ -1,32 +1,32 @@
-module_name motor_ctl
+module_name sample
 module_type normal
 option_port{
 	o,1,dir_out_r
-	o,1,dir_out_l
 	o,1,en_out_r
-	o,1,en_out_l
+	o,1,dir_out_l
+	output,1,en_out_l
 }
 //use_fifo_8
 use_fifo_32
 //make_8_alw{
 //}
 make_32_alw{
-	r,1,dir_right
-	r,15,para_right
-	r,1,dir_left
-	r,15,para_left
+	reg,15,para_in_r
+	reg,1,dir_r
+	r,15,para_in_l
+	r,1,dir_l
 }
 sub_module_name pwm_ctl right
 assign_port pwm_ctl{
-	para_in=para_right
-	dir_in=dir_right
+	para_in=para_in_r
+	dir_in=dir_r
 	dir_out=dir_out_r
 	en_out=en_out_r
 }
 sub_module_name pwm_ctl left
 assign_port pwm_ctl{
-	para_in=para_left
-	dir_in=dir_left
+	para_in=para_in_l
+	dir_in=dir_l
 	dir_out=dir_out_l
 	en_out=en_out_l
 }
