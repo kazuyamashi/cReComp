@@ -2,7 +2,7 @@ module_name sample
 module_type normal
 option_port{
 	io,1,sig_
-	o,4,led_
+	1,4,led_
 }
 //use_fifo_8
 use_fifo_32

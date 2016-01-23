@@ -15,7 +15,7 @@ def option():
 			print line.rstrip()
 		quit()
 	elif argvs[1] == "-s":
-		if argc < 2:
+		if argc < 3:
 			print "Please type name of SCRP file"
 			quit()
 		fi = open("lib/template.scrp")
@@ -58,6 +58,13 @@ def option():
 		quit()
 	elif argvs[1] == "-l":
 		print glob.glob("scrp/*")
+		quit()
+	else:
+		if argc > 1:
+			return argvs[1]
+		print "argument error"
+		print "Please specify your SCRP file"
+		print "-h = show help"
 		quit()
 	return argvs[1]
 

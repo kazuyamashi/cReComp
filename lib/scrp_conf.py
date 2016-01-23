@@ -1,6 +1,8 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 
+
+
 class ConfigFlag(object):
 	"""docstring for ConfigFlag"""
 	def __init__(self,dsl_file):

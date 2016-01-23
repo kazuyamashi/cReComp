@@ -1,0 +1,13 @@
+module_name test
+module_type normal
+option_port{
+	o,1,test
+	io,13,inp
+}
+use_fifo_8
+//use_fifo_32
+//make_8_alw{
+//}
+//make_32_alw{
+//}
+end

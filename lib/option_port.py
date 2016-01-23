@@ -1,5 +1,6 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*
+import common
 def make(flag,fo):
 	port_stack = []
 	i = 0
@@ -12,11 +13,22 @@ def make(flag,fo):
 		if port[1].isdigit() == False or port[0].isdigit():
 			print  "error ports declaration"
 			print port
+			common.remove_file(fo,flag.module_name)
 			quit()
 		elif not port[2]:
 			print "please define port name"
 			print port
+			common.remove_file(fo,flag.module_name)
 			quit()
+		elif len(port)>3:
+			if "x" in port[3]:
+				pass
+			else:
+				print  "error ports declaration"
+				print port
+				common.remove_file(fo,flag.module_name)
+				quit()
+
 
 		if "i" == port[0] or "input" == port[0]:
 			port_io = "input"
@@ -27,6 +39,8 @@ def make(flag,fo):
 		else:
 			print  "error ports declaration"
 			print port
+			common.remove_file(fo,flag.module_name)
+			quit()
 		# print port[2]
 		if len(port)<4:
 			bitwidth = int(port[1])-1

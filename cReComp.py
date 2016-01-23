@@ -31,25 +31,26 @@ if __name__ == "__main__":
 	module_name = flag.module_name
 
 	fo = open("devel/%s.v" % module_name,"w")
-	ans_hs_s=""
-	ans_hs_m=""
+	ans_hs_s=False
+	ans_hs_m=False
 	module_type = flag.module_type
-	print module_type
+	# print module_type
 	if module_type == "normal":
-		ans_hs_s = False
-		ans_hs_m = False
+		pass
 	elif module_type == "hs_mst":
 		ans_hs_m = True
 	elif module_type == "hs_slv":
 		ans_hs_s = True
 	else:
 		print "Error! module_type"
+		common.remove_file(fo,module_name)
 		quit()
 	
 	ans_32 = flag.use_fifo_32
 	ans_8 = flag.use_fifo_8
 	ans_32_alw = False
 	ans_8_alw = False
+	ans_o = False
 	if flag.option_port:
 		ans_o = True
 	else:
