@@ -1,5 +1,6 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
+import common
 class Fifo_32(object):
 	"""docstring for Fifo_32"""
 	def __init__(self):
@@ -19,15 +20,14 @@ class Fifo_32(object):
 		while i < len(flag.alw32_stack):
 			reg2fifo = flag.alw32_stack[i].split(",")
 
-			# error check
-			if reg2fifo[1].isdigit() == False or reg2fifo[0].isdigit():
+			if len(reg2fifo) > 2 and len(reg2fifo) < 5 and reg2fifo[1].isdigit() and (reg2fifo[0]=="r" or reg2fifo[0]=="w") and reg2fifo[2]!="":
+				pass
+			else:
 				print "error ports declaration"
 				print "not generated"
 				print reg2fifo
-				pass
-			elif len(reg2fifo) < 3:
-				print "please define name"
-				pass
+				common.remove_file(fo,flag.module_name)
+				quit()
 			if cur_r > 32:
 				print "error! Upper limit of 32bit FIFO was exceeded"
 				cur_r = cur_r - int(reg2fifo[1])
@@ -36,26 +36,40 @@ class Fifo_32(object):
 				print "error! Upper limit of 32bit FIFO was exceeded"
 				cur_s = cur_s - int(reg2fifo[1])
 				break;
-			elif reg2fifo[0] == "r" or reg2fifo[0] == "reg":
+			elif reg2fifo[0] == "r":
 				if len(reg2fifo) > 3:
 					n = 0
+					if "x" in reg2fifo[3]:
+						pass
+					else:
+						print "syntax error"
+						print reg2fifo
+						common.remove_file(fo,flag.module_name)
+						quit()
 					while n < int(reg2fifo[3].translate(None,"x")):
 						self.bit_witdh_32_r.append(reg2fifo[1])
 						self.reg2fifo_stack_32_r.append("%s_%s"%(reg2fifo[2],n))
-						fo.write("reg[%s:0] %s;\n"%(int(self.bit_witdh_32_r[j+n])-1,self.reg2fifo_stack_32_r[j+n]))
+						fo.write("reg [%s:0] %s;\n"%(int(self.bit_witdh_32_r[j+n])-1,self.reg2fifo_stack_32_r[j+n]))
 						cur_r = cur_r + int(reg2fifo[1])
 						n = n + 1
 					j = j + n
 				else:
 					self.bit_witdh_32_r.append(reg2fifo[1])
 					self.reg2fifo_stack_32_r.append(reg2fifo[2])
-					fo.write("reg[%s:0] %s;\n"%(int(self.bit_witdh_32_r[j])-1,self.reg2fifo_stack_32_r[j]))
+					fo.write("reg [%s:0] %s;\n"%(int(self.bit_witdh_32_r[j])-1,self.reg2fifo_stack_32_r[j]))
 					cur_r = cur_r + int(reg2fifo[1])
 					j = j + 1
 
-			elif reg2fifo[0] == "w" or reg2fifo[0] == "wire":
+			elif reg2fifo[0] == "w":
 				if len(reg2fifo) > 3:
 					n = 0
+					if "x" in reg2fifo[3]:
+						pass
+					else:
+						print "syntax error"
+						print reg2fifo
+						common.remove_file(fo,flag.module_name)
+						quit()
 					while n < int(reg2fifo[3].translate(None,"x")):
 						self.bit_witdh_32_s.append(reg2fifo[1])
 						self.reg2fifo_stack_32_s.append("%s_%s"%(reg2fifo[2],n))
@@ -76,10 +90,11 @@ class Fifo_32(object):
 		i = 0
 		bitmin = 0
 		bitmax = 0
-		if flag.module_type == "hs_mst":
-			ans_hs_m = True
-		elif flag.module_type == "normal":
-			ans_hs_m = False
+		ans_hs_m =""
+		# if flag.module_type == "hs_mst":
+		# 	ans_hs_m = True
+		# elif flag.module_type == "normal":
+		# 	ans_hs_m = False
 
 		fi = open("lib/lib_alw32")
 		while True:
@@ -120,16 +135,15 @@ class Fifo_32(object):
 				i = i + 1
 				bitmin = bitmax + 1
 
-		if ans_hs_m and len(flag.sub_module_name)>0:
-			i = 0
-			while i < len(flag.sub_module_name):
-				fi = open("lib/hs_mst_alw32")
-				while l in fi.readline():
-					l = l.translate("req_%s"%flag.sub_module_name[i],"/*req*/")
-					l = l.translate("busy_%s"%flag.sub_module_name[i],"/*busy*/")
-					l = l.translate("finish_%s"%flag.sub_module_name[i],"/*finish*/")
-					fo.write(l)
-				i = i + 1
-			else:
-				while l in fi.readline():
-					fo.write(l)
+		# if ans_hs_m and len(flag.sub_module_name)>0:
+		# 	i = 0
+		# 	while i < len(flag.sub_module_name):
+		# 		fi = open("lib/hs_mst_alw32")
+		# 		while l in fi.readline():
+		# 			l = l.translate("req_%s"%flag.sub_module_name[i],"/*req*/")
+		# 			l = l.translate("busy_%s"%flag.sub_module_name[i],"/*busy*/")
+		# 			l = l.translate("finish_%s"%flag.sub_module_name[i],"/*finish*/")
+		# 			fo.write(l)
+		# 		i = i + 1
+		while l in fi.readline():
+			fo.write(l)

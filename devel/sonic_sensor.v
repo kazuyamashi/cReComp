@@ -5,7 +5,7 @@ module sonic_sensor(
 	input rst,
 	input req,
 	output busy,
-	inout [0:0] sig,
+	inout sig,
 	output [31:0] out_data,
 	output [3:0] led
 );

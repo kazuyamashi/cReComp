@@ -7,7 +7,7 @@ class ConfigFlag(object):
 	"""docstring for ConfigFlag"""
 	def __init__(self,dsl_file):
 		self.module_name = ""
-		self.module_type = ""
+		# self.module_type = ""
 		self.use_fifo_32 = False
 		self.use_fifo_8 = False
 		self.option_port = False
@@ -57,8 +57,8 @@ class ConfigFlag(object):
 			elif "module_name" == state[0]:
 				self.module_name = state[1]
 				# print self.module_name
-			elif "module_type" == state[0]:
-				self.module_type = state[1]
+			# elif "module_type" == state[0]:
+			# 	self.module_type = state[1]
 				# print self.module_type
 			elif "use_fifo_32" == state[0]:
 				self.use_fifo_32 = True

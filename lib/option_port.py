@@ -9,25 +9,15 @@ def make(flag,fo):
 	while i < max_num:
 		l = flag.port_stack[i]
 		port = l.split(",")
-		# if target is value, isdigit() returns True.
-		if port[1].isdigit() == False or port[0].isdigit():
-			print  "error ports declaration"
-			print port
-			common.remove_file(fo,flag.module_name)
-			quit()
-		elif not port[2]:
-			print "please define port name"
-			print port
-			common.remove_file(fo,flag.module_name)
-			quit()
-		elif len(port)>3:
-			if "x" in port[3]:
+
+		if len(port) > 2 and len(port) < 5 and port[1].isdigit() and (port[0]=="i" or port[0]=="input" or port[0]=="o" or port[0]=="output" or port[0]=="io" or port[0]=="inout") and port[2]!="":
 				pass
-			else:
-				print  "error ports declaration"
-				print port
-				common.remove_file(fo,flag.module_name)
-				quit()
+		else:
+			print "error ports declaration"
+			print "not generated"
+			print port
+			common.remove_file(fo,flag.module_name)
+			quit()
 
 
 		if "i" == port[0] or "input" == port[0]:
@@ -41,7 +31,6 @@ def make(flag,fo):
 			print port
 			common.remove_file(fo,flag.module_name)
 			quit()
-		# print port[2]
 		if len(port)<4:
 			bitwidth = int(port[1])-1
 			port_stack.append(port_io+" ["+str(bitwidth)+":0] "+port[2])

@@ -1,5 +1,4 @@
 module_name sample
-module_type normal
 //option_port{
 //}
 //use_fifo_8

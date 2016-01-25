@@ -31,20 +31,20 @@ if __name__ == "__main__":
 	module_name = flag.module_name
 
 	fo = open("devel/%s.v" % module_name,"w")
-	ans_hs_s=False
-	ans_hs_m=False
-	module_type = flag.module_type
-	# print module_type
-	if module_type == "normal":
-		pass
-	elif module_type == "hs_mst":
-		ans_hs_m = True
-	elif module_type == "hs_slv":
-		ans_hs_s = True
-	else:
-		print "Error! module_type"
-		common.remove_file(fo,module_name)
-		quit()
+	# ans_hs_s=False
+	# ans_hs_m=False
+	# module_type = flag.module_type
+	# # print module_type
+	# if module_type == "normal":
+	# 	pass
+	# elif module_type == "hs_mst":
+	# 	ans_hs_m = True
+	# elif module_type == "hs_slv":
+	# 	ans_hs_s = True
+	# else:
+	# 	print "Error! module_type"
+	# 	common.remove_file(fo,module_name)
+	# 	quit()
 	
 	ans_32 = flag.use_fifo_32
 	ans_8 = flag.use_fifo_8
@@ -76,10 +76,11 @@ if __name__ == "__main__":
 		common.read_lib(fo,"lib/lib8")
 		if ans_o:
 			fo.write(",\n")
-	if ans_hs_s:
-		common.read_lib(fo,"lib/hs_slv_port")
-		if ans_o:
-			fo.write(",\n\n")
+	# if ans_hs_s:
+	# 	common.read_lib(fo,"lib/hs_slv_port")
+	# 	if ans_o:
+	# 		fo.write(",\n\n")
+	
 	#generate option port
 	port_stack = []
 	if ans_o:
@@ -96,8 +97,8 @@ if __name__ == "__main__":
 			fo.write(",\n//")
 	if ans_8:
 		common.read_lib(fo,"lib/lib8inst")
-	if ans_hs_s:
-		common.read_lib(fo,"lib/hs_slv_inst")
+	# if ans_hs_s:
+	# 	common.read_lib(fo,"lib/hs_slv_inst")
 	if ans_o:
 		if ans_32 or ans_8:
 			fo.write("\n")
@@ -113,8 +114,8 @@ if __name__ == "__main__":
 	fo.write("\n//);\n")
 
 	# define prameter
-	if ans_hs_s:
-		common.read_lib(fo,"lib/hs_slv_para")
+	# if ans_hs_s:
+	# 	common.read_lib(fo,"lib/hs_slv_para")
 	if ans_32:
 		common.read_lib(fo,"lib/fifo_32_para")
 	if ans_8:
@@ -138,8 +139,8 @@ if __name__ == "__main__":
 	if ans_8_alw:
 		fifo8.gen_alw(flag,fo)
 	# generate always block of hand shake slave
-	if ans_hs_s:
-		common.read_lib(fo,"lib/hs_slv_alw")
+	# if ans_hs_s:
+	# 	common.read_lib(fo,"lib/hs_slv_alw")
 	
 	fo.write("\n\nendmodule")
 
