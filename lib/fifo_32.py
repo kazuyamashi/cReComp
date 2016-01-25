@@ -9,6 +9,31 @@ class Fifo_32(object):
 		self.reg2fifo_stack_32_s = []
 		self.bit_witdh_32_s = []
 
+	def gen_para(self,flag,fo):
+		fo.write ("parameter INIT_32 = 0,\n")
+		fo.write ("\tIDLE_32 = 1,\n")
+		fo.write ("\tREADY_RCV_32 = 2,\n")
+		# w_cycle_32
+		# r_cycle_32
+		i = 3
+		j = 0
+		while j < int(flag.r_cycle_32):
+			fo.write("\tRCV_DATA_32_%s = %s,\n"%(j,i))
+			i = i + 1
+			j = j + 1
+		fo.write("\tPOSE_32	= %s,\n"%(i))
+		i = i + 1
+		fo.write("\tREADY_SND_32 = %s,\n"%(i))
+		i = i + 1
+		j = 0
+		while j < int(flag.w_cycle_32):
+			fo.write("\tSND_DATA_32_%s = %s,\n"%(j,i))
+			i = i + 1
+			j = j + 1
+		fo.write("// state register\n")
+		fo.write("reg [%s:0] state_32;\n"%(i/4+1))
+		common.read_lib(fo,"lib/fifo_32_para")
+
 	def gen_reg(self,flag,fo):
 		fo.write("\n\n")
 		fo.write("//for 32bbit FIFO\n")
@@ -97,35 +122,101 @@ class Fifo_32(object):
 		# 	ans_hs_m = False
 
 		fi = open("lib/lib_alw32")
+		if int(flag.r_cycle_32) == 0 and int(flag.w_cycle_32) == 0:
+			print "configure r_cycle_32 or w_cycle_32 more than 0 cycle"
+			common.remove_file(fo,flag.module_name)
+			quit()
 		while True:
 			l = fi.readline().rstrip()
-			if l == "/*user defined init*/":
+			if l == "/*idle state*/":
 				fo.write(l+"\n")
 				break
 			fo.write(l+"\n")
-		if len(self.reg2fifo_stack_32_r) > 0:
-			while i < len(self.reg2fifo_stack_32_r):
-				fo.write("\t\t%s <= 0;\n"%self.reg2fifo_stack_32_r[i])
-				i = i + 1
+		if int(flag.r_cycle_32) > 0:
+			fo.write("\t\t\tIDLE_32: 								state_32 <= READY_RCV_32;\n")
+			fo.write("\t\t\tREADY_RCV_32: if(data_empty_32 == 0) 	state_32 <= RCV_DATA_32_0;\n")
+		elif int(flag.w_cycle_32) > 0:
+			fo.write("\t\t\tIDLE_32: 								state_32 <= READY_SND_32;\n")
+
 		while True:
 			l = fi.readline().rstrip()
-			if l == "/*user defined rcv*/":
+			if l == "/*read state*/":
 				fo.write(l+"\n")
 				break
 			fo.write(l+"\n")
+
+		while i < int(flag.r_cycle_32)-1:
+			fo.write("\t\t\tRCV_DATA_32_%s: if(data_empty_32 == 0)	state_32 <= RCV_DATA_32_%s;\n"%(i,i+1))
+			i = i + 1
+		if int(flag.r_cycle_32) > 0:
+			fo.write("\t\t\tRCV_DATA_32_%s: if(data_empty_32 == 0)	state_32 <= POSE_32;\n"%(i))
+			fo.write("\t\t\tPOSE_32 								state_32 <= ")
+			if int(flag.w_cycle_32) > 0:
+				fo.write("READY_SND_32\n")
+			else:
+				fo.write("IDLE_32\n")
+		if i < int(flag.w_cycle_32)>0:
+			fo.write("\t\t\tREADY_SND_32 							state_32 <= SND_DATA_32_0\n")
+
+		while True:
+			l = fi.readline().rstrip()
+			if l == "/*write state*/":
+				fo.write(l+"\n")
+				break
+			fo.write(l+"\n")
+
 		i = 0
-		if len(self.reg2fifo_stack_32_r) > 0:
-			while i < len(self.reg2fifo_stack_32_r):
-				bitmax = bitmin + int(self.bit_witdh_32_r[i]) - 1;
-				fo.write("\t\t%s <= rcv_data_32[%s:%s];\n"%(self.reg2fifo_stack_32_r[i],bitmax,bitmin))
-				i = i + 1
-				bitmin = bitmax + 1
+		while i < int(flag.w_cycle_32)-1:
+			fo.write("\t\t\tSND_DATA_32_%s: if(data_full_32 == 0)	state_32 <= SND_DATA_32_%s;\n"%(i,i+1))
+			i = i + 1
+		if int(flag.w_cycle_32) > 0:
+			fo.write("\t\t\tSND_DATA_32_%s: if(data_full_32 == 0)	state_32 <= IDLE_32;\n"%(i))
+
+
+		while True:
+			l = fi.readline().rstrip()
+			if l == "/*read block for fifo_32*/":
+				fo.write(l+"\n")
+				break
+			fo.write(l+"\n")
+		if int(flag.r_cycle_32)>0:
+			while True:
+				l = fi.readline().rstrip()
+				if l == "/*user defined init*/":
+					fo.write(l+"\n")
+					break
+				fo.write(l+"\n")
+
+			i = 0
+			if len(self.reg2fifo_stack_32_r) > 0:
+				while i < len(self.reg2fifo_stack_32_r):
+					fo.write("\t\t%s <= 0;\n"%self.reg2fifo_stack_32_r[i])
+					i = i + 1
+			while True:
+				l = fi.readline().rstrip()
+				if l == "/*user defined rcv*/":
+					fo.write(l+"\n")
+					break
+				fo.write(l+"\n")
+
+			i = 0
+			if len(self.reg2fifo_stack_32_r) > 0:
+				while i < len(self.reg2fifo_stack_32_r):
+					bitmax = bitmin + int(self.bit_witdh_32_r[i]) - 1;
+					fo.write("\t\t%s <= rcv_data_32[%s:%s];\n"%(self.reg2fifo_stack_32_r[i],bitmax,bitmin))
+					i = i + 1
+					bitmin = bitmax + 1
+
 		while True:
 			l = fi.readline().rstrip()
 			if l == "/*user assign*/":
 				fo.write(l+"\n")
 				break
-			fo.write(l+"\n")
+			if int(flag.r_cycle_32)>0:
+				fo.write(l+"\n")
+			else:
+				pass
+
 		i = 0
 		bitmin = 0
 		if len(self.reg2fifo_stack_32_s) > 0:
@@ -134,6 +225,11 @@ class Fifo_32(object):
 				fo.write("assign snd_data_32[%s:%s] = %s;\n"%(bitmax,bitmin,self.reg2fifo_stack_32_s[i]))
 				i = i + 1
 				bitmin = bitmax + 1
+
+		if int(flag.w_cycle_32) > 0:
+			fo.write("assign snd_en_32 = (state_32 > READY_SND_32);\n")
+		if int(flag.r_cycle_32) > 0:
+			fo.write("assign rcv_en_32 = (state_32 > READY_RCV_32);\n")
 
 		# if ans_hs_m and len(flag.sub_module_name)>0:
 		# 	i = 0

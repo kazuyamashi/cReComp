@@ -29,7 +29,8 @@ def option():
 			i = 0
 			while i < argc-3:
 				fo.write("\nsub_module_name %s uut\n"%argvs[3+i])
-				fo.write("assign_port %s{\n"%argvs[3+i])
+				fo.write("//connection type normal or handshake\n")
+				fo.write("assign_port %s normal{\n"%argvs[3+i])
 				fd = open("devel/%s.v"%argvs[3+i],"r")
 				while True:
 					l = fd.readline().rstrip().translate(None,"\t(").split(" ")

@@ -1,19 +1,36 @@
 module_name test
 option_port{
-	io,1,sig_io
-	o,4,led_out
+	o,1,dir_r
+	o,1,en_r
+	o,1,dir_l
+	o,1,en_l
 }
 //use_fifo_8
 use_fifo_32
 //make_8_alw{
 //}
 make_32_alw{
-	w,32,sensor_data
+	r,1,dir_reg_r
+	r,15,para_in_reg_r
+	r,1,dir_reg_l
+	r,15,para_in_reg_l
 }
-sub_module_name sonic_sensor uut
-assign_port sonic_sensor{
-	sig=sig_io
-	out_data=sensor_data
-	led=led_out
+//w_cycle_32 1
+r_cycle_32 1
+//w_cycle_8
+//r_cycle_8
+sub_module_name pwm_ctl right
+assign_port pwm_ctl normal{
+	para_in=para_in_reg_r
+	dir_in=dir_reg_r
+	dir_out=dir_r
+	en_out=en_r
+}
+sub_module_name pwm_ctl left
+assign_port pwm_ctl normal{
+	para_in=para_in_reg_l
+	dir_in=dir_reg_l
+	dir_out=dir_l
+	en_out=en_l
 }
 end

@@ -7,3 +7,7 @@ module_name sample
 //}
 //make_32_alw{
 //}
+//w_cycle_32
+//r_cycle_32
+//w_cycle_8
+//r_cycle_8

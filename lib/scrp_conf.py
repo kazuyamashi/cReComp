@@ -22,6 +22,11 @@ class ConfigFlag(object):
 		self.assign_port_stack = []
 		self.fi=dsl_file
 		self.line = 1
+		self.w_cycle_32 = 0;
+		self.r_cycle_32 = 0;
+		self.w_cycle_8 = 0;
+		self.r_cycle_8 = 0;
+		self.connect = []
 
 	def elem_ins(self):
 		array = []
@@ -80,10 +85,21 @@ class ConfigFlag(object):
 				# print self.alw8_stack
 			elif "sub_module_name" == state[0]:
 				self.sub_module = True
-				string = state[1] + " " + state[2]
-				self.sub_module_name.append(string)
+				if  len(state)>2 and state[1].isdigit() == False and state[2].isdigit() == False:
+					string = state[1] + " " + state[2]
+					self.sub_module_name.append(string)
+				else:
+					print "Syntax Error near line %s in %s"%(self.line,dsl_file)
+					quit()
 				# print self.sub_module_name
 			elif "assign_port" == state[0]:
+				if state[2]!="" and state[2].isdigit()==False:
+					self.connect = state[2]
+					# print self.connect
+				else:
+					print "Syntax Error"
+					print "Specify cycle"
+					quit()
 				while True:
 					l = self.fi.readline().rstrip()
 					if l == "}":
@@ -93,6 +109,38 @@ class ConfigFlag(object):
 						self.assign_port_stack.append(l.translate(None," \t"))
 					self.line = self.line + 1
 					# print self.assign_port_stack
+			elif "w_cycle_32" == state[0]:
+				if state[1]!="" and state[1].isdigit():
+					self.w_cycle_32 = state[1]
+					# print self.w_cycle_32
+				else:
+					print "Syntax Error"
+					print "Specify cycle"
+					quit()
+			elif "r_cycle_32" == state[0]:
+				if state[1]!="" and state[1].isdigit():
+					self.r_cycle_32 = state[1]
+					# print self.r_cycle_32
+				else:
+					print "Syntax Error"
+					print "Specify cycle"
+					quit()
+			elif "w_cycle_8" == state[0]:
+				if state[1]!="" and state[1].isdigit():
+					self.w_cycle_8 = state[1]
+					# print self.w_cycle_8
+				else:
+					print "Syntax Error"
+					print "Specify cycle"
+					quit()
+			elif "r_cycle_8" == state[0]:
+				if state[1]!="" and state[1].isdigit():
+					self.r_cycle_8 = state[1]
+					# print self.r_cycle_8
+				else:
+					print "Syntax Error"
+					print "Specify cycle"
+					quit()
 			elif "end" in state[0]:
 				break
 			else:

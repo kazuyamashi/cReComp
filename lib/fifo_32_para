@@ -1,9 +1,3 @@
-parameter INIT_32 = 0,
-			READY_RCV_32 	= 1,
-			RCV_DATA_32 	= 2,
-			POSE_32		= 3,
-			READY_SND_32	= 4,
-			SND_DATA_32	= 5;
 
 // for input fifo
 wire [31:0] rcv_data_32;
@@ -13,8 +7,6 @@ wire data_empty_32;
 wire [31:0] snd_data_32;
 wire snd_en_32;
 wire data_full_32;
-// state register
-reg [3:0] state_32;
 
 ////fifo 32bit
 fifo_32x512 input_fifo_32(

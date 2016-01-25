@@ -51,6 +51,8 @@ if __name__ == "__main__":
 	ans_32_alw = False
 	ans_8_alw = False
 	ans_o = False
+	fifo32 = fifo_32.Fifo_32()
+	fifo8 = fifo_8.Fifo_8()
 	if flag.option_port:
 		ans_o = True
 	else:
@@ -80,7 +82,7 @@ if __name__ == "__main__":
 	# 	common.read_lib(fo,"lib/hs_slv_port")
 	# 	if ans_o:
 	# 		fo.write(",\n\n")
-	
+
 	#generate option port
 	port_stack = []
 	if ans_o:
@@ -117,17 +119,16 @@ if __name__ == "__main__":
 	# if ans_hs_s:
 	# 	common.read_lib(fo,"lib/hs_slv_para")
 	if ans_32:
-		common.read_lib(fo,"lib/fifo_32_para")
+		# common.read_lib(fo,"lib/fifo_32_para")
+		fifo32.gen_para(flag,fo)
 	if ans_8:
 		common.read_lib(fo,"lib/fifo_8_para")
 
 	# generate register for 32bit FIFO
 	if ans_32_alw:
-		fifo32 = fifo_32.Fifo_32()
 		fifo32.gen_reg(flag,fo)
 	# generate register for 8bit FIFO
 	if ans_8_alw:
-		fifo8 = fifo_8.Fifo_8()
 		fifo8.gen_reg(flag,fo)
 	# generate sub module instance
 	if ans_sub:
