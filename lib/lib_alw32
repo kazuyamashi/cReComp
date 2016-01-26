@@ -5,7 +5,6 @@ always @(posedge clk)begin
 	else
 		case (state_32)
 			INIT_32: 								state_32 <= IDLE_32;
-
 /*idle state*/
 
 /*read state*/

@@ -17,6 +17,15 @@ def remove_file(fo,file_name):
 	# os.remove(file_name)
 	print "not generated %s.v"%file_name
 
+def read_eachline(fi,str,fo):
+	while True:
+			l = fi.readline().rstrip()
+			if l == str:
+				fo.write(l+"\n")
+				break
+			fo.write(l+"\n")
+	pass
+
 if __name__ == '__main__':
 	file_name="sample.txt"
 	fd = open("sample.txt","w")

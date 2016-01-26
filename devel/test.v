@@ -108,7 +108,6 @@ always @(posedge clk)begin
 	else
 		case (state_32)
 			INIT_32: 								state_32 <= IDLE_32;
-
 /*idle state*/
 			IDLE_32: 								state_32 <= READY_RCV_32;
 			READY_RCV_32: if(data_empty_32 == 0) 	state_32 <= RCV_DATA_32_0;

@@ -126,24 +126,15 @@ class Fifo_32(object):
 			print "configure r_cycle_32 or w_cycle_32 more than 0 cycle"
 			common.remove_file(fo,flag.module_name)
 			quit()
-		while True:
-			l = fi.readline().rstrip()
-			if l == "/*idle state*/":
-				fo.write(l+"\n")
-				break
-			fo.write(l+"\n")
+
+		common.read_eachline(fi,"/*idle state*/",fo)
 		if int(flag.r_cycle_32) > 0:
 			fo.write("\t\t\tIDLE_32: 								state_32 <= READY_RCV_32;\n")
 			fo.write("\t\t\tREADY_RCV_32: if(data_empty_32 == 0) 	state_32 <= RCV_DATA_32_0;\n")
 		elif int(flag.w_cycle_32) > 0:
 			fo.write("\t\t\tIDLE_32: 								state_32 <= READY_SND_32;\n")
 
-		while True:
-			l = fi.readline().rstrip()
-			if l == "/*read state*/":
-				fo.write(l+"\n")
-				break
-			fo.write(l+"\n")
+		common.read_eachline(fi,"/*read state*/",fo)
 
 		while i < int(flag.r_cycle_32)-1:
 			fo.write("\t\t\tRCV_DATA_32_%s: if(data_empty_32 == 0)	state_32 <= RCV_DATA_32_%s;\n"%(i,i+1))
@@ -158,12 +149,7 @@ class Fifo_32(object):
 		if i < int(flag.w_cycle_32)>0:
 			fo.write("\t\t\tREADY_SND_32 							state_32 <= SND_DATA_32_0\n")
 
-		while True:
-			l = fi.readline().rstrip()
-			if l == "/*write state*/":
-				fo.write(l+"\n")
-				break
-			fo.write(l+"\n")
+		common.read_eachline(fi,"/*write state*/",fo)
 
 		i = 0
 		while i < int(flag.w_cycle_32)-1:
@@ -172,32 +158,19 @@ class Fifo_32(object):
 		if int(flag.w_cycle_32) > 0:
 			fo.write("\t\t\tSND_DATA_32_%s: if(data_full_32 == 0)	state_32 <= IDLE_32;\n"%(i))
 
+		common.read_eachline(fi,"/*read block for fifo_32*/",fo)
 
-		while True:
-			l = fi.readline().rstrip()
-			if l == "/*read block for fifo_32*/":
-				fo.write(l+"\n")
-				break
-			fo.write(l+"\n")
 		if int(flag.r_cycle_32)>0:
-			while True:
-				l = fi.readline().rstrip()
-				if l == "/*user defined init*/":
-					fo.write(l+"\n")
-					break
-				fo.write(l+"\n")
+
+			common.read_eachline(fi,"/*user defined init*/",fo)
 
 			i = 0
 			if len(self.reg2fifo_stack_32_r) > 0:
 				while i < len(self.reg2fifo_stack_32_r):
 					fo.write("\t\t%s <= 0;\n"%self.reg2fifo_stack_32_r[i])
 					i = i + 1
-			while True:
-				l = fi.readline().rstrip()
-				if l == "/*user defined rcv*/":
-					fo.write(l+"\n")
-					break
-				fo.write(l+"\n")
+
+			common.read_eachline(fi,"/*user defined rcv*/",fo)
 
 			i = 0
 			if len(self.reg2fifo_stack_32_r) > 0:
