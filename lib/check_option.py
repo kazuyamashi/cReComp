@@ -68,18 +68,3 @@ def option():
 		print "-h = show help"
 		quit()
 	return argvs[1]
-
-if __name__ == '__main__':
-	
-	# argvs = sys.argv
-	# argc = len(argvs)
-	# argv0 = ""
-	# argv1 = ""
-	# argv2 = ""
-
-	# if(argc == 3):
-	# 	argv0 = argvs[1]
-	# 	argv1 = argvs[2]
-	# elif (argc == 2):
-	# 	argv0 = argvs[1]
-	option()

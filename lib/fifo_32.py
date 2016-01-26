@@ -116,10 +116,6 @@ class Fifo_32(object):
 		bitmin = 0
 		bitmax = 0
 		ans_hs_m =""
-		# if flag.module_type == "hs_mst":
-		# 	ans_hs_m = True
-		# elif flag.module_type == "normal":
-		# 	ans_hs_m = False
 
 		fi = open("lib/lib_alw32")
 		if int(flag.r_cycle_32) == 0 and int(flag.w_cycle_32) == 0:
@@ -147,16 +143,16 @@ class Fifo_32(object):
 			else:
 				fo.write("IDLE_32\n")
 		if i < int(flag.w_cycle_32)>0:
-			fo.write("\t\t\tREADY_SND_32 							state_32 <= SND_DATA_32_0\n")
+			fo.write("\t\t\tREADY_SND_32: 	if(data_full_32 == 0)	state_32 <= SND_DATA_32_0\n")
 
 		common.read_eachline(fi,"/*write state*/",fo)
 
 		i = 0
 		while i < int(flag.w_cycle_32)-1:
-			fo.write("\t\t\tSND_DATA_32_%s: if(data_full_32 == 0)	state_32 <= SND_DATA_32_%s;\n"%(i,i+1))
+			fo.write("\t\t\tSND_DATA_32_%s: 					state_32 <= SND_DATA_32_%s;\n"%(i,i+1))
 			i = i + 1
 		if int(flag.w_cycle_32) > 0:
-			fo.write("\t\t\tSND_DATA_32_%s: if(data_full_32 == 0)	state_32 <= IDLE_32;\n"%(i))
+			fo.write("\t\t\tSND_DATA_32_%s: 							state_32 <= IDLE_32;\n"%(i))
 
 		common.read_eachline(fi,"/*read block for fifo_32*/",fo)
 
@@ -204,15 +200,5 @@ class Fifo_32(object):
 		if int(flag.r_cycle_32) > 0:
 			fo.write("assign rcv_en_32 = (state_32 > READY_RCV_32);\n")
 
-		# if ans_hs_m and len(flag.sub_module_name)>0:
-		# 	i = 0
-		# 	while i < len(flag.sub_module_name):
-		# 		fi = open("lib/hs_mst_alw32")
-		# 		while l in fi.readline():
-		# 			l = l.translate("req_%s"%flag.sub_module_name[i],"/*req*/")
-		# 			l = l.translate("busy_%s"%flag.sub_module_name[i],"/*busy*/")
-		# 			l = l.translate("finish_%s"%flag.sub_module_name[i],"/*finish*/")
-		# 			fo.write(l)
-		# 		i = i + 1
 		while l in fi.readline():
 			fo.write(l)

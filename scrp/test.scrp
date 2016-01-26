@@ -19,6 +19,8 @@ make_32_alw{
 r_cycle_32 1
 //w_cycle_8
 //r_cycle_8
+//reg_list{}
+//wire_list{}
 sub_module_name pwm_ctl right
 assign_port pwm_ctl normal{
 	para_in=para_in_reg_r

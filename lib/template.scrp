@@ -11,3 +11,5 @@ module_name sample
 //r_cycle_32
 //w_cycle_8
 //r_cycle_8
+//reg_list{}
+//wire_list{}
