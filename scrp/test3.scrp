@@ -1,0 +1,36 @@
+module_name test3
+option_port{
+	o,1,SPI_SS_out
+	o,1,SPI_CK_out
+	o,1,SPI_DO_out
+	o,1,SPI_DI_out
+}
+use_fifo_32
+make_32_alw{
+	w,32,sensor_data
+}
+w_cycle_32 3
+//r_cycle_32
+reg_list{
+	16,gyro_x_reg
+	16,gyro_y_reg
+	16,gyro_z_reg
+}
+wire_list{
+	1,flag
+	16,gyro_x
+	16,gyro_y
+	16,gyro_z
+}
+sub_module_name MPU_gyro_controller uut
+assign_port MPU_gyro_controller normal{
+	gyro_x=gyro_x
+	gyro_y=gyro_y
+	gyro_z=gyro_z
+	SPI_SS_g=SPI_SS_out
+	SPI_CK_g=SPI_CK_out
+	SPI_DO_g=SPI_DO_out
+	SPI_DI_g=SPI_DI_out
+	arm_read_enable_g=flag
+}
+end

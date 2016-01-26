@@ -5,16 +5,15 @@ option_port{
 }
 use_fifo_8
 use_fifo_32
-make_8_alw{
-	r,8,input_command
-}
+//make_8_alw{
+//}
 make_32_alw{
 	w,32,sensor_data
 }
 w_cycle_32 3
 //r_cycle_32
 //w_cycle_8
-r_cycle_8 4
+//r_cycle_8 4
 reg_list{
 	1,req_reg
 }

@@ -24,7 +24,7 @@ def gen_inst(flag,fo):
 		while True:
 			l = fi.readline().rstrip()
 			sub_port = l.translate(None,",\t").split(" ")
-			
+
 			if sub_port[0] == "input" or sub_port[0] == "output" or sub_port[0] == "inout":
 				if once == 0:
 					pass
@@ -35,7 +35,6 @@ def gen_inst(flag,fo):
 				break
 
 			if len(sub_port)<3:
-
 				assign = assign_port[j].translate(None,"\"[]\t").split("=")
 				if sub_port[0] == "input" or sub_port[0] == "output" or sub_port[0] == "inout":
 					if sub_port[1] == "rst" or sub_port[1] == "reset":
@@ -55,6 +54,29 @@ def gen_inst(flag,fo):
 
 					else:
 						fo.write(".%s(%s)"%(sub_port[1],sub_port[1]))
+
+			elif len(sub_port)>3:
+
+				assign = assign_port[j].translate(None,"\"[]\t").split("=")
+
+				if sub_port[0] == "input" or sub_port[0] == "output" or sub_port[0] == "inout":
+
+					if sub_port[1] == "rst" or sub_port[1] == "reset":
+						if flag.use_fifo_32:
+							fo.write(".%s(rst_32)"%(sub_port[2]))
+						elif flag.use_fifo_8:
+							fo.write(".%s(rst_8)"%(sub_port[3]))
+						elif flag.use_fifo_8 and flag.use_fifo_32:
+							fo.write(".%s(%s)"%(sub_port[3],sub_port[3]))
+						else:
+							fo.write(".%s(%s)"%(sub_port[3],sub_port[3]))
+
+					elif sub_port[3]==assign[0]:
+						fo.write(".%s(%s)"%(sub_port[3],assign[1]))
+						j = j + 1
+
+					else:
+						fo.write(".%s(%s)"%(sub_port[3],sub_port[3]))
 
 			elif len(sub_port)>2:
 
