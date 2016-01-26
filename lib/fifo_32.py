@@ -45,7 +45,10 @@ class Fifo_32(object):
 		while i < len(flag.alw32_stack):
 			reg2fifo = flag.alw32_stack[i].split(",")
 
-			if len(reg2fifo) > 2 and len(reg2fifo) < 5 and reg2fifo[1].isdigit() and (reg2fifo[0]=="r" or reg2fifo[0]=="w") and reg2fifo[2]!="":
+			if (len(reg2fifo) > 2 and len(reg2fifo) < 5
+				and reg2fifo[1].isdigit()
+				and (reg2fifo[0]=="r" or reg2fifo[0]=="w")
+				and reg2fifo[2]!=""):
 				pass
 			else:
 				print "error ports declaration"
@@ -133,10 +136,10 @@ class Fifo_32(object):
 		common.read_eachline(fi,"/*read state*/",fo)
 
 		while i < int(flag.r_cycle_32)-1:
-			fo.write("\t\t\tRCV_DATA_32_%s: if(data_empty_32 == 0)	state_32 <= RCV_DATA_32_%s;\n"%(i,i+1))
+			fo.write("\t\t\tRCV_DATA_32_%s:  									state_32 <= RCV_DATA_32_%s;\n"%(i,i+1))
 			i = i + 1
 		if int(flag.r_cycle_32) > 0:
-			fo.write("\t\t\tRCV_DATA_32_%s: if(data_empty_32 == 0)	state_32 <= POSE_32;\n"%(i))
+			fo.write("\t\t\tRCV_DATA_32_%s:  									state_32 <= POSE_32;\n"%(i))
 			fo.write("\t\t\tPOSE_32 								state_32 <= ")
 			if int(flag.w_cycle_32) > 0:
 				fo.write("READY_SND_32\n")

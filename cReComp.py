@@ -89,7 +89,8 @@ if __name__ == "__main__":
 	if flag.use_fifo_32:
 		fifo32.gen_para(flag,fo)
 	if flag.use_fifo_8:
-		common.read_lib(fo,"lib/fifo_8_para")
+		fifo8.gen_para(flag,fo)
+		# common.read_lib(fo,"lib/fifo_8_para")
 
 	# generate user register and wire
 	if flag.make_reglist:
