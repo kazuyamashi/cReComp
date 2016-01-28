@@ -3,24 +3,18 @@ option_port{
 	io,1,sig_out
 	o,3,led_out
 }
-//use_fifo_8
 use_fifo_32
-//make_8_alw{
-//}
 make_32_alw{
 	r,32,req_in
 	w,32,sesnor_data
 }
 w_cycle_32 1
 r_cycle_32 1
-//w_cycle_8
-//r_cycle_8
 wire_list{
 	1,busy_sensor
 }
 sub_module_name sonic_sensor uut
 assign_port sonic_sensor normal{
-	req=req_in
 	busy=busy_sensor
 	sig=sig_out
 	out_data=sesnor_data
