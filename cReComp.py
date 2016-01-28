@@ -11,8 +11,9 @@
 #		  new BSD
 #
 # (c) Kazushi Yamashina
-
+import os
 import sys
+import shutil
 sys.path.append("lib/")
 import check_option
 import scrp_conf
@@ -22,6 +23,7 @@ import fifo_32
 import fifo_8
 import sub_module
 
+
 if __name__ == "__main__":
 
 	dsl_file = check_option.option()
@@ -30,8 +32,15 @@ if __name__ == "__main__":
 	flag.set(dsl_file)
 
 	module_name = flag.module_name
+	if os.path.isdir("devel/%s"%module_name) == False:
+		os.makedirs("devel/%s"%module_name)
+	fo = open("devel/%s/%s.v"%(module_name,module_name),"w")
+	i = 0
 
-	fo = open("devel/%s.v" % module_name,"w")
+	while len(flag.sub_module_name) > i:
+		sub_module_name = flag.sub_module_name[i].split(" ")
+		shutil.copyfile("sub_module/%s.v"%sub_module_name[0], "devel/%s/%s.v"%(module_name,sub_module_name[0]))
+		i = i + 1
 
 	fifo32 = fifo_32.Fifo_32()
 	fifo8 = fifo_8.Fifo_8()

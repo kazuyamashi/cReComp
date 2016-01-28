@@ -1,5 +1,8 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
+import sys
+sys.path.append("sub_module")
+sys.path.append("../sub_module")
 def gen_inst(flag,fo):
 	i = 0
 	j = 0
@@ -7,7 +10,7 @@ def gen_inst(flag,fo):
 	assign_port = flag.assign_port_stack
 	while i < len(flag.sub_module_name):
 		sub_module_name = flag.sub_module_name[i].split(" ")
-		fi = open("devel/%s.v"%sub_module_name[0],"r")
+		fi = open("sub_module/%s.v"%sub_module_name[0],"r")
 		fo.write("\n\n//instance for %s\n"%sub_module_name[0])
 		l = ""
 		while True:
