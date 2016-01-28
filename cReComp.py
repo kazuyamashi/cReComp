@@ -22,6 +22,7 @@ import common
 import fifo_32
 import fifo_8
 import sub_module
+import sw_gen
 
 
 if __name__ == "__main__":
@@ -36,7 +37,6 @@ if __name__ == "__main__":
 		os.makedirs("devel/%s"%module_name)
 	fo = open("devel/%s/%s.v"%(module_name,module_name),"w")
 	i = 0
-
 	while len(flag.sub_module_name) > i:
 		sub_module_name = flag.sub_module_name[i].split(" ")
 		shutil.copyfile("sub_module/%s.v"%sub_module_name[0], "devel/%s/%s.v"%(module_name,sub_module_name[0]))
@@ -123,5 +123,7 @@ if __name__ == "__main__":
 		fifo8.gen_alw(flag,fo)
 
 	fo.write("\n\nendmodule")
+
+	sw_gen.cpp(flag)
 
 	print "Generate %s.v in ./devel"%flag.module_name
