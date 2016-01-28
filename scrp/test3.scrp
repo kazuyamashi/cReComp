@@ -9,8 +9,8 @@ use_fifo_32
 make_32_alw{
 	w,32,sensor_data
 }
-w_cycle_32 3
-//r_cycle_32
+w_cycle_32 1
+r_cycle_32 0
 reg_list{
 	16,gyro_x_reg
 	16,gyro_y_reg

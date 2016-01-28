@@ -31,14 +31,10 @@ output [0:0] SPI_DI_out
 //);
 parameter INIT_32 = 0,
 	IDLE_32 = 1,
-	READY_RCV_32 = 2,
-	POSE_32	= 3,
-	READY_SND_32 = 4,
-	SND_DATA_32_0 = 5,
-	SND_DATA_32_1 = 6,
-	SND_DATA_32_2 = 7,
+	READY_SND_32 = 2,
+	SND_DATA_32_0 = 3;
 // state register
-reg [3:0] state_32;
+reg [2:0] state_32;
 
 // for input fifo
 wire [31:0] rcv_data_32;
@@ -109,11 +105,9 @@ always @(posedge clk)begin
 /*idle state*/
 			IDLE_32: 								state_32 <= READY_SND_32;
 /*read state*/
-			READY_SND_32: 	if(data_full_32 == 0)	state_32 <= SND_DATA_32_0
+			READY_SND_32: 	if(data_full_32 == 0)	state_32 <= SND_DATA_32_0;
 /*write state*/
-			SND_DATA_32_0: 					state_32 <= SND_DATA_32_1;
-			SND_DATA_32_1: 					state_32 <= SND_DATA_32_2;
-			SND_DATA_32_2: 							state_32 <= IDLE_32;
+			SND_DATA_32_0: 							state_32 <= IDLE_32;
 		endcase
 end
 

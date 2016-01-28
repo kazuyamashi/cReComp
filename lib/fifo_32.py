@@ -12,24 +12,37 @@ class Fifo_32(object):
 	def gen_para(self,flag,fo):
 		fo.write ("parameter INIT_32 = 0,\n")
 		fo.write ("\tIDLE_32 = 1,\n")
-		fo.write ("\tREADY_RCV_32 = 2,\n")
-		# w_cycle_32
-		# r_cycle_32
-		i = 3
+		i = 2
 		j = 0
-		while j < int(flag.r_cycle_32):
-			fo.write("\tRCV_DATA_32_%s = %s,\n"%(j,i))
+		if int(flag.r_cycle_32) > 0:
+			fo.write("\tREADY_RCV_32 = %s,\n"%i)
 			i = i + 1
-			j = j + 1
-		fo.write("\tPOSE_32	= %s,\n"%(i))
-		i = i + 1
-		fo.write("\tREADY_SND_32 = %s,\n"%(i))
-		i = i + 1
+			while j < int(flag.r_cycle_32):
+				fo.write("\tRCV_DATA_32_%s = %s,\n"%(j,i))
+				i = i + 1
+				j = j + 1
+		if int(flag.w_cycle_32) > 0 and int(flag.r_cycle_32) == 0:
+			pass
+		else:
+			fo.write("\tPOSE_32	= %s"%(i))
+			i = i + 1
+			if int(flag.w_cycle_32) > 0:
+				fo.write(",\n")
+			else:
+				fo.write(";\n")
+		
 		j = 0
-		while j < int(flag.w_cycle_32):
-			fo.write("\tSND_DATA_32_%s = %s,\n"%(j,i))
+		if int(flag.w_cycle_32) > 0:
+			fo.write("\tREADY_SND_32 = %s,\n"%(i))
 			i = i + 1
-			j = j + 1
+			while j < int(flag.w_cycle_32):
+				fo.write("\tSND_DATA_32_%s = %s"%(j,i))
+				i = i + 1
+				j = j + 1
+				if int(flag.w_cycle_32) == j:
+					fo.write(";\n")
+				else:
+					fo.write(",\n")
 		fo.write("// state register\n")
 		fo.write("reg [%s:0] state_32;\n"%(i/4+1))
 		common.read_lib(fo,"lib/fifo_32_para")
@@ -140,13 +153,14 @@ class Fifo_32(object):
 			i = i + 1
 		if int(flag.r_cycle_32) > 0:
 			fo.write("\t\t\tRCV_DATA_32_%s:  									state_32 <= POSE_32;\n"%(i))
-			fo.write("\t\t\tPOSE_32 								state_32 <= ")
+			fo.write("\t\t\tPOSE_32: 								state_32 <= ")
 			if int(flag.w_cycle_32) > 0:
-				fo.write("READY_SND_32\n")
+				fo.write("READY_SND_32;\n")
 			else:
-				fo.write("IDLE_32\n")
-		if i < int(flag.w_cycle_32)>0:
-			fo.write("\t\t\tREADY_SND_32: 	if(data_full_32 == 0)	state_32 <= SND_DATA_32_0\n")
+				fo.write("IDLE_32;\n")
+		print flag.w_cycle_32
+		if int(flag.w_cycle_32)>0:
+			fo.write("\t\t\tREADY_SND_32: 	if(data_full_32 == 0)	state_32 <= SND_DATA_32_0;\n")
 
 		common.read_eachline(fi,"/*write state*/",fo)
 
@@ -201,7 +215,7 @@ class Fifo_32(object):
 		if int(flag.w_cycle_32) > 0:
 			fo.write("assign snd_en_32 = (state_32 > READY_SND_32);\n")
 		if int(flag.r_cycle_32) > 0:
-			fo.write("assign rcv_en_32 = (state_32 > READY_RCV_32);\n")
+			fo.write("assign rcv_en_32 = (state_32 > READY_RCV_32 && POSE_32 > state_32);\n")
 
 		while l in fi.readline():
 			fo.write(l)
