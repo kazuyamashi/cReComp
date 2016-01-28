@@ -15,7 +15,7 @@ class ConfigFlag(object):
 		self.alw8_stack = []
 		self.sub_module = False
 		self.sub_module_name = []
-		self.assign_target_module = []
+		# self.assign_target_module = []
 		self.assign_port_stack = []
 		self.fi=dsl_file
 		self.line = 1
@@ -28,6 +28,8 @@ class ConfigFlag(object):
 		self.make_wirelist=False
 		self.reg_list = []
 		self.wire_list = []
+		self.rw_condition_32 = False
+		self.rw_condition_8 = False
 
 	def elem_ins(self):
 		array = []
@@ -44,6 +46,11 @@ class ConfigFlag(object):
 			self.line = self.line + 1
 		return array
 
+	def elem_ins_one(self):
+		l = self.fi.readline().rstrip().translate(None,"\t")
+		self.line = self.line + 1
+		return l
+
 	def check_format(self,filename):
 		str_ = filename.split(".")
 		if not str_[1] == "scrp":
@@ -57,7 +64,6 @@ class ConfigFlag(object):
 			line = self.fi.readline().translate(None,"{\t")
 			state = line.rstrip().split(" ")
 			if "//" in state[0]:
-				# print state[0]
 				pass
 			elif "module_name" == state[0]:
 				self.module_name = state[1]
@@ -126,6 +132,12 @@ class ConfigFlag(object):
 			elif "wire_list" == state[0]:
 				self.make_wirelist = True
 				self.wire_list = self.elem_ins()
+			elif "rw_condition_32" == state[0]:
+				self.rw_condition_32 = self.elem_ins_one()
+				self.fi.readline()
+			elif "rw_condition_8" == state[0]:
+				self.rw_condition_8 = self.elem_ins_one()
+				self.fi.readline()
 			elif "end" in state[0]:
 				break
 			else:

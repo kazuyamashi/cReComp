@@ -79,7 +79,7 @@ reg [31:0] sesnor_data;
 sonic_sensor uut(
 .clk(clk),
 .rst(rst_32),
-.req(req_in),
+.req(req),
 .busy(busy_sensor),
 .sig(sig_out),
 .out_data(sesnor_data),
@@ -91,16 +91,16 @@ always @(posedge clk)begin
 		state_32 <= 0;
 	else
 		case (state_32)
-			INIT_32: 								state_32 <= IDLE_32;
+			INIT_32: 		state_32 <= IDLE_32;
 /*idle state*/
-			IDLE_32: 								state_32 <= READY_RCV_32;
+			IDLE_32: 		state_32 <= READY_RCV_32;
 			READY_RCV_32: if(data_empty_32 == 0) 	state_32 <= RCV_DATA_32_0;
 /*read state*/
-			RCV_DATA_32_0:  						state_32 <= POSE_32;
-			POSE_32: 								state_32 <= READY_SND_32;
+			RCV_DATA_32_0:  		state_32 <= POSE_32;
+			POSE_32: 		if(busy_sensor == 0) state_32 <= READY_SND_32;
 			READY_SND_32: 	if(data_full_32 == 0)	state_32 <= SND_DATA_32_0;
 /*write state*/
-			SND_DATA_32_0: 							state_32 <= IDLE_32;
+			SND_DATA_32_0: 		state_32 <= IDLE_32;
 		endcase
 end
 
@@ -111,7 +111,7 @@ always @(posedge clk)begin
 /*user defined init*/
 		req_in <= 0;
 	end
-	else if (state_32 >= RCV_DATA_32_0)begin
+	else if (state_32 > READY_RCV_32 && POSE_32 > state_32)begin
 /*user defined rcv*/
 		req_in <= rcv_data_32[31:0];
 	end

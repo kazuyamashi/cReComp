@@ -141,24 +141,27 @@ class Fifo_32(object):
 
 		common.read_eachline(fi,"/*idle state*/",fo)
 		if int(flag.r_cycle_32) > 0:
-			fo.write("\t\t\tIDLE_32: 								state_32 <= READY_RCV_32;\n")
+			fo.write("\t\t\tIDLE_32: 		state_32 <= READY_RCV_32;\n")
 			fo.write("\t\t\tREADY_RCV_32: if(data_empty_32 == 0) 	state_32 <= RCV_DATA_32_0;\n")
 		elif int(flag.w_cycle_32) > 0:
-			fo.write("\t\t\tIDLE_32: 								state_32 <= READY_SND_32;\n")
+			fo.write("\t\t\tIDLE_32: 		state_32 <= READY_SND_32;\n")
 
 		common.read_eachline(fi,"/*read state*/",fo)
 
 		while i < int(flag.r_cycle_32)-1:
-			fo.write("\t\t\tRCV_DATA_32_%s:  									state_32 <= RCV_DATA_32_%s;\n"%(i,i+1))
+			fo.write("\t\t\tRCV_DATA_32_%s:  		state_32 <= RCV_DATA_32_%s;\n"%(i,i+1))
 			i = i + 1
 		if int(flag.r_cycle_32) > 0:
-			fo.write("\t\t\tRCV_DATA_32_%s:  									state_32 <= POSE_32;\n"%(i))
-			fo.write("\t\t\tPOSE_32: 								state_32 <= ")
+			fo.write("\t\t\tRCV_DATA_32_%s:  		state_32 <= POSE_32;\n"%(i))
+			fo.write("\t\t\tPOSE_32: 		")
+
+			if flag.rw_condition_32!=False:
+				fo.write("%s "%flag.rw_condition_32)
+			
 			if int(flag.w_cycle_32) > 0:
-				fo.write("READY_SND_32;\n")
+				fo.write("state_32 <= READY_SND_32;\n")
 			else:
-				fo.write("IDLE_32;\n")
-		print flag.w_cycle_32
+				fo.write("state_32 <= IDLE_32;\n")
 		if int(flag.w_cycle_32)>0:
 			fo.write("\t\t\tREADY_SND_32: 	if(data_full_32 == 0)	state_32 <= SND_DATA_32_0;\n")
 
@@ -166,10 +169,10 @@ class Fifo_32(object):
 
 		i = 0
 		while i < int(flag.w_cycle_32)-1:
-			fo.write("\t\t\tSND_DATA_32_%s: 					state_32 <= SND_DATA_32_%s;\n"%(i,i+1))
+			fo.write("\t\t\tSND_DATA_32_%s: 		state_32 <= SND_DATA_32_%s;\n"%(i,i+1))
 			i = i + 1
 		if int(flag.w_cycle_32) > 0:
-			fo.write("\t\t\tSND_DATA_32_%s: 							state_32 <= IDLE_32;\n"%(i))
+			fo.write("\t\t\tSND_DATA_32_%s: 		state_32 <= IDLE_32;\n"%(i))
 
 		common.read_eachline(fi,"/*read block for fifo_32*/",fo)
 

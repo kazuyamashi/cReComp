@@ -9,6 +9,9 @@ make_32_alw{
 	w,32,sesnor_data
 }
 w_cycle_32 1
+rw_condition_32{
+if(busy_sensor == 0)
+}
 r_cycle_32 1
 wire_list{
 	1,busy_sensor

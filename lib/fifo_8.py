@@ -12,24 +12,37 @@ class Fifo_8(object):
 	def gen_para(self,flag,fo):
 		fo.write ("parameter INIT_8 = 0,\n")
 		fo.write ("\tIDLE_8 = 1,\n")
-		fo.write ("\tREADY_RCV_8 = 2,\n")
-		# w_cycle_8
-		# r_cycle_8
-		i = 3
+		i = 2
 		j = 0
-		while j < int(flag.r_cycle_8):
-			fo.write("\tRCV_DATA_8_%s = %s,\n"%(j,i))
+		if int(flag.r_cycle_8) > 0:
+			fo.write("\tREADY_RCV_8 = %s,\n"%i)
 			i = i + 1
-			j = j + 1
-		fo.write("\tPOSE_8	= %s,\n"%(i))
-		i = i + 1
-		fo.write("\tREADY_SND_8 = %s,\n"%(i))
-		i = i + 1
+			while j < int(flag.r_cycle_8):
+				fo.write("\tRCV_DATA_8_%s = %s,\n"%(j,i))
+				i = i + 1
+				j = j + 1
+		if int(flag.w_cycle_8) > 0 and int(flag.r_cycle_8) == 0:
+			pass
+		else:
+			fo.write("\tPOSE_8	= %s"%(i))
+			i = i + 1
+			if int(flag.w_cycle_8) > 0:
+				fo.write(",\n")
+			else:
+				fo.write(";\n")
+		
 		j = 0
-		while j < int(flag.w_cycle_8):
-			fo.write("\tSND_DATA_8_%s = %s,\n"%(j,i))
+		if int(flag.w_cycle_8) > 0:
+			fo.write("\tREADY_SND_8 = %s,\n"%(i))
 			i = i + 1
-			j = j + 1
+			while j < int(flag.w_cycle_8):
+				fo.write("\tSND_DATA_8_%s = %s"%(j,i))
+				i = i + 1
+				j = j + 1
+				if int(flag.w_cycle_8) == j:
+					fo.write(";\n")
+				else:
+					fo.write(",\n")
 		fo.write("// state register\n")
 		fo.write("reg [%s:0] state_8;\n"%(i/4+1))
 		common.read_lib(fo,"lib/fifo_8_para")
@@ -128,34 +141,38 @@ class Fifo_8(object):
 
 		common.read_eachline(fi,"/*idle state*/",fo)
 		if int(flag.r_cycle_8) > 0:
-			fo.write("\t\t\tIDLE_8: 								state_8 <= READY_RCV_8;\n")
+			fo.write("\t\t\tIDLE_8: 		state_8 <= READY_RCV_8;\n")
 			fo.write("\t\t\tREADY_RCV_8: if(data_empty_8 == 0) 	state_8 <= RCV_DATA_8_0;\n")
 		elif int(flag.w_cycle_8) > 0:
-			fo.write("\t\t\tIDLE_8: 								state_8 <= READY_SND_8;\n")
+			fo.write("\t\t\tIDLE_8: 		state_8 <= READY_SND_8;\n")
 
 		common.read_eachline(fi,"/*read state*/",fo)
 
 		while i < int(flag.r_cycle_8)-1:
-			fo.write("\t\t\tRCV_DATA_8_%s:  									state_8 <= RCV_DATA_8_%s;\n"%(i,i+1))
+			fo.write("\t\t\tRCV_DATA_8_%s:  		state_8 <= RCV_DATA_8_%s;\n"%(i,i+1))
 			i = i + 1
 		if int(flag.r_cycle_8) > 0:
-			fo.write("\t\t\tRCV_DATA_8_%s:  									state_8 <= POSE_8;\n"%(i))
-			fo.write("\t\t\tPOSE_8 								state_8 <= ")
+			fo.write("\t\t\tRCV_DATA_8_%s:  		state_8 <= POSE_8;\n"%(i))
+			fo.write("\t\t\tPOSE_8: 		")
+
+			if flag.rw_condition_8!=False:
+				fo.write("%s "%flag.rw_condition_8)
+			
 			if int(flag.w_cycle_8) > 0:
-				fo.write("READY_SND_8\n")
+				fo.write("state_8 <= READY_SND_8;\n")
 			else:
-				fo.write("IDLE_8\n")
-		if i < int(flag.w_cycle_8)>0:
-			fo.write("\t\t\tREADY_SND_8: 	if(data_full_8 == 0)	state_8 <= SND_DATA_8_0\n")
+				fo.write("state_8 <= IDLE_8;\n")
+		if int(flag.w_cycle_8)>0:
+			fo.write("\t\t\tREADY_SND_8: 	if(data_full_8 == 0)	state_8 <= SND_DATA_8_0;\n")
 
 		common.read_eachline(fi,"/*write state*/",fo)
 
 		i = 0
 		while i < int(flag.w_cycle_8)-1:
-			fo.write("\t\t\tSND_DATA_8_%s: 					state_8 <= SND_DATA_8_%s;\n"%(i,i+1))
+			fo.write("\t\t\tSND_DATA_8_%s: 		state_8 <= SND_DATA_8_%s;\n"%(i,i+1))
 			i = i + 1
 		if int(flag.w_cycle_8) > 0:
-			fo.write("\t\t\tSND_DATA_8_%s: 							state_8 <= IDLE_8;\n"%(i))
+			fo.write("\t\t\tSND_DATA_8_%s: 		state_8 <= IDLE_8;\n"%(i))
 
 		common.read_eachline(fi,"/*read block for fifo_8*/",fo)
 
@@ -201,7 +218,7 @@ class Fifo_8(object):
 		if int(flag.w_cycle_8) > 0:
 			fo.write("assign snd_en_8 = (state_8 > READY_SND_8);\n")
 		if int(flag.r_cycle_8) > 0:
-			fo.write("assign rcv_en_8 = (state_8 > READY_RCV_8);\n")
+			fo.write("assign rcv_en_8 = (state_8 > READY_RCV_8 && POSE_8 > state_8);\n")
 
 		while l in fi.readline():
 			fo.write(l)
