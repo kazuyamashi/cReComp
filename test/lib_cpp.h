@@ -1,21 +1,38 @@
-#include <stdio.h>
-#include <stdlib.h>
+#include <fcntl.h>
+#include <termio.h>
+#include <signal.h>
+
 class If_module
 {
-	FILE *fr,*fw;
+	char devfile_write[256];
+	char devfile_read[256];
 public:
+	FILE *fr,*fw;
 	If_module();
 	~If_module();
-	// void opendevfile_read(char* path);
-	// void opendevfile_write(char* path);
-	void opendevfile_read();
-	void opendevfile_write();
+	void set_devfile_read(const char* str);
+	void set_devfile_write(const char* str);
+	bool open_devfile_read();
+	bool open_devfile_write();
+	void close_devfile_read();
+	void close_devfile_write();
+	void readfrom_fifo()
 };
 
-void If_module::opendevfile_read(){
-	fr = open("sample.txt",O_RDONLY);
+If_module::If_module(){}
+If_module::~If_module(){}
+
+bool If_module::open_devfile_read(){
+
+	return (fr = open("", O_RDONLY)) == NULL;
 }
-void If_module::opendevfile_write(){
-	fw = open("sample0.txt",O_WRONLY);
+bool If_module::open_devfile_write(){
+	return (fw = open("/dev/xillybus_write_32", O_WRONLY)) == NULL;
 }
 
+void If_module::close_devfile_read(){
+	fclose(fr);
+}
+void If_module::close_devfile_write(){
+	fclose(fw);
+}
