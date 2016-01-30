@@ -79,7 +79,7 @@ reg [31:0] sesnor_data;
 sonic_sensor uut(
 .clk(clk),
 .rst(rst_32),
-.req(req),
+.req(req_in),
 .busy(busy_sensor),
 .sig(sig_out),
 .out_data(sesnor_data),

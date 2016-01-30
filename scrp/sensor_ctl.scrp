@@ -18,6 +18,7 @@ wire_list{
 }
 sub_module_name sonic_sensor uut
 assign_port sonic_sensor normal{
+	req=req_in
 	busy=busy_sensor
 	sig=sig_out
 	out_data=sesnor_data
