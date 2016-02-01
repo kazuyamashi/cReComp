@@ -31,7 +31,7 @@ def option():
 				fo.write("\nsub_module_name %s uut\n"%argvs[3+i])
 				# fo.write("//connection type normal or handshake\n")
 				fo.write("assign_port %s normal{\n"%argvs[3+i])
-				fd = open("devel/%s.v"%argvs[3+i],"r")
+				fd = open("sub_module/%s.v"%argvs[3+i],"r")
 				while True:
 					l = fd.readline().rstrip().translate(None,"\t(").split(" ")
 					if l[0]=="module" and l[1] == argvs[3+i]:
