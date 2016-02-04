@@ -1,0 +1,40 @@
+module_name test
+option_port{
+	io,1,sig_out
+	o,3,led_out
+}
+//use_fifo_8
+use_fifo_32
+//make_8_alw{}
+make_32_alw{
+	r,32,req_in
+	w,32,sensor_data
+}
+//
+r_cycle_32 1
+rw_condition_32{
+if(finish_sensor)
+}
+w_cycle_32 1
+//
+//r_cycle_8
+//rw_condition_8{
+//if()
+//w_cycle_8
+//}
+reg_list{
+	1,finish_sensor
+}
+wire_list{
+	1,busy_sensor
+}
+sub_module_name sonic_sensor uut
+assign_port sonic_sensor normal{
+	req=req_in
+	busy=busy_sensor
+	sig=sig_out
+	out_data=sensor_data
+	finish=finish_sensor
+	led=led_out
+}
+end

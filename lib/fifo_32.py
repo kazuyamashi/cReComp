@@ -114,14 +114,14 @@ class Fifo_32(object):
 					while n < int(reg2fifo[3].translate(None,"x")):
 						self.bit_witdh_32_s.append(reg2fifo[1])
 						self.reg2fifo_stack_32_s.append("%s_%s"%(reg2fifo[2],n))
-						fo.write("reg [%s:0] %s;\n"%(int(self.bit_witdh_32_s[k+n])-1,self.reg2fifo_stack_32_s[k+n]))
+						fo.write("wire [%s:0] %s;\n"%(int(self.bit_witdh_32_s[k+n])-1,self.reg2fifo_stack_32_s[k+n]))
 						cur_s = cur_s + int(reg2fifo[1])
 						n = n + 1
 					k = k + n
 				else:
 					self.bit_witdh_32_s.append(reg2fifo[1])
 					self.reg2fifo_stack_32_s.append(reg2fifo[2])
-					fo.write("reg [%s:0] %s;\n"%(int(self.bit_witdh_32_s[k])-1,self.reg2fifo_stack_32_s[k]))
+					fo.write("wire [%s:0] %s;\n"%(int(self.bit_witdh_32_s[k])-1,self.reg2fifo_stack_32_s[k]))
 					cur_s = cur_s + int(reg2fifo[1])
 					k = k + 1
 

@@ -73,7 +73,7 @@ def cpp(flag):
 		else:
 			line = word.while_cpp_get32.replace("action",flag.module_name)
 			fo.write(line.replace("max", flag.w_cycle_32))
-		fo.write("\treturn sensor_ctl_dout_32;\n")
+		fo.write("\treturn %s_dout_32;\n"%flag.module_name)
 		fo.write("}\n")
 	if int(flag.r_cycle_32) > 0:
 		if int(flag.r_cycle_32) == 1:
@@ -98,7 +98,7 @@ def cpp(flag):
 		else:
 			line = word.while_cpp_get8.replace("action",flag.module_name)
 			fo.write(line.replace("max", flag.w_cycle_8))
-		fo.write("\treturn sensor_ctl_dout_8;\n")
+		fo.write("\treturn %s_dout_8;\n"%flag.module_name)
 		fo.write("}\n")
 	if int(flag.r_cycle_8) > 0:
 		if int(flag.r_cycle_8) == 1:
@@ -112,7 +112,7 @@ def cpp(flag):
 			line = word.while_cpp_set8.replace("action",flag.module_name)
 			fo.write(line.replace("max", flag.r_cycle_8))
 		fo.write("}\n")
-	
+
 	fo.write("\n\n")
 
 	fo.write("int main(int argc, char const *argv[]){\n")

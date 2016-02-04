@@ -8,6 +8,7 @@ always @(posedge clk)begin
 /*idle state*/
 /*read state*/
 /*write state*/
+	default: state <= INIT_32;
 		endcase
 end
 
@@ -21,5 +22,19 @@ always @(posedge clk)begin
 /*user defined rcv*/
 	end
 end
+
+always @(posedge clk)begin
+	if(rst_32)begin
+		snd_en_32 <= 0;
+		rcv_en_32 <= 0;
+	end
+	else case (state_32)
+		READY_RCV_32: if(data_empty_32 == 0) 	rcv_en_32 <= 1;
+		RCV_DATA_32_0: rcv_en_32 <= 0;
+		READY_SND_32: 	if(data_full_32 == 0)	snd_en_32 <= 1;
+		SND_DATA_32_0: snd_en_32 <= 0;
+	endcase
+end
+
 
 /*user assign*/

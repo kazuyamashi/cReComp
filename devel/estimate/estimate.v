@@ -1,5 +1,5 @@
 `timescale 1ns / 1ps
-module sensor_ctl(
+module estimate(
 input clk,
 input rst_32,
 input [31:0] din_32,
@@ -7,12 +7,9 @@ input [0:0] wr_en_32,
 input [0:0] rd_en_32,
 output [31:0] dout_32,
 output [0:0] full_32,
-output [0:0] empty_32,
-inout [0:0] sig_out,
-output [2:0] led_out
-);
+output [0:0] empty_32);
 // //copy this instance to top module
-//sensor_ctl sensor_ctl(
+//estimate estimate(
 //.clk(bus_clk),
 //.rst_32(!user_w_write_32_open && !user_r_read_32_open),
 //.din_32(user_w_write_32_data),
@@ -20,18 +17,12 @@ output [2:0] led_out
 //.rd_en_32(user_r_read_32_rden),
 //.dout_32(user_r_read_32_data),
 //.full_32(user_w_write_32_full),
-//.empty_32(user_r_read_32_empty),
-//
-// .sig_out(sig_out),
-// .led_out(led_out)
+//.empty_32(user_r_read_32_empty)
 //);
 parameter INIT_32 = 0,
 	IDLE_32 = 1,
-	READY_RCV_32 = 2,
-	RCV_DATA_32_0 = 3,
-	POSE_32	= 4,
-	READY_SND_32 = 5,
-	SND_DATA_32_0 = 6;
+	READY_SND_32 = 2,
+	SND_DATA_32_0 = 3;
 // state register
 reg [2:0] state_32;
 
@@ -66,23 +57,29 @@ fifo_32x512 output_fifo_32(
 	.rd_en(rd_en_32),
 	.empty(empty_32)
 	);
+//user register
+reg [0:0] start;
+reg [31:0] max_reg;
 //user wire
-wire [0:0] busy_sensor;
+wire [0:0] done;
+wire [0:0] idle;
+wire [0:0] ready;
 
 
 //for 32bbit FIFO
-reg [31:0] req_in;
-wire [31:0] sesnor_data;
+wire [31:0] ap_return_top;
 
 
-//instance for sonic_sensor
-sonic_sensor uut(
-.clk(clk),
-.rst(rst_32),
-.req(req_in),
-.busy(busy_sensor),
-.sig(sig_out),
-.out_data(sesnor_data)
+//instance for filter_est
+filter_est uut(
+.ap_clk(clk),
+.ap_rst(rst_32),
+.ap_start(start),
+.ap_done(done),
+.ap_idle(idle),
+.ap_ready(ready),
+.max(max_reg),
+.ap_return(ap_return_top)
 );
 
 always @(posedge clk)begin
@@ -92,34 +89,19 @@ always @(posedge clk)begin
 		case (state_32)
 			INIT_32: 		state_32 <= IDLE_32;
 /*idle state*/
-			IDLE_32: 		state_32 <= READY_RCV_32;
-			READY_RCV_32: if(data_empty_32 == 0) 	state_32 <= RCV_DATA_32_0;
+			IDLE_32: 		state_32 <= READY_SND_32;
 /*read state*/
-			RCV_DATA_32_0:  		state_32 <= POSE_32;
-			POSE_32: 		if(busy_sensor == 0) state_32 <= READY_SND_32;
 			READY_SND_32: 	if(data_full_32 == 0)	state_32 <= SND_DATA_32_0;
 /*write state*/
 			SND_DATA_32_0: 		state_32 <= IDLE_32;
+	default: state <= INIT_32;
 		endcase
 end
 
 /*read block for fifo_32*/
-
-always @(posedge clk)begin
-	if(rst_32)begin
-/*user defined init*/
-		req_in <= 0;
-	end
-	else if (state_32 > READY_RCV_32 && POSE_32 > state_32)begin
-/*user defined rcv*/
-		req_in <= rcv_data_32[31:0];
-	end
-end
-
 /*user assign*/
-assign snd_data_32[31:0] = sesnor_data;
+assign snd_data_32[31:0] = ap_return_top;
 assign snd_en_32 = (state_32 > READY_SND_32);
-assign rcv_en_32 = (state_32 > READY_RCV_32 && POSE_32 > state_32);
 
 
 endmodule

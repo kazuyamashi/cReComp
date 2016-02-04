@@ -1,11 +1,21 @@
 `timescale 1ns / 1ps
-
-//	      _    _                   _    _
-// clk  _| |__| |__ ........... __| |__| |_
-//         ____
-// req  __|    |___________________________
-//             ___________________
-// busy ______|                   |________
+// sonic_sensor.v ver 1.0
+// Description by Kazushi Yamashina
+// Utsunomiya University
+// kazushi@virgo.is.utsunomiya-u.ac.jp
+//	         _    _                   _    _
+//clk      _| |__| |__ ........... __| |__| |_
+//            ____
+//req      __|    |___________________________
+//                ____             ___
+//busy     ______|     ...........    |_______
+//                              ______________
+//out_data ____________ ....... __result______
+//
+// req : If you wanna get sensor value, assert req.
+// busy : Module is processing while "busy" asserts.
+// sig : assign to ultra sonic distance sensor.
+// out_data : If "busy" negates, value is publisehd.
 
 
 module sonic_sensor(
@@ -14,10 +24,9 @@ module sonic_sensor(
 	input req,
 	output busy,
 	inout sig,
-	output [31:0] out_data,
-	output [3:0] led
+	output [31:0] out_data
 );
-	
+
 	parameter STATE_INIT 			= 0,
 				 STATE_IDLE 			= 1,
 				 STATE_OUT_SIG 		= 2,
@@ -27,8 +36,7 @@ module sonic_sensor(
 				 STATE_IN_SIG 			= 6,
 				 STATE_IN_SIG_END 	= 7,
 				 STATE_WAIT200 		= 8;
-				 
-	
+
 	reg [3:0] state;
 	reg [31:0] echo;
 	reg [32:0] counter;
@@ -53,7 +61,6 @@ module sonic_sensor(
 	assign time_out = counter == 2000;
 	assign echo_fl = (echo > 1850000)? 1 : 0;
 
-//	assign sig = (state == STATE_IN_SIG)? 1'bZ : (state == STATE_OUT_SIG)? 1 : 1'bZ;
 	assign sig = (state == STATE_OUT_SIG)? 1 : 1'bZ;
 	assign busy = (state > STATE_IDLE)?1 : 0;
 	//state unit
@@ -110,8 +117,7 @@ module sonic_sensor(
 		else if(state == STATE_IN_SIG_END)
 			result <= echo;
 	end
-	
+
 	assign out_data = result[31:0];
-	assign led = state;
-	
+
 endmodule

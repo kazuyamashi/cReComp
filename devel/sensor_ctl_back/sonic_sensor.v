@@ -1,21 +1,11 @@
 `timescale 1ns / 1ps
-// sonic_sensor.v ver 1.0
-// Description by Kazushi Yamashina
-// Utsunomiya University
-// kazushi@virgo.is.utsunomiya-u.ac.jp
-//	          _    _                   _    _
-//clk      _| |__| |__ ........... __| |__| |_
-//            ____
-//req      __|    |___________________________
-//                ____             ___
-//busy     ______|     ...........    |_______
-//                              ______________
-//out_data ____________ ....... __result______
-//
-// req : If you wanna get sensor value, assert req.
-// busy : Module is processing while "busy" asserts.
-// sig : assign to ultra sonic distance sensor.
-// out_data : If "busy" negates, value is publisehd.
+
+//	      _    _                   _    _
+// clk  _| |__| |__ ........... __| |__| |_
+//         ____
+// req  __|    |___________________________
+//             ___________________
+// busy ______|                   |________
 
 
 module sonic_sensor(
@@ -25,10 +15,9 @@ module sonic_sensor(
 	output busy,
 	inout sig,
 	output [31:0] out_data,
-	output finish
-//	output [3:0] led
+	output [3:0] led
 );
-
+	
 	parameter STATE_INIT 			= 0,
 				 STATE_IDLE 			= 1,
 				 STATE_OUT_SIG 		= 2,
@@ -38,7 +27,8 @@ module sonic_sensor(
 				 STATE_IN_SIG 			= 6,
 				 STATE_IN_SIG_END 	= 7,
 				 STATE_WAIT200 		= 8;
-
+				 
+	
 	reg [3:0] state;
 	reg [31:0] echo;
 	reg [32:0] counter;
@@ -47,41 +37,25 @@ module sonic_sensor(
 	wire count_5u;
 	wire count_750u;
 	wire count_200u;
-//	wire time_out;
+	wire time_out;
 	wire echo_fl;
-	reg busy_reg;
-	reg finish_reg;
 	
 	//for debug
-//	assign count_5u = counter == 5;
-//	assign count_750u = counter == 75;
-//	assign count_200u = counter == 20;
-//	assign echo_fl = (counter > 100)? 1 : 0;
+//	assign count_5u = counter == 249;
+//	assign count_750u = counter == 37;
+//	assign count_200u = counter == 10;
+//	assign echo_fl = (counter > 25)? 1 : 0;
+//	assign time_out = counter == 10;
 	
 	assign count_5u = counter == 499;
 	assign count_750u = counter == 74998;
 	assign count_200u = counter == 19999;
-	assign echo_fl = (echo == 1850000)? 1 : 0; // 18.5ms @ 100MHz
+	assign time_out = counter == 2000;
+	assign echo_fl = (echo > 1850000)? 1 : 0;
 
+//	assign sig = (state == STATE_IN_SIG)? 1'bZ : (state == STATE_OUT_SIG)? 1 : 1'bZ;
 	assign sig = (state == STATE_OUT_SIG)? 1 : 1'bZ;
-	assign busy = busy_reg;
-	assign finish = finish_reg;
-	
-	always @(posedge clk)
-	begin
-		if(rst) begin
-			busy_reg <= 0;
-			finish_reg <= 0;
-		end
-		else
-			case(state)
-				STATE_INIT: begin busy_reg <= 0; finish_reg <= 0;end
-				STATE_IDLE:if(req) busy_reg <= 1;
-				STATE_IN_SIG_END: finish_reg <= 1;
-				STATE_WAIT200: finish_reg <= 0;
-			endcase
-		end
-	
+	assign busy = (state > STATE_IDLE)?1 : 0;
 	//state unit
 	always @(posedge clk)
 	begin
@@ -96,10 +70,10 @@ module sonic_sensor(
 			STATE_IN_SIG_WAIT:				state <= STATE_IN_SIG;
 			STATE_IN_SIG:begin
 				if(echo_fl || sig == 0) 	state <= STATE_IN_SIG_END;
+				else if(echo == 0 && time_out) state <= STATE_INIT;
 			end
 			STATE_IN_SIG_END:					state <= STATE_WAIT200;
-			STATE_WAIT200:if(count_200u)	state <= STATE_INIT;
-			default: state <= STATE_INIT;
+			STATE_WAIT200:if(count_200u)	state <= STATE_IDLE;
 		endcase
 	end
 	
@@ -136,7 +110,8 @@ module sonic_sensor(
 		else if(state == STATE_IN_SIG_END)
 			result <= echo;
 	end
-
+	
 	assign out_data = result[31:0];
-//	assign led = state;
+	assign led = state;
+	
 endmodule

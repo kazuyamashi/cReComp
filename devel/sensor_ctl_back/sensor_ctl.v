@@ -72,7 +72,7 @@ wire [0:0] busy_sensor;
 
 //for 32bbit FIFO
 reg [31:0] req_in;
-wire [31:0] sesnor_data;
+reg [31:0] sesnor_data;
 
 
 //instance for sonic_sensor
@@ -82,7 +82,8 @@ sonic_sensor uut(
 .req(req_in),
 .busy(busy_sensor),
 .sig(sig_out),
-.out_data(sesnor_data)
+.out_data(sesnor_data),
+.led(led_out)
 );
 
 always @(posedge clk)begin
