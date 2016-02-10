@@ -1,2 +1,0 @@
-locate sonic_sensor.v
-Generate sensor_ctl.v in ./devel

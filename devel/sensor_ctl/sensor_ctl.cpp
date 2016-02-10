@@ -11,16 +11,29 @@ public:
 sensor_ctl::sensor_ctl(){};
 sensor_ctl::~sensor_ctl(){};
 unsigned int sensor_ctl::get_sensor_ctl_32(){
-	for(int i=0;i<1;i++){
-		read(fr,&sensor_ctl_dout_32,sizeof(sensor_ctl_dout_32));
-		//printf("%d\n",sensor_ctl_dout_32);
+	int rc = 0;
+	while (1){
+		rc = write(fw,&sensor_ctl_dout_32,sizeof(sensor_ctl_dout_32));
+		if(rc<0){
+			cout << "fail read" << endl;
+			continue;
+		}
+		else if (rc == sizeof(sensor_ctl_dout_32))
+			break;
 	}
 	return sensor_ctl_dout_32;
 }
 void sensor_ctl::set_sensor_ctl_32(unsigned int argv){
-	for(int i=0;i<1;i++){
-		sensor_ctl_din_32 = argv;
-		write(fw,&sensor_ctl_din_32,sizeof(sensor_ctl_din_32));
+	int rc = 0;
+	sensor_ctl_din_32 = argv;
+	while (1){
+		rc = write(fw,&sensor_ctl_din_32,sizeof(sensor_ctl_din_32));
+		if(rc<0){
+			cout << "fail read" << endl;
+			continue;
+		}
+		else if (rc == sizeof(sensor_ctl_din_32))
+			break;
 	}
 }
 

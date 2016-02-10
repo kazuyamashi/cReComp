@@ -1,11 +1,11 @@
 
 // for input fifo
 wire [31:0] rcv_data_32;
-wire rcv_en_32;
+reg rcv_en_32;
 wire data_empty_32;
 // for output fifo
 wire [31:0] snd_data_32;
-wire snd_en_32;
+reg snd_en_32;
 wire data_full_32;
 
 ////fifo 32bit

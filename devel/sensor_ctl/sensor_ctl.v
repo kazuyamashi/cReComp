@@ -8,8 +8,7 @@ input [0:0] rd_en_32,
 output [31:0] dout_32,
 output [0:0] full_32,
 output [0:0] empty_32,
-inout [0:0] sig_out,
-output [2:0] led_out
+inout [0:0] sig_out
 );
 // //copy this instance to top module
 //sensor_ctl sensor_ctl(
@@ -22,8 +21,7 @@ output [2:0] led_out
 //.full_32(user_w_write_32_full),
 //.empty_32(user_r_read_32_empty),
 //
-// .sig_out(sig_out),
-// .led_out(led_out)
+// .sig_out(sig_out)
 //);
 parameter INIT_32 = 0,
 	IDLE_32 = 1,
@@ -31,17 +29,18 @@ parameter INIT_32 = 0,
 	RCV_DATA_32_0 = 3,
 	POSE_32	= 4,
 	READY_SND_32 = 5,
-	SND_DATA_32_0 = 6;
+	SND_DATA_32_0 = 6,
+	CYCLE_END_32 = 7;
 // state register
 reg [2:0] state_32;
 
 // for input fifo
 wire [31:0] rcv_data_32;
-wire rcv_en_32;
+reg rcv_en_32;
 wire data_empty_32;
 // for output fifo
 wire [31:0] snd_data_32;
-wire snd_en_32;
+reg snd_en_32;
 wire data_full_32;
 
 ////fifo 32bit
@@ -68,11 +67,12 @@ fifo_32x512 output_fifo_32(
 	);
 //user wire
 wire [0:0] busy_sensor;
+wire [0:0] finish_sensor;
 
 
 //for 32bbit FIFO
 reg [31:0] req_in;
-wire [31:0] sesnor_data;
+wire [31:0] sensor_data;
 
 
 //instance for sonic_sensor
@@ -82,7 +82,8 @@ sonic_sensor uut(
 .req(req_in),
 .busy(busy_sensor),
 .sig(sig_out),
-.out_data(sesnor_data)
+.out_data(sensor_data),
+.finish(finish_sensor)
 );
 
 always @(posedge clk)begin
@@ -96,10 +97,12 @@ always @(posedge clk)begin
 			READY_RCV_32: if(data_empty_32 == 0) 	state_32 <= RCV_DATA_32_0;
 /*read state*/
 			RCV_DATA_32_0:  		state_32 <= POSE_32;
-			POSE_32: 		if(busy_sensor == 0) state_32 <= READY_SND_32;
+			POSE_32: 		if(busy_sensor==0 && finish_sensor) state_32 <= READY_SND_32;
 			READY_SND_32: 	if(data_full_32 == 0)	state_32 <= SND_DATA_32_0;
 /*write state*/
-			SND_DATA_32_0: 		state_32 <= IDLE_32;
+			SND_DATA_32_0: 		state_32 <= CYCLE_END_32;
+			CYCLE_END_32:										state_32 <= IDLE_32;
+	default: state <= INIT_32;
 		endcase
 end
 
@@ -110,16 +113,33 @@ always @(posedge clk)begin
 /*user defined init*/
 		req_in <= 0;
 	end
-	else if (state_32 > READY_RCV_32 && POSE_32 > state_32)begin
+	else if (rcv_en_32)begin
 /*user defined rcv*/
 		req_in <= rcv_data_32[31:0];
 	end
+	else begin
+/*user defined init*/
+		req_in <= 0;
+	end
 end
 
+always @(posedge clk)begin
+	if(rst_32)begin
+		snd_en_32 <= 0;
+		rcv_en_32 <= 0;
+	end
+	else case (state_32)
+/*en action*/
+			READY_RCV_32: if(data_empty_32 == 0) 	rcv_en_32 <= 1;
+			POSE_32: rcv_en_32 <= 0;
+			READY_SND_32: 	if(data_full_32 == 0)	snd_en_32 <= 1;
+			SND_DATA_32_0: snd_en_32 <= 0;
+	endcase
+end
+
+
 /*user assign*/
-assign snd_data_32[31:0] = sesnor_data;
-assign snd_en_32 = (state_32 > READY_SND_32);
-assign rcv_en_32 = (state_32 > READY_RCV_32 && POSE_32 > state_32);
+assign snd_data_32[31:0] = sensor_data;
 
 
 endmodule

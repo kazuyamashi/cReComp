@@ -1,11 +1,11 @@
 
 // for input fifo
 wire [31:0] rcv_data_8;
-wire rcv_en_8;
+reg rcv_en_8;
 wire data_empty_8;
 // for output fifo
 wire [31:0] snd_data_8;
-wire snd_en_8;
+reg snd_en_8;
 wire data_full_8;
 
 ////fifo 8bit
