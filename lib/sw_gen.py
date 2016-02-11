@@ -7,6 +7,8 @@ def cpp(flag):
 	fo = open("devel/%s/%s.cpp"%(flag.module_name,flag.module_name),"w")
 	shutil.copyfile("lib/lib_cpp.h", "devel/%s/lib_cpp.h"%(flag.module_name))
 	fo.write("#include \"lib_cpp.h\"\n")
+	fo.write("#include <iostream>\n")
+	fo.write("using namespace std;\n")
 	fo.write("class %s :public If_module{\n"%flag.module_name)
 
 	if int(flag.w_cycle_32) > 0:
