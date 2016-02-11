@@ -6,7 +6,7 @@ class word(object):
 		self.while_cpp_get32 = """	int rc = 0;
 	for(int i=0;i<max;i++){
 		while (1){
-		rc = write(fw,&action_dout_32,sizeof(action_dout_32));
+		rc = read(fr,&action_dout_32,sizeof(action_dout_32));
 		if(rc<0){
 			cout << "fail read" << endl;
 			continue;
@@ -18,7 +18,7 @@ class word(object):
 """
 		self.while_cpp_get32_one = """	int rc = 0;
 	while (1){
-		rc = write(fw,&action_dout_32,sizeof(action_dout_32));
+		rc = read(fr,&action_dout_32,sizeof(action_dout_32));
 		if(rc<0){
 			cout << "fail read" << endl;
 			continue;
@@ -57,7 +57,7 @@ class word(object):
 		self.while_cpp_get8 = """	int rc = 0;
 	for(int i=0;i<max;i++){
 		while (1){
-		rc = write(fw,&action_dout_8,sizeof(action_dout_8));
+		rc = read(fr,&action_dout_8,sizeof(action_dout_8));
 		if(rc<0){
 			cout << "fail read" << endl;
 			continue;
@@ -69,7 +69,7 @@ class word(object):
 """
 		self.while_cpp_get8_one = """	int rc = 0;
 	while (1){
-		rc = write(fw,&action_dout_8,sizeof(action_dout_8));
+		rc = read(fr,&action_dout_8,sizeof(action_dout_8));
 		if(rc<0){
 			cout << "fail read" << endl;
 			continue;
