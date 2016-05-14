@@ -46,9 +46,15 @@ if __name__ == "__main__":
 	fifo8 = fifo_8.Fifo_8()
 
 	# define io port
-	fo.write("`timescale 1ns / 1ps\n")
-	fo.write("module %s("%module_name)
-	fo.write ("\ninput clk,\n")
+	# fo.write("`timescale 1ns / 1ps\n")
+	# fo.write("module %s("%module_name)
+	# fo.write ("\ninput clk,\n")
+	fo.write('''
+`timescale 1ns / 1ps
+module %s(
+input clk,
+'''%module_name)
+
 	# for 32bit and 8bit fifo
 	if flag.use_fifo_32 == False and flag.use_fifo_8 == False:
 		fo.write("input rst,\n")
@@ -72,6 +78,7 @@ if __name__ == "__main__":
 	fo.write ("// //copy this instance to top module\n")
 	fo.write ("//%s %s(\n"%(module_name,module_name))
 	fo.write ("//.clk(bus_clk),\n")
+
 
 	if flag.use_fifo_32:
 		common.read_lib(fo,"lib/lib32inst")

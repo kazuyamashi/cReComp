@@ -1,7 +1,11 @@
 module_name sample
+//**option_port is user-defined port for connection to external**//
 //option_port{}
+//**If you use FIFO (32 bit or 8 bit), the flag is uncommented**//
+//**use_fifo_8, use_fifo_32**//
 //use_fifo_8
 //use_fifo_32
+//**Stare machine generation and define register for receive/send data**//
 //make_8_alw{}
 //make_32_alw{}
 //
