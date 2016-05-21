@@ -62,9 +62,11 @@ class ConfigFlag(object):
 		i_sub = 0
 		while True:
 			line = self.fi.readline().translate(None,"{\t")
+			if line == "\n":
+				continue
 			state = line.rstrip().split(" ")
 			if "//" in state[0]:
-				pass
+				continue
 			elif "module_name" == state[0]:
 				self.module_name = state[1]
 			elif "use_fifo_32" == state[0]:
