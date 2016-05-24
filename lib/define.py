@@ -32,7 +32,7 @@ class word(object):
 		while (1){
 		rc = write(fw,&action_din_32,sizeof(action_din_32));
 		if(rc<0){
-			cout << "fail read" << endl;
+			cout << "fail write" << endl;
 			continue;
 		}
 		else if (rc == sizeof(action_din_32))
@@ -45,7 +45,7 @@ class word(object):
 	while (1){
 		rc = write(fw,&action_din_32,sizeof(action_din_32));
 		if(rc<0){
-			cout << "fail read" << endl;
+			cout << "fail write" << endl;
 			continue;
 		}
 		else if (rc == sizeof(action_din_32))
@@ -83,7 +83,7 @@ class word(object):
 		while (1){
 		rc = write(fw,&action_din_8,sizeof(action_din_8));
 		if(rc<0){
-			cout << "fail read" << endl;
+			cout << "fail write" << endl;
 			continue;
 		}
 		else if (rc == sizeof(action_din_8))
@@ -96,7 +96,7 @@ class word(object):
 	while (1){
 		rc = write(fw,&action_din_8,sizeof(action_din_8));
 		if(rc<0){
-			cout << "fail read" << endl;
+			cout << "fail write" << endl;
 			continue;
 		}
 		else if (rc == sizeof(action_din_8))

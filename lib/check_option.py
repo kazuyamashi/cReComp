@@ -41,8 +41,10 @@ def option():
 						print "error! did not locate %s.v"%argvs[3+i]
 						quit()
 				while True:
-					l = fd.readline().rstrip()
-					sub_port = l.translate(None,",\t").split(" ")
+					l = fd.readline()
+					if l == "\n":
+						continue
+					sub_port = l.rstrip().translate(None,",\t").split(" ")
 					if ");" in l:
 						break
 					if len(sub_port)<3:
