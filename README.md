@@ -7,7 +7,7 @@ creator for Reconfigurable hw Component
 **Copyright**:   2016, Kazushi Yamashina  
 **License**:      new BSD License   
 **Latest Version**: 0.5.0  
-**Contact**: 	 kazushi_at_virgo.is.utsunomiya-u.ac.jp  
+**Contact**: 	 kazushi_at_virgo.is.utsunomiya-u.ac.jp  or [Twitter](https://twitter.com/KazushihsuzaK) or [Facebook](https://www.facebook.com/kazushi.yamashina?fref=nf)
 
   
 
@@ -69,4 +69,7 @@ nothing		: Normal mode. Generate verilog file
 Tutorial
 ===============================
 
-Please click following URL
+Please click following URL  
+  
+Japanese Tutorial  
+http://kazuyamashi.github.io/crecomp_ws/
