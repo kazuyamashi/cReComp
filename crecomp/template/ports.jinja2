@@ -1,0 +1,10 @@
+`timescale 1ns / 1ps
+module {{compname}}(
+{% for input_port in input_ports %}input [{{input_port.bit}}-1:0] {{input_port.name}}{% if (input_ports|length > loop.index) or output_ports != [] %},{% endif %}
+{% endfor %}
+{% for output_port in output_ports %}output [{{output_port.bit}}-1:0] {{output_port.name}}{% if (output_ports|length > loop.index) or inout_ports != [] %},{% endif %}
+{% endfor %}
+{% for inout_port in inout_ports %}inout [{{inout_port.bit}}-1:0] {{inout_port.name}}{% if inout_ports|length > loop.index %},{% endif %}
+{% endfor %}
+);
+

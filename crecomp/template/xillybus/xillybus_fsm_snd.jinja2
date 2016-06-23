@@ -1,0 +1,4 @@
+
+			READY_SND_{{fifobit}}:		state_{{fifobit}} <= SND_DATA_{{fifobit}}_0;
+			{% for x in range(0,snd_cycle) %}SND_DATA_{{fifobit}}_{{x}}:		state <= {% if x == snd_cycle-1 %}CYCLE_END_{{fifobit}};{% else %}SND_DATA_{{fifobit}}_{{x+1}};{% endif %}
+			{% endfor %}

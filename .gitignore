@@ -1,0 +1,7 @@
+.DS_Store
+crecomp2.sublime*
+*.pyc
+test_*
+sublime/
+parser.out
+parsetab.py

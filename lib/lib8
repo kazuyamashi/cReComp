@@ -1,8 +1,0 @@
-
-input rst_8,
-input [7:0] din_8,
-input [0:0] wr_en_8,
-input [0:0] rd_en_8,
-output [7:0] dout_8,
-output [0:0] full_8,
-output [0:0] empty_8
