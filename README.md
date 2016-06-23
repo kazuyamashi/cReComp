@@ -6,7 +6,7 @@ creator for Reconfigurable hw Component
 **Author**:      Kazushi Yamashina (Utsunomiya University)  
 **Copyright**:   2016, Kazushi Yamashina  
 **License**:      new BSD License   
-**Latest Version**: 0.1.0  
+**Latest Version**: 0.0.1  
 **Contact**: 	 kazushi_at_virgo.is.utsunomiya-u.ac.jp  or [Twitter](https://twitter.com/KazushihsuzaK) or [Facebook](https://www.facebook.com/kazushi.yamashina?fref=nf)
 
 
@@ -16,7 +16,7 @@ The cReComp is a **code generator and framework for componentization of a single
 
 Update
 =================================
-ver 0.1.0 released first version  
+06.23.2016 released first version  
 
 Install
 ================================

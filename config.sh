@@ -11,6 +11,15 @@ case $1 in
 		rm -rf crecomp.egg-info
 		rm -rf build
 		;;
+	release)
+		echo "release"
+		python setup.py egg_info sdist bdist_wheel
+		python setup.py register
+		python setup.py sdist upload
+		rm -rf dist
+		rm -rf crecomp.egg-info
+		rm -rf build
+		;;
 	clean)
 		echo "cleaned files"
 		rm -rf dist

@@ -1,6 +1,5 @@
 include README.md
 include README.rst
 include LICENSE.txt
-include install.sh
 recursive-include verilog *
 recursive-include example *
