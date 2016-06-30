@@ -26,16 +26,75 @@ HW/SW co-system by integrating the each of the hardware.
 Update
 ======
 
-ver 0.1.0 released first version
+2016/06/23 released version 0.0.1
 
 Install
 =======
+
+Requirements
+------------
+
+Platform
+^^^^^^^^
+
+Ubuntu or OSX (Mac)
+
+Python (2.7 later)
+^^^^^^^^^^^^^^^^^^
+
+::
+
+    sudo apt-get install python
+
+Icarus Verilog
+^^^^^^^^^^^^^^
+
+Ubuntu
+
+::
+
+    sudo apt-get install iverilog
+
+Mac
+
+::
+
+    brew install icarus-verilog
+
+Jinja2
+^^^^^^
+
+::
+
+    pip install jinja2
+
+`pyverilog <https://github.com/PyHDI/pyverilog>`__
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+::
+
+     git clone https://github.com/PyHDI/pyverilog.git
+     cd pyverilog/
+     python setup.py install
+
+`veriloggen <https://github.com/PyHDI/veriloggen>`__
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+::
+
+     git clone https://github.com/PyHDI/veriloggen.git
+     cd veriloggen/
+     python setup.py install
+
+Install cReComp
+---------------
 
 **Download from github & install**
 
 ::
 
     git clone https://github.com/kazuyamashi/cReComp.git
+    cd cReComp/
     python setup.py install
 
 **Package install**
@@ -44,8 +103,8 @@ Install
 
     pip install crecomp
 
-Run & Help
-==========
+Command usage
+=============
 
 ::
 
@@ -57,3 +116,11 @@ Run & Help
                             specifier your user logic name
       -t TEMPLATENAME, --template=TEMPLATENAME
                             specifier for template name
+
+Getting Started
+===============
+
+| `Getting Started
+  English <https://kazuyamashi.github.io/crecomp_doc/getting_started_en.html>`__
+| `Getting Started
+  Japanese <https://kazuyamashi.github.io/crecomp_doc/getting_started_jp.html>`__
