@@ -27,7 +27,7 @@ setup(
         keywords='FPGA, component, Verilog HDL',
         author="Kazushi Yamashina",
         author_email="kazuyamashi_at_gamil.com",
-        url='https://github.com/kazuyamashi/cReComp2',
+        url='https://github.com/kazuyamashi/cReComp.git',
         license='new BSD',
         packages=find_packages(),
         package_data={ 'crecomp.template' : ['*.*'],

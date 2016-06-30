@@ -1,8 +1,5 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
-import sys
-import os
-
 import crecomp.userlogic as ul
 import crecomp.verilog as vl
 import crecomp.component as cp

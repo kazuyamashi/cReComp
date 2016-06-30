@@ -91,8 +91,8 @@ class Util():
 			ret.append(port.name)
 		return ret
 
-	def assign(self, signame, signame_):
-		self.assignlist.update({signame: signame_})
+	def assign(self, signame_u, signame_c):
+		self.assignlist.update({signame_u: signame_c})
 
 
 def check_ulassign(ul, module):

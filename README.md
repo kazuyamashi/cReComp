@@ -47,3 +47,9 @@ Options:
   -t TEMPLATENAME, --template=TEMPLATENAME
                         specifier for template name
 ```
+
+Getting Started
+===============================
+[Japanese](https://kazuyamashi.github.io/crecomp_doc/getting_started_jp.html)
+[English](https://kazuyamashi.github.io/crecomp_doc/getting_started_en.html)
+
