@@ -16,7 +16,7 @@ The cReComp is a **code generator and framework for componentization of a single
 
 # Update
 
-2016/06/23 released version 0.0.1
+2016/06/30 released version 1.0.0
 
 # Install
 
