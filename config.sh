@@ -7,9 +7,10 @@ case $1 in
 	uninstall)
 		echo "uninstall"
 		pip uninstall crecomp -y
-		rm -rf dist
-		rm -rf crecomp.egg-info
-		rm -rf build
+		;;
+	publish)
+		echo "readme"
+		pandoc -o README.rst README.md
 		;;
 	release)
 		echo "release"
