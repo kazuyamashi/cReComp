@@ -14,6 +14,7 @@ case $1 in
 		;;
 	release)
 		echo "release"
+		pandoc -o README.rst README.md
 		python setup.py egg_info sdist bdist_wheel
 		python setup.py register
 		python setup.py sdist upload
