@@ -87,12 +87,20 @@ class Util():
 
 	def get_portnames(self):
 		ret = []
-		for port in self.myports:
+		for port in self.ports:
 			ret.append(port.name)
 		return ret
 
 	def assign(self, signame_u, signame_c):
 		self.assignlist.update({signame_u: signame_c})
+
+class UserlogicBase(Util):
+	def __init__(self,name,uut):
+		self.name = name
+		self.filepath = ""
+		self.uut = uut
+		self.ports =[]
+		self.assignlist = {}
 
 
 def check_ulassign(ul, module):

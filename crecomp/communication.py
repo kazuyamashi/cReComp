@@ -36,11 +36,14 @@ class Xillybus_fifo(object):
 	def set_rcycle(self, cycle):
 		self.rcv_cycle = cycle
 
-	def set_wcycle(self, cycle):
+	def set_scycle(self, cycle):
 		self.snd_cycle = cycle
 
 	def set_conditon(self, conditon):
 		self.rs_cond = conditon
+
+	def set_fifo_width(self, width):
+		self.fifo_width = width
 
 	def assign(self, action, sig):
 

@@ -81,7 +81,6 @@ class Component(object):
 		self.module["userlogic"].append(ul)
 
 	def add_com(self, com):
-		self.module["communication"].append(com)
 		if com.__class__.__name__ == "Xillybus_fifo":
 			for port in com.signals:
 				if port.__class__.__name__ == "Input":
@@ -98,6 +97,7 @@ class Component(object):
 
 				if port.__class__.__name__ == "Wire":
 					self.module["wire"].append(port)
+		self.module["communication"].append(com)
 
 	def componentize(self):
 		compname = self.name

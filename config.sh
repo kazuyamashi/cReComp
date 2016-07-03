@@ -24,6 +24,7 @@ case $1 in
 		;;
 	clean)
 		echo "cleaned files"
+		rm crecomp/*pyc
 		rm -rf dist
 		rm -rf crecomp.egg-info
 		rm -rf build
