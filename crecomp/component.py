@@ -104,6 +104,7 @@ class Component(object):
 		module = self.module
 		self.generate_hardware()
 		self.generate_software()
+		print "Generate component successfully"
 
 	def generate_hardware(self):
 		compname = self.name

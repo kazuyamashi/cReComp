@@ -4,12 +4,12 @@
 
 always @(posedge clk)begin
 	if(rst)begin
-	{{rst_ports}}
+	{{-rst_ports}}
 	end
 	else if (rcv_en_{{fifobit}})begin
-	{{assign_dataport}}
+	{{-assign_dataport}}
 	end
 	else begin
-	{{rst_ports}}
+	{{-rst_ports}}
 	end
 end

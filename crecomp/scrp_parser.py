@@ -1,11 +1,15 @@
 # -*- coding: utf-8 -*-
 import ply.lex as lex
 import ply.yacc as yacc
+from jinja2 import Environment, FileSystemLoader
+
 import os
 import verilog as vl
 import component as cp
 import communication as com
 import userlogic as ul
+
+TEMPLATE = os.path.dirname(os.path.abspath(__file__)) + '/template/'
 
 tokens = [
 	'INPUT',
@@ -13,12 +17,9 @@ tokens = [
 	'INOUT',
 	'REG',
 	'WIRE',
-	'EQUALL',
 	'LBRACES',
 	'RBRACES',
 	'STRING',
-	'LBRACKET',
-	'RBRACKET',
 	'NUMBER',
 
 	'COMPONENT_NAME',
@@ -45,11 +46,8 @@ t_INOUT = r'inout'
 t_REG = r'reg'
 t_WIRE = r'wire'
 
-t_EQUALL = r'\='
 t_LBRACES = r'{'
 t_RBRACES = r'}'
-LBRACKET = r'\['
-RBRACKET = r'\]'
 
 t_COMPONENT_NAME = r'component_name'
 t_COMMUNICAITION = r'communication'
@@ -118,19 +116,19 @@ class ParseScrp():
 			name = p[3]
 			if p[1] == "input":
 				self.component.add_input(name, bit)
-				print "added input", p[2], p[3]
+				print "added input", bit, name
 			elif p[1] == "output":
 				self.component.add_output(name, bit)
-				print "added output", p[2], p[3]
+				print "added output", bit, name
 			elif p[1] == "inout":
 				self.component.add_inout(name, bit)
-				print "added inout", p[2], p[3]
+				print "added inout", bit, name
 			elif p[1] == "reg":
 				self.component.add_reg(name, bit)
-				print "added reg", p[2], p[3]
+				print "added reg", bit, name
 			elif p[1] == "wire":
 				self.component.add_wire(name, bit)
-				print "added wire", p[2], p[3]
+				print "added wire", bit, name
 
 		def p_expression_communication_xillybus(p):
 			'''expression : COMMUNICAITION XILLYBUS NUMBER NUMBER STRING NUMBER
@@ -167,11 +165,27 @@ class ParseScrp():
 			'expression : USERLOGIC_PATH STRING INSTANCE_NAME STRING'
 			name =os.path.basename(p[2]).replace(".v","")
 			ul_ = ul.UserlogicBase(name,p[4])
+			ul_.filepath = p[2]
 			info = ul.Info()
 			info.get_userlogicinfo(p[2])
 			ul_.ports = info.ports
+			while True:
+				line = self.scrp.readline().translate(None, " \t\n")
+				if line == "userlogic_assign":
+					while True:
+						port = self.scrp.readline().translate(None, " \t\n")
+						print port
+						if port == "assign_end":
+							break
+						else:
+							(ul_port, assign_port) = port.split("=")
+							ul_port = ul_port.split(",")
+							ul_.assign(ul_port[2],assign_port)
+					break
+				else:
+					raise Exception("Syntax error. Not found \"userlogic_assign\"")
 
-			print ul_.get_portnames()
+			self.component.add_ul(ul_)
 
 
 		def p_expression_end(p):
@@ -186,9 +200,15 @@ class ParseScrp():
 			if self.parser.parse(line) == -1:
 				break
 
+		self.component.show_myinfo()
+		self.component.componentize()
+
+def generate_scrptemplate(templatename, userlogic_list):
+	fo = open(templatename, "w")
+	env = Environment(loader=FileSystemLoader(TEMPLATE, encoding='utf8'))
+	tpl = env.get_template('scrp.jinja2')
+	scrp = tpl.render({'ul_list': userlogic_list})
+	fo.write(scrp)
 
 if __name__ == '__main__':
-
 	paser = ParseScrp("sample.scrp")
-	paser.component.show_myinfo()
-	paser.component.componentize()

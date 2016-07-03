@@ -1,0 +1,26 @@
+component_name "sensor_ctl"
+input 1 "clk"
+input 1 "rst"
+inout 1 "sig_out"
+wire 1 "finish_flag"
+wire 1 "busy_flag"
+reg 31 "dummy"
+reg 1 "req_reg"
+wire 32 "data_out"
+
+communication xillybus 1 1 "busy_sensor == 0 && finish_sensor" 32
+xillybus32_rcv "req_reg"
+xillybus32_rcv "dummy"
+xillybus32_snd "data_out"
+
+userlogic_path "../verilog/sonic_sensor.v" instance_name "uut"
+userlogic_assign
+	input,1,clk = clk
+	input,1,rst = rst
+	input,1,req = req_reg
+	output,1,busy = busy_flag
+	inout,1,sig = sig_out
+	output,1,finish = finish_flag
+	output,32,out_data = data_out
+assign_end
+end

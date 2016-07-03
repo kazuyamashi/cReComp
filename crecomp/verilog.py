@@ -29,7 +29,6 @@ class Wire(Sig):
 def genrate_userlogic_inst(ul):
 	env = Environment(loader=FileSystemLoader(TEMPLATE, encoding='utf8'))
 	tpl = env.get_template('ulinstance.jinja2')
-
 	instance = tpl.render({'userlogicname': ul.name, 'uut': ul.uut,
 							'signals': ul.assignlist.keys(), 'portname': ul.assignlist })
 	return instance

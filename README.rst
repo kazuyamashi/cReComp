@@ -7,7 +7,7 @@ creator for Reconfigurable hw Component
 | **Author**: Kazushi Yamashina (Utsunomiya University)
 | **Copyright**: 2016, Kazushi Yamashina
 | **License**: new BSD License
-| **Latest Version**: 1.0.0
+| **Latest Version**: 1.1.0
 | **Contact**: kazushi\_at\_virgo.is.utsunomiya-u.ac.jp or
   `Twitter <https://twitter.com/KazushihsuzaK>`__ or
   `Facebook <https://www.facebook.com/kazushi.yamashina?fref=nf>`__
@@ -26,7 +26,7 @@ HW/SW co-system by integrating the each of the hardware.
 Update
 ======
 
-2016/06/30 released version 1.0.0
+2016/07/04 released version 1.1.0 2016/06/30 released version 1.0.0
 
 Install
 =======
@@ -60,6 +60,13 @@ Mac
 ::
 
     brew install icarus-verilog
+
+PLY
+^^^
+
+::
+
+    pip instll ply
 
 Jinja2
 ^^^^^^
@@ -108,14 +115,18 @@ Command usage
 
 ::
 
-    Usage: python crecomp [-t] [-u user logic]+
+    Usage: crecomp [option] [file path] [-u user logic]+
 
     Options:
       -h, --help            show this help message and exit
       -u USERLOGIC, --userlogic=USERLOGIC
                             specifier your user logic name
-      -t TEMPLATENAME, --template=TEMPLATENAME
+      -p PYTHON_TEMPLATENAME, --python_template=PYTHON_TEMPLATENAME
                             specifier for template name
+      -s SCRP_TEMPLATENAME, --scrp_template=SCRP_TEMPLATENAME
+                            specifier for template name
+      -b SCRP_PATH, --build=SCRP_PATH
+                            specifier target scrp file to build for componentize
 
 Getting Started
 ===============
