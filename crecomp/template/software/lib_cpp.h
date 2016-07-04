@@ -15,8 +15,8 @@ class If_module
 	char *devfile_write[256];
 public:
 	int fr,fw;
-	If_module();
-	~If_module();
+	If_module(){}
+	~If_module(){}
 	void set_devfile_read(const char *str);
 	void set_devfile_write(const char *str);
 	int  open_devfile_read();
@@ -24,9 +24,6 @@ public:
 	void close_devfile_read();
 	void close_devfile_write();
 };
-
-If_module::If_module(){}
-If_module::~If_module(){}
 
 void If_module::set_devfile_read(const char *str){
 	strcpy((char*)devfile_read , (char*)str);

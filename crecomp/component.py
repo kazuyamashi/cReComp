@@ -23,6 +23,7 @@ class Component(object):
 			"communication": [] # class object for communication
 		}
 		self.name = compname
+		self.ros_package = False
 
 	def show_myinfo(self):
 		module = self.module
@@ -99,6 +100,9 @@ class Component(object):
 					self.module["wire"].append(port)
 		self.module["communication"].append(com)
 
+	def ros_packaging(self):
+		self.ros_package = True
+
 	def componentize(self):
 		compname = self.name
 		module = self.module
@@ -156,6 +160,9 @@ class Component(object):
 		fo = open("%s/software/Makefile"%(compname), "w")
 		fo.write(sw.generate_cpp_xillibus_makefile(module,compname))
 		fo.close()
+
+		if self.ros_package == True:
+			sw.generate_ros_package(self)
 
 if __name__ == '__main__':
 	pass

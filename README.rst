@@ -7,10 +7,10 @@ creator for Reconfigurable hw Component
 | **Author**: Kazushi Yamashina (Utsunomiya University)
 | **Copyright**: 2016, Kazushi Yamashina
 | **License**: new BSD License
-| **Latest Version**: 1.1.0
+| **Latest Version**: 1.2.0
 | **Contact**: kazushi\_at\_virgo.is.utsunomiya-u.ac.jp or
-  `Twitter <https://twitter.com/KazushihsuzaK>`__ or
-  `Facebook <https://www.facebook.com/kazushi.yamashina?fref=nf>`__
+`Twitter <https://twitter.com/KazushihsuzaK>`__ or
+`Facebook <https://www.facebook.com/kazushi.yamashina?fref=nf>`__
 
 What is the cReComp?
 ====================
@@ -26,7 +26,9 @@ HW/SW co-system by integrating the each of the hardware.
 Update
 ======
 
-2016/07/04 released version 1.1.0 2016/06/30 released version 1.0.0
+| 2016/07/05 released version 1.2.0
+| 2016/07/04 released version 1.1.0
+| 2016/06/30 released version 1.0.0
 
 Install
 =======
@@ -66,7 +68,7 @@ PLY
 
 ::
 
-    pip instll ply
+    pip install ply
 
 Jinja2
 ^^^^^^
@@ -132,6 +134,6 @@ Getting Started
 ===============
 
 | `Getting Started
-  English <https://kazuyamashi.github.io/crecomp_doc/getting_started_en.html>`__
+English <https://kazuyamashi.github.io/crecomp_doc/getting_started_en.html>`__
 | `Getting Started
-  Japanese <https://kazuyamashi.github.io/crecomp_doc/getting_started_jp.html>`__
+Japanese <https://kazuyamashi.github.io/crecomp_doc/getting_started_jp.html>`__
