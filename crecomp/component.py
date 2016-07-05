@@ -29,6 +29,9 @@ class Component(object):
 		module = self.module
 		compname = self.name
 
+		print "===== Component name ====="
+		print self.name
+
 		print "===== input ====="
 		for port in module["input"]:
 			print "%s %s %s"%(port.__class__.__name__, port.bit, port.name)
@@ -57,6 +60,9 @@ class Component(object):
 		for com in module["communication"]:
 			print "%s%s"%(com.__class__.__name__, com.fifo_width)
 			print "\n"
+
+		print "\n===== ROS package generation ====="
+		print self.ros_package
 
 	def add_input(self, name, bit):
 		input = vl.Input(name, bit)

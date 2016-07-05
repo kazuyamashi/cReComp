@@ -37,6 +37,8 @@ tokens = [
 	'USERLOGIC_OUTPUT',
 	'USERLOGIC_INOUT',
 
+	'GENERATE_ROS_PACKAGE',
+
 	'END'
 ]
 
@@ -60,6 +62,9 @@ t_XILLYBUS8_SND = r'xillybus8_rcv'
 
 t_USERLOGIC_PATH = r'userlogic_path'
 t_INSTANCE_NAME = r'instance_name'
+
+t_GENERATE_ROS_PACKAGE = r'generate_ros_package'
+
 t_END = r'end'
 
 def t_NUMBER(t):
@@ -187,6 +192,10 @@ class ParseScrp():
 
 			self.component.add_ul(ul_)
 
+		def p_expression_ros(p):
+			'expression : GENERATE_ROS_PACKAGE'
+			print "generate ros package"
+			self.component.ros_package = True
 
 		def p_expression_end(p):
 			'expression : END'

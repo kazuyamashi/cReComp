@@ -23,4 +23,7 @@ userlogic_assign
 	output,1,finish = finish_flag
 	output,32,out_data = data_out
 assign_end
+
+generate_ros_package
+
 end
