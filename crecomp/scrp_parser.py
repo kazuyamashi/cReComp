@@ -19,17 +19,19 @@ tokens = [
 	'WIRE',
 	'LBRACES',
 	'RBRACES',
-	'STRING',
+	'SIGNAL',
 	'NUMBER',
+	'STRING',
 
 	'COMPONENT_NAME',
 	'COMMUNICAITION',
 
+	'IN_OUT_SIGNALS',
+	'OPTION_SIGNALS',
+
 	'XILLYBUS',
-	'XILLYBUS32_RCV',
-	'XILLYBUS32_SND',
-	'XILLYBUS8_RCV',
-	'XILLYBUS8_SND',
+	'XILLYBUS_RCV',
+	'XILLYBUS_SND',
 
 	'USERLOGIC_PATH',
 	'INSTANCE_NAME',
@@ -54,11 +56,12 @@ t_RBRACES = r'}'
 t_COMPONENT_NAME = r'component_name'
 t_COMMUNICAITION = r'communication'
 
+t_IN_OUT_SIGNALS = r'in_out_signals'
+t_OPTION_SIGNALS = r'option_signals'
+
 t_XILLYBUS = r'xillybus'
-t_XILLYBUS32_RCV = r'xillybus32_snd'
-t_XILLYBUS32_SND = r'xillybus32_rcv'
-t_XILLYBUS8_RCV = r'xillybus8_snd'
-t_XILLYBUS8_SND = r'xillybus8_rcv'
+t_XILLYBUS_RCV = r'xillybus_snd'
+t_XILLYBUS_SND = r'xillybus_rcv'
 
 t_USERLOGIC_PATH = r'userlogic_path'
 t_INSTANCE_NAME = r'instance_name'
@@ -71,10 +74,12 @@ def t_NUMBER(t):
 	r'\d+'
 	t.value = int(t.value)
 	return t
+def t_SIGNAL(t):
+	r'[a-zA-Z_][a-zA-Z_0-9]*'
+	t.value = str(t.value)
+	return t
 def t_STRING(t):
 	r'\".*?\"'
-	t.value = str(t.value).translate(None,"\"")
-	return t
 def t_newline(t):
 	r'\n+'
 	t.lexer.lineno += len(t.value)
@@ -111,11 +116,11 @@ class ParseScrp():
 			p[0] = "{"
 
 		def p_expression_signal(p):
-			'''expression : INPUT NUMBER STRING
-							| OUTPUT NUMBER STRING
-							| INOUT NUMBER STRING
-							| REG NUMBER STRING
-							| WIRE NUMBER STRING
+			'''expression : INPUT NUMBER SIGNAL
+							| OUTPUT NUMBER SIGNAL
+							| INOUT NUMBER SIGNAL
+							| REG NUMBER SIGNAL
+							| WIRE NUMBER SIGNAL
 			'''
 			bit = p[2]
 			name = p[3]
@@ -144,10 +149,8 @@ class ParseScrp():
 			self.component.add_com(com_)
 
 		def p_expression_xillybus_assign(p):
-			'''expression : XILLYBUS32_RCV STRING
-						| XILLYBUS32_SND STRING
-						| XILLYBUS8_RCV STRING
-						| XILLYBUS8_SND STRING
+			'''expression : XILLYBUS_RCV STRING
+						| XILLYBUS_SND STRING
 			'''
 			for com_ in self.component.module["communication"]:
 				name = p[2]
@@ -197,6 +200,9 @@ class ParseScrp():
 			print "generate ros package"
 			self.component.ros_package = True
 
+		def p_error(p):
+			print "Syntax error in input"
+
 		def p_expression_end(p):
 			'expression : END'
 			p[0] = -1
@@ -206,6 +212,7 @@ class ParseScrp():
 		line = ""
 		while True:
 			line = self.scrp.readline()
+			print line
 			if self.parser.parse(line) == -1:
 				break
 
