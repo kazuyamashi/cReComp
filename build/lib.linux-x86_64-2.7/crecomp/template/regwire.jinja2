@@ -1,0 +1,6 @@
+
+{% for user_register in user_regs %}reg [{{user_register.bit}}-1:0] {{user_register.name}};
+{% endfor %}
+{% for user_wire in user_wires %}wire [{{user_wire.bit}}-1:0] {{user_wire.name}};
+{% endfor %}
+

@@ -1,0 +1,13 @@
+
+
+always @(posedge clk)begin
+	if(rst)
+		state_{{fifobit}} <= 0;
+	else
+		case (state_{{fifobit}})
+			INIT_{{fifobit}}: 		state_{{fifobit}} <= IDLE_{{fifobit}};
+			{{fsm}}
+			CYCLE_END_{{fifobit}}:	state_{{fifobit}} <= IDLE_{{fifobit}};
+			default: state_{{fifobit}} <= INIT_{{fifobit}};
+		endcase
+end

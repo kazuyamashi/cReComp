@@ -1,0 +1,14 @@
+
+
+always @(posedge clk)begin
+	if(rst_{{fifobit}})begin
+		snd_en_{{fifobit}} <= 0;
+		rcv_en_{{fifobit}} <= 0;
+	end
+	else case (state_{{fifobit}})
+		{% if com.rcv_cycle > 0 %}READY_RCV_{{fifobit}}: if(data_empty_{{fifobit}} == 0)	rcv_en_{{fifobit}} <= 1;{% endif %}
+		{% if com.snd_cycle > 0%}POSE_{{fifobit}}: rcv_en_{{fifobit}} <= 0;{% else %}CYCLE_END_{{fifobit}}: rcv_en_{{fifobit}} <= 0;{% endif %}
+		{% if com.snd_cycle > 0 %}READY_SND_{{fifobit}}:	if(date_full_{{fifobit}} == 0)	snd_en_{{fifobit}} <= 1;
+		SND_DATA_{{fifobit}}_{{com.snd_cycle-1}}: snd_en_{{fifobit}} <= 0;{% endif %}
+	endcase
+end

@@ -1,0 +1,110 @@
+#include "ros/.h"
+#include "{{compname}}/{{compname}}.h"
+#include "lib_cpp.h"
+#include <iostream>
+using namespace std;
+
+{% for com in communication %}
+class {{compname}}_{{com.fifo_width}} :public If_module{
+	{% if com.snd_cycle > 0 %}unsigned int {{compname}}_dout_{{com.fifo_width}}{% if com.snd_cycle > 1 %}[{{com.snd_cycle}}]{% endif %}{% endif %};
+	{% if com.rcv_cycle > 0 %}unsigned int {{compname}}_din_{{com.fifo_width}}{% if com.rcv_cycle > 1 %}[{{com.rcv_cycle}}]{% endif %}{% endif %};
+public:
+	{{compname}}_{{com.fifo_width}}(){}
+	~{{compname}}_{{com.fifo_width}}(){}
+	{% if com.snd_cycle > 0 %}unsigned int {% if com.snd_cycle > 1 %}*{% endif %}get_{{compname}}_{{com.fifo_width}}();{% endif %}
+	{% if com.rcv_cycle > 0 %}void set_{{compname}}_{{com.fifo_width}}(unsigned int {% if com.rcv_cycle > 1 %}*{% endif %}argv);{% endif %}
+};
+unsigned int{% if com.snd_cycle > 1 %}*{% endif %} {{compname}}_{{com.fifo_width}}::get_{{compname}}_{{com.fifo_width}}(){
+	int rc = 0;
+	{% if com.snd_cycle > 1 %}
+	for (int i = 0; i < {{com.snd_cycle}}; i++ ){
+		while(1){
+			rc = read(fr, &{{compname}}_dout_{{com.fifo_width}}[i], sizeof({{compname}}_dout_{{com.fifo_width}}[i]));
+			if(rc < 0){
+				cout << "fail read from fifo" << endl;
+				continue;
+			}
+			else if(rc == sizeof({{compname}}_dout_{{com.fifo_width}}[i])) break;
+		}
+	}
+	return {{compname}}_dout_{{com.fifo_width}};
+	{% else %}while(1){
+		rc = read(fr, &{{compname}}_dout_{{com.fifo_width}}, sizeof({{compname}}_dout_{{com.fifo_width}}));
+		if(rc < 0){
+			cout << "fail read from fifo" << endl;
+			continue;
+			}
+		else if(rc == sizeof({{compname}}_dout_{{com.fifo_width}})) break;
+		}
+	return {{compname}}_dout_{{com.fifo_width}};{% endif %}
+}
+
+void {{compname}}_{{com.fifo_width}}::set_{{compname}}_{{com.fifo_width}}(unsigned int{% if com.rcv_cycle > 1 %}*{% endif %} argv){
+	int rc = 0;
+	{% if com.rcv_cycle > 1 %}for(int i = 0; i < {{com.rcv_cycle}}; i++){
+		{{compname}}_din_{{com.rcv_cycle}}[i] = argv[i];
+	}
+	for(int i = 0; i < {{com.rcv_cycle}}; i++){
+		while(1){
+			rc = write(fw, &{{compname}}_dout_{{com.fifo_width}}[i], sizeof({{compname}}_din_{{com.fifo_width}}[i]));
+			if(rc < 0){
+				cout << "fail write to fifo" << endl;
+				continue;
+			}
+			else if (rc == sizeof({{compname}}_din_{{com.fifo_width}}[i])) break;
+		}
+	}
+	{% else %}{{compname}}_din_{{com.fifo_width}} = argv;
+	while(1){
+		rc = write(fw, &{{compname}}_dout_{{com.fifo_width}}, sizeof({{compname}}_din_{{com.fifo_width}}));
+		if(rc < 0){
+			cout << "fail write to fifo" << endl;
+			continue;
+		}
+		else if (rc == sizeof({{compname}}_din_{{com.fifo_width}})) break;
+	}{% endif %}
+	return;
+}
+{% endfor %}
+
+/************ for output ************
+void callbackFunction(const {{compname}}::{{compname}} msg){
+	cout << msg << endl;
+}
+***********************************/
+
+int main(int argc, char const *argv[]){
+{% for com in communication %}
+	{{compname}}_{{com.fifo_width}} cp_{{com.fifo_width}};
+	cp_{{com.fifo_width}}.set_devfile_read("/dev/xillybus_read_{{com.fifo_width}}");
+	cp_{{com.fifo_width}}.open_devfile_read();
+	cp_{{com.fifo_width}}.set_devfile_write("/dev/xillybus_write__{{com.fifo_width}}");
+	cp_{{com.fifo_width}}.open_devfile_write();
+{% endfor %}
+
+	ros::init(argc, argv, "{{compname}}");
+	ros::NodeHandle n;
+	ros::Publisher {{compname}}_pub n.advertise<{{compname}}::{{compname}}>("{{compname}}_output",1000);
+	ros::Subscriber {{compname}}_sub sub = n.advertise("{{compname}}_input", 1000, callbackFunction);
+
+	{{compname}}::{{compname}} input_msg;
+	{{compname}}::{{compname}} output_msg;
+
+	/************ for input ************
+	ros::spin()
+	***********************************/
+
+	/************ for output ************
+	ros::Rate loop_rate(100)
+	while(ros::ok()){
+		{{compname}}_pub.publish(output_msg)
+		ros::spinOnce();
+	}
+	***********************************/
+
+{% for com in communication %}
+	cp_{{com.fifo_width}}.close_devfile_read();
+	cp_{{com.fifo_width}}.close_devfile_write();
+{% endfor %}
+	return 0;
+}

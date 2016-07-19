@@ -1,0 +1,24 @@
+
+
+////fifo {{fifobit}}bit
+fifo_{{fifobit}}x512 input_fifo_{{fifobit}}(
+	.clk(clk),
+	.srst(rst),
+	.din(din_{{fifobit}}),
+	.wr_en(wr_en_{{fifobit}}),
+	.full(full_{{fifobit}}),
+	.dout(rcv_data_{{fifobit}}),
+	.rd_en(rcv_en_{{fifobit}}),
+	.empty(data_empty_{{fifobit}})
+	);
+
+fifo_{{fifobit}}x512 output_fifo_{{fifobit}}(
+	.clk(clk),
+	.srst(rst),
+	.din(snd_data_{{fifobit}}),
+	.wr_en(snd_en_{{fifobit}}),
+	.full(data_full_{{fifobit}}),
+	.dout(dout_{{fifobit}}),
+	.rd_en(rd_en_{{fifobit}}),
+	.empty(empty_{{fifobit}})
+	);

@@ -1,0 +1,13 @@
+component_name ""
+
+# communication xillybus 1 1 "1" 32
+# xillybus32_rcv ""
+# xillybus32_snd ""
+{% for ul in ul_list %}
+userlogic_path "{{ul.filepath}}" instance_name "uut"
+userlogic_assign
+{%- for port in ul.ports %}
+	{{port.__class__.__name__[0].lower() + port.__class__.__name__[1:]}},{{port.bit}},{{port.name}} ={% endfor %}
+assign_end
+{% endfor %}
+end

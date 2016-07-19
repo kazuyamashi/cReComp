@@ -1,0 +1,5 @@
+
+			
+			READY_RCV_{{fifobit}}:			state{{fifobit}} <= RCV_DATA_{{fifobit}}_0;
+			{% for x in range(0, rcv_cycle) %}RCV_DATA_{{fifobit}}_{{x}}:			state_{{fifobit}} <= {% if x == rcv_cycle-1 %}{% if snd_cycle > 0 %}POSE_{{fifobit}};{% else %}CYCLE_END_{{fifobit}};{% endif %}{% else %}RCV_DATA_{{fifobit}}_{{x+1}};{% endif %}
+			{% endfor %}

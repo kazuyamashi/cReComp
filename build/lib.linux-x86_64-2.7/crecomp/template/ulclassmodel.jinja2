@@ -1,0 +1,28 @@
+#!/usr/bin/python
+# -*- coding: utf-8 -*-
+
+import crecomp.userlogic as ul
+import crecomp.component as cp
+import crecomp.verilog as vl
+import crecomp.communication as com
+
+{% for ul_in in userlogicmodule %}
+class {{ ul_in.classname }}(ul.Util):
+
+	def __init__(self,uut):
+		self.name = "{{ul_in.name}}"
+		self.filepath = "{{ul_in.filepath}}"
+		self.uut = uut
+		self.ports = {%- set ports = ul_in.ports -%}[
+		{% for port in ports %}vl.{{port.__class__.__name__}}("{{port.name}}", {{port.bit}}){% if ports|length > loop.index %},{% endif %}
+		{% endfor %}]
+		self.assignlist = {}
+{% endfor %}
+
+# Please describe your component
+{% for ul_in in userlogicmodule %}
+{{ul_in.name}} = {{ul_in.classname}}("uut")
+
+{%- set ports = ul_in.ports -%}{% for port in ports %}
+{{ul_in.name}}.assign("{{port.name}}",""){% endfor %}
+{% endfor %}

@@ -1,0 +1,15 @@
+
+
+/*read block for fifo_{{fifobit}}*/
+
+always @(posedge clk)begin
+	if(rst)begin
+	{{-rst_ports}}
+	end
+	else if (rcv_en_{{fifobit}})begin
+	{{-assign_dataport}}
+	end
+	else begin
+	{{-rst_ports}}
+	end
+end

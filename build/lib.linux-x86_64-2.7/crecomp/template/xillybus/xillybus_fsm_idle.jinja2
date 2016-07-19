@@ -1,0 +1,1 @@
+IDLE_{{fifobit}}		state_{{fifobit}} <= {% if ((rcv_cycle > 0) and (snd_cycle > 0)) %} READY_RCV_{% elif rcv_cycle > 0 %} READY_RCV_{% elif snd_cycle > 0 %} READY_SND_{% endif %}{{fifobit}};
