@@ -1,4 +1,0 @@
-jinja2
-veriloggen
-pyverilog
-ply
