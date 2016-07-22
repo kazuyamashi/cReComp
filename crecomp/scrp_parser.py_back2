@@ -1,0 +1,246 @@
+# -*- coding: utf-8 -*-
+import ply.lex as lex
+import ply.yacc as yacc
+from jinja2 import Environment, FileSystemLoader
+
+import os
+import verilog as vl
+import component as cp
+import communication as com
+import userlogic as ul
+
+TEMPLATE = os.path.dirname(os.path.abspath(__file__)) + '/template/'
+
+reserved = {
+	'input' : 'INPUT',
+	'output' : 'OUTPUT',
+	'inout' : 'INOUT',
+	'reg' : 'REG',
+	'wire' : 'WIRE',
+	'rcv' : 'RCV',
+	'snd' : 'SND',
+	'component_name' : 'COMPONENT_NAME',
+	'communication' : 'COMMUNICAITION',
+	'in_out_signals' : 'IN_OUT_SIGNALS',
+	'option_signals' : 'OPTION_SIGNALS',
+	'xillybus' : 'XILLYBUS',
+	'userlogic_path' : 'USERLOGIC_PATH',
+	'instance_name' : 'INSTANCE_NAME',
+	'generate_ros_package' : 'GENERATE_ROS_PACKAGE',
+	'rcv_cycle' : 'RCV_CYCLE',
+	'snd_cycle' : 'SND_CYCLE',
+	'condition' : 'CONDITION',
+	'fifo_width' : 'FIFO_WIDTH',
+	'end' : 'END'
+}
+
+tokens = [
+	'LBRACES',
+	'RBRACES',
+	'VARIABLE',
+	'NUMBER',
+	'STRING',
+	'EQUAL'
+] + list(reserved.values())
+
+t_LBRACES = r'\{'
+t_RBRACES = r'\}'
+t_EQUAL =  r'='
+
+def t_NUMBER(t):
+	r'\d+'
+	t.value = int(t.value)
+	return t
+
+def t_STRING(t):
+	r'\".*?\"'
+	t.value = str(t.value).translate(None, "\"")
+	return t
+
+def t_VARIABLE(t):
+	r'[a-zA-Z_][a-zA-Z_0-9]*'
+	t.type = reserved.get(t.value,'VARIABLE')
+	print "SPECIFER: %s"%t.type
+	return t
+
+def t_newline(t):
+	r'\n+'
+	t.lexer.lineno += len(t.value)
+
+def t_COMMENT(t):
+	r'\#.*'
+	pass
+
+t_ignore = ' \t'
+
+def t_error(t):
+	print u"Illegal '%s'" % t.value[0]
+	quit()
+
+lexer = lex.lex()
+
+# ======================================
+
+def read_block(ps, arg):
+	while True:
+		line = ps.scrp.readline().rstrip()
+		if line == "":
+			continue
+		elif ps.parser.parse(line) == "start_block":
+			break
+		else:
+			raise Exception("Syntax error. \"{\" should be described after \"%s\""%arg)
+	elem = []
+	while True:
+		line = ps.scrp.readline().rstrip()
+		if line == "":
+			continue
+		else:
+			ret = ps.parser.parse(line)
+			if ret == "end_block":
+				break
+			else:
+				elem.append(ret)
+	return elem
+
+class ParseScrp():
+	def __init__(self, scrp_path):
+		self.component = None
+		self.parser = None
+		self.scrp_path = scrp_path
+		self.scrp = open(scrp_path)
+		def p_term(p):
+			'''
+				term : LBRACES expression RBRACES
+			'''
+			p[0] = [1]
+
+		def p_expression_lbraces(p):
+			'expression : LBRACES'
+			print "Start block"
+			p[0] = "start_block"
+
+		def p_expression_rbraces(p):
+			'expression : RBRACES'
+			print "End block"
+			p[0] = "end_block"
+
+		def p_expression_assign(p):
+			'''expression : RCV EQUAL VARIABLE
+						| SND EQUAL VARIABLE
+			'''
+			p[0] = {"%s"%p[1] : p[3]}
+
+		def p_expression_in_out_signals(p):
+			'expression : IN_OUT_SIGNALS'
+			read_block(self,"in_out_signals")
+
+		def p_expression_option_signals(p):
+			'expression : OPTION_SIGNALS'
+			read_block(self,"option_signals")
+
+		def p_expression_rcv_cycle(p):
+			'expression : RCV_CYCLE NUMBER'
+			p[0] = {"rcv_cycle":p[2]}
+
+		def p_expression_snd_cycle(p):
+			'expression : SND_CYCLE NUMBER'
+			p[0] = {"snd_cycle":p[2]}
+
+		def p_expression_condition(p):
+			'expression : CONDITION STRING'
+			p[0] = {"condition":p[2]}
+
+		def p_expression_fifo_width(p):
+			'expression : FIFO_WIDTH NUMBER'
+			p[0] = {"fifo_width":p[2]}
+
+		def p_expression_communication(p):
+			'''expression : COMMUNICAITION XILLYBUS
+			'''
+			com_type = p[2]
+			if com_type == "xillybus":
+				elems = read_block(self, "communication")
+				for elem in elems:
+					key =  elem.keys()[0]
+					if key == "rcv_cycle":
+						rcv_cycle = elem.values()[0]
+					elif key == "snd_cycle":
+						snd_cycle = elem.values()[0]
+					elif key == "condition":
+						condition = elem.values()[0]
+					elif key == "fifo_width":
+						fifo_width = elem.values()[0]
+
+
+
+		def p_expression_signal(p):
+			'''expression : INPUT NUMBER VARIABLE
+						| OUTPUT NUMBER VARIABLE
+						| INOUT NUMBER VARIABLE
+						| REG NUMBER VARIABLE
+						| WIRE NUMBER VARIABLE
+			'''
+			bit = p[2]
+			name = p[3]
+			if p[1] == "input":
+				self.component.add_input(name, bit)
+				print "added input", bit, name
+			elif p[1] == "output":
+				self.component.add_output(name, bit)
+				print "added output", bit, name
+			elif p[1] == "inout":
+				self.component.add_inout(name, bit)
+				print "added inout", bit, name
+			elif p[1] == "reg":
+				self.component.add_reg(name, bit)
+				print "added reg", bit, name
+			elif p[1] == "wire":
+				self.component.add_wire(name, bit)
+				print "added wire", bit, name
+
+		def p_expression_component(p):
+			'expression : COMPONENT_NAME STRING term'
+			self.component = cp.Component(p[2])
+			print "start generation", p[2]
+			read_block(self,"component_name")
+
+
+		def p_expression_ros(p):
+			'expression : GENERATE_ROS_PACKAGE'
+			print "generate ros package"
+			self.component.ros_package = True
+
+		def p_error(p):
+			print "Syntax error"
+			quit()
+			pass
+
+		def p_expression_end(p):
+			'expression : END'
+			p[0] = -1
+
+		self.parser = yacc.yacc()
+
+		line = ""
+		# while True:
+		# 	line = self.scrp.readline().rstrip()
+		# 	print line
+		# 	if line.rstrip() == "":
+		# 		break
+		# 	self.parser.parse(line)
+		scrp = self.scrp.read()
+		self.parser.parse(scrp)
+
+		self.component.show_myinfo()
+		self.component.componentize()
+
+def generate_scrptemplate(templatename, userlogic_list):
+	fo = open(templatename, "w")
+	env = Environment(loader=FileSystemLoader(TEMPLATE, encoding='utf8'))
+	tpl = env.get_template('scrp.jinja2')
+	scrp = tpl.render({'ul_list': userlogic_list})
+	fo.write(scrp)
+
+if __name__ == '__main__':
+	paser = ParseScrp("sample.scrp")
