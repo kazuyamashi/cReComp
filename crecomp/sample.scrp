@@ -1,2 +1,44 @@
-{input 1 clk, inout 1 RST, inout 1 SIG, output 1 SAMPLE}
-# {2}
+component_name "sensor_ctl"
+{
+	in_out_signals
+	{
+		input 1 clk,
+		inout 1 RST,
+		inout 1 SIG,
+		output 1 SAMPLE
+	}
+
+	option_signals
+	{
+		wire 1 finish_flag,
+		wire 1 busy_flag,
+		reg 31 dummy,
+		reg 1 req_reg,
+		wire 32 data_out
+	}
+
+	communication xillybus
+	{
+		rcv_cycle 1,
+		snd_cycle 1,
+		condition "busy_sensor == 0 && finish_sensor",
+		fifo_width 32,
+		assign{
+			rcv = req_reg,
+			rcv = dummy,
+			snd = data_out
+		}
+	}
+
+	userlogic_path "../verilog/sonic_sensor.v" instance_name "uut"
+	{
+		input 1 clk = clk,
+		input 1 rst = rst,
+		input 1 req = req_reg,
+		output 1 busy = busy_flag,
+		inout 1 sig = sig_out,
+		output 1 finish = finish_flag,
+		output 32 out_data = data_out
+	}
+	# generate_ros_package
+}

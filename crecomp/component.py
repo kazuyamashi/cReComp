@@ -34,23 +34,23 @@ class Component(object):
 
 		print "===== input ====="
 		for port in module["input"]:
-			print "%s %s %s"%(port.__class__.__name__, port.bit, port.name)
+			print port.__class__.__name__, port.bit, port.name
 
 		print "\n===== output ====="
 		for port in module["output"]:
-			print "%s %s %s"%(port.__class__.__name__, port.bit, port.name)
+			print port.__class__.__name__, port.bit, port.name
 
 		print "\n===== inout ====="
 		for port in module["inout"]:
-			print "%s %s %s"%(port.__class__.__name__, port.bit, port.name)
+			print port.__class__.__name__, port.bit, port.name
 
 		print "\n===== reg ====="
 		for port in module["reg"]:
-			print "%s %s %s"%(port.__class__.__name__, port.bit, port.name)
+			print port.__class__.__name__, port.bit, port.name
 
 		print "\n===== wire ====="
 		for port in module["wire"]:
-			print "%s %s %s"%(port.__class__.__name__, port.bit, port.name)
+			print port.__class__.__name__, port.bit, port.name
 
 		print "\n===== usrlogic ====="
 		for ul in module["userlogic"]:
@@ -58,7 +58,7 @@ class Component(object):
 
 		print "\n===== communication ====="
 		for com in module["communication"]:
-			print "%s%s"%(com.__class__.__name__, com.fifo_width)
+			print com.__class__.__name__, com.fifo_width
 			print "\n"
 
 		print "\n===== ROS package generation ====="
