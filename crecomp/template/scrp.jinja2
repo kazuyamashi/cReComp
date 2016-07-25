@@ -1,13 +1,30 @@
-component_name ""
+component_name "compoent"
+{
+	# in_out_signals{
+	# 	input 1 CLK,
+	# 	input 1 RST
+	# }
 
-# communication xillybus 1 1 "1" 32
-# xillybus32_rcv ""
-# xillybus32_snd ""
-{% for ul in ul_list %}
-userlogic_path "{{ul.filepath}}" instance_name "uut"
-userlogic_assign
-{%- for port in ul.ports %}
-	{{port.__class__.__name__[0].lower() + port.__class__.__name__[1:]}},{{port.bit}},{{port.name}} ={% endfor %}
-assign_end
-{% endfor %}
-end
+	# option_signals{}
+
+	# communication xillybus
+	# {
+	# 	rcv_cycle 1,
+	# 	snd_cycle 1,
+	# 	condition "1",
+	# 	fifo_width 32,
+	# 	rcv = dummy,
+	# 	snd = dummy
+	# }
+
+	{% for ul in ul_list %}
+	userlogic_path "{{ul.filepath}}" instance_name "uut"
+	{
+	{%- for port in ul.ports %}
+		{{port.__class__.__name__[0].lower() + port.__class__.__name__[1:]}} {{port.bit}} {{port.name}} =
+		{%- if loop.index < ul.ports | length %} ,{% endif %}{% endfor %}
+	}
+	{% endfor %}
+	# generate_ros_package
+
+}

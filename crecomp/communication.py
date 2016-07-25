@@ -15,35 +15,53 @@ class Xillybus_fifo(object):
 		self.total_sndbits = 0
 		self.fifo_width = fifo_width
 		self.signals = [
-			vl.Input("din_%s"%(fifo_width), fifo_width),
-			vl.Input("wr_en_%s"%(fifo_width), 1),
-			vl.Input("rd_en_%s"%(fifo_width), 1),
-			vl.Output("dout_%s"%(fifo_width), fifo_width),
-			vl.Output("full_%s"%(fifo_width), 1),
-			vl.Output("empty_%s"%(fifo_width), 1),
+			vl.Input("din_%s"%(self.fifo_width), self.fifo_width),
+			vl.Input("wr_en_%s"%(self.fifo_width), 1),
+			vl.Input("rd_en_%s"%(self.fifo_width), 1),
+			vl.Output("dout_%s"%(self.fifo_width), self.fifo_width),
+			vl.Output("full_%s"%(self.fifo_width), 1),
+			vl.Output("empty_%s"%(self.fifo_width), 1),
 
-			vl.Reg("state_%s"%(fifo_width), (2 + self.rcv_cycle + self.snd_cycle)/4+3),
+			vl.Reg("state_%s"%(self.fifo_width), (2 + self.rcv_cycle + self.snd_cycle)/4+3),
 
-			vl.Wire("rcv_data_%s"%(fifo_width),32),
-			vl.Reg("rcv_en_%s"%(fifo_width),1),
-			vl.Wire("data_empty_%s"%(fifo_width),1),
+			vl.Wire("rcv_data_%s"%(self.fifo_width),self.fifo_width),
+			vl.Reg("rcv_en_%s"%(self.fifo_width),1),
+			vl.Wire("data_empty_%s"%(self.fifo_width),1),
 
-			vl.Wire("snd_data_%s"%(fifo_width),32),
-			vl.Reg("snd_en_%s"%(fifo_width),1),
-			vl.Wire("data_full_%s"%(fifo_width),1)
+			vl.Wire("snd_data_%s"%(self.fifo_width),self.fifo_width),
+			vl.Reg("snd_en_%s"%(self.fifo_width),1),
+			vl.Wire("data_full_%s"%(self.fifo_width),1)
 		]
 
-	def set_rcycle(self, cycle):
+	def set_rcv_cycle(self, cycle):
 		self.rcv_cycle = cycle
 
-	def set_scycle(self, cycle):
+	def set_snd_cycle(self, cycle):
 		self.snd_cycle = cycle
 
-	def set_conditon(self, conditon):
+	def set_condition(self, conditon):
 		self.rs_cond = conditon
 
 	def set_fifo_width(self, width):
 		self.fifo_width = width
+		del self.signals[:]
+		self.signals = [vl.Input("din_%s"%(self.fifo_width), self.fifo_width),
+					vl.Input("wr_en_%s"%(self.fifo_width), 1),
+					vl.Input("rd_en_%s"%(self.fifo_width), 1),
+					vl.Output("dout_%s"%(self.fifo_width), self.fifo_width),
+					vl.Output("full_%s"%(self.fifo_width), 1),
+					vl.Output("empty_%s"%(self.fifo_width), 1),
+
+					vl.Reg("state_%s"%(self.fifo_width), (2 + self.rcv_cycle + self.snd_cycle)/4+3),
+
+					vl.Wire("rcv_data_%s"%(self.fifo_width),self.fifo_width),
+					vl.Reg("rcv_en_%s"%(self.fifo_width),1),
+					vl.Wire("data_empty_%s"%(self.fifo_width),1),
+
+					vl.Wire("snd_data_%s"%(self.fifo_width),self.fifo_width),
+					vl.Reg("snd_en_%s"%(self.fifo_width),1),
+					vl.Wire("data_full_%s"%(self.fifo_width),1)
+				]
 
 	def assign(self, action, sig):
 

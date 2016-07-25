@@ -10,7 +10,9 @@
 #
 # (c) Kazushi Yamashina
 
-# require package jinja2, veriloggen, pyverilog, iverilog
+# requirements
+# jinja2, veriloggen, pyverilog,
+# iverilog, ply(python-lex-yacc)
 
 import os
 import sys
@@ -73,7 +75,7 @@ def main():
 		scrp_parser.generate_scrptemplate(options.scrp_templatename, userlogic_list)
 		print "Generate %s successfully"%options.scrp_templatename
 	elif options.scrp_path != False:
-		parser = scrp_parser.ParseScrp(options.scrp_path)
+		parser = scrp_parser.parse_scrp(options.scrp_path)
 
 if __name__ == '__main__':
 	main()

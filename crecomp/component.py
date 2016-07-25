@@ -25,7 +25,7 @@ class Component(object):
 		self.name = compname
 		self.ros_package = False
 
-	def show_myinfo(self):
+	def show_info(self):
 		module = self.module
 		compname = self.name
 
