@@ -39,11 +39,11 @@ unsigned int{% if com.snd_cycle > 1 %}*{% endif %} {{compname}}_{{com.fifo_width
 void {{compname}}_{{com.fifo_width}}::set_{{compname}}_{{com.fifo_width}}(unsigned int{% if com.rcv_cycle > 1 %}*{% endif %} argv){
 	int rc = 0;
 	{% if com.rcv_cycle > 1 %}for(int i = 0; i < {{com.rcv_cycle}}; i++){
-		{{compname}}_din_{{com.rcv_cycle}}[i] = argv[i];
+		{{compname}}_din_{{com.fifo_width}}[i] = argv[i];
 	}
 	for(int i = 0; i < {{com.rcv_cycle}}; i++){
 		while(1){
-			rc = write(fw, &{{compname}}_dout_{{com.fifo_width}}[i], sizeof({{compname}}_din_{{com.fifo_width}}[i]));
+			rc = write(fw, &{{compname}}_din_{{com.fifo_width}}[i], sizeof({{compname}}_din_{{com.fifo_width}}[i]));
 			if(rc < 0){
 				cout << "fail write to fifo" << endl;
 				continue;
@@ -53,7 +53,7 @@ void {{compname}}_{{com.fifo_width}}::set_{{compname}}_{{com.fifo_width}}(unsign
 	}
 	{% else %}{{compname}}_din_{{com.fifo_width}} = argv;
 	while(1){
-		rc = write(fw, &{{compname}}_dout_{{com.fifo_width}}, sizeof({{compname}}_din_{{com.fifo_width}}));
+		rc = write(fw, &{{compname}}_din_{{com.fifo_width}}, sizeof({{compname}}_din_{{com.fifo_width}}));
 		if(rc < 0){
 			cout << "fail write to fifo" << endl;
 			continue;
@@ -69,7 +69,7 @@ int main(int argc, char const *argv[]){
 	{{compname}}_{{com.fifo_width}} cp_{{com.fifo_width}};
 	cp_{{com.fifo_width}}.set_devfile_read("/dev/xillybus_read_{{com.fifo_width}}");
 	cp_{{com.fifo_width}}.open_devfile_read();
-	cp_{{com.fifo_width}}.set_devfile_write("/dev/xillybus_write__{{com.fifo_width}}");
+	cp_{{com.fifo_width}}.set_devfile_write("/dev/xillybus_write_{{com.fifo_width}}");
 	cp_{{com.fifo_width}}.open_devfile_write();
 {% endfor %}
 

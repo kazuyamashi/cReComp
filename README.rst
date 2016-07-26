@@ -7,7 +7,7 @@ creator for Reconfigurable hw Component
 | **Author**: Kazushi Yamashina (Utsunomiya University)
 | **Copyright**: 2016, Kazushi Yamashina
 | **License**: new BSD License
-| **Latest Version**: 1.3.0
+| **Latest Version**: 1.4.0
 | **Contact**: kazushi\_at\_virgo.is.utsunomiya-u.ac.jp or
   `Twitter <https://twitter.com/KazushihsuzaK>`__ or
   `Facebook <https://www.facebook.com/kazushi.yamashina?fref=nf>`__
@@ -26,19 +26,27 @@ HW/SW co-system by integrating the each of the hardware.
 Update
 ======
 
+-  2016/07/25 version 1.4.0
+
+   -  scrp\_parser was improved functionally and become to be able to
+      parse more accurately
+
 -  2016/07/05 version 1.3.0
 
-   -  SCRP supported ROS packages generation
+   -  **scrp** supported ROS packages generation
 
 -  2016/07/04 version 1.1.0 & 1.2.0
 
-   -  cReComp supported configuration with SCRP (specification for
+   -  cReComp supported configuration with **scrp** (specification for
       cReComp)
    -  cReComp supported ROS package generation
 
 -  2016/06/30 version 1.0.0
 
-   -  Released first version # Install
+   -  Released first version
+
+Install
+=======
 
 Requirements
 ------------
@@ -48,8 +56,8 @@ Platform
 
 Ubuntu or OSX (Mac)
 
-Python (2.7 later)
-^^^^^^^^^^^^^^^^^^
+Python (2.7 later, not 3.0)
+^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 ::
 
@@ -70,8 +78,8 @@ Mac
 
     brew install icarus-verilog
 
-PLY
-^^^
+PLY (Python-Lex-Yacc)
+^^^^^^^^^^^^^^^^^^^^^
 
 ::
 
@@ -127,15 +135,15 @@ Command usage
     Usage: crecomp [option] [file path] [-u user logic]+
 
     Options:
-      -h, --help            show this help message and exit
-      -u USERLOGIC, --userlogic=USERLOGIC
-                            specifier your user logic name
-      -p PYTHON_TEMPLATENAME, --python_template=PYTHON_TEMPLATENAME
-                            specifier for template name
-      -s SCRP_TEMPLATENAME, --scrp_template=SCRP_TEMPLATENAME
-                            specifier for template name
-      -b SCRP_PATH, --build=SCRP_PATH
-                            specifier target scrp file to build for componentize
+        -h, --help            show this help message and exit
+        -u USERLOGIC, --userlogic=USERLOGIC
+                                                    specifier your user logic name
+        -p PYTHON_TEMPLATENAME, --python_template=PYTHON_TEMPLATENAME
+                                                    specifier for template name
+        -s SCRP_TEMPLATENAME, --scrp_template=SCRP_TEMPLATENAME
+                                                    specifier for template name
+        -b SCRP_PATH, --build=SCRP_PATH
+                                                    specifier target scrp file to build for componentize
 
 Getting Started
 ===============

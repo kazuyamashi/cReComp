@@ -20,8 +20,6 @@ reserved = {
 	'snd_cycle' : 'SND_CYCLE',
 	'condition' : 'CONDITION',
 	'fifo_width' : 'FIFO_WIDTH',
-	'assign' : 'ASSIGN',
-	'end' : 'END'
 }
 
 tokens = [
@@ -31,14 +29,12 @@ tokens = [
 	'NUMBER',
 	'STRING',
 	'CONMMA',
-	'SEMICOLON',
 	'EQUAL'
 ] + list(reserved.values())
 
 t_LBRACES = r'\{'
 t_RBRACES = r'\}'
 t_EQUAL =  r'='
-t_SEMICOLON = r';'
 t_CONMMA = r','
 
 def t_NUMBER(t):

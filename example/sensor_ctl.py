@@ -45,13 +45,6 @@ fifo_32.assign("rcv","req_reg")
 fifo_32.assign("rcv", "dummy")
 fifo_32.assign("snd", "sensor_data")
 
-cp.add_reg("dummy_reg",8)
-cp.add_wire("dummy_wire",8)
-fifo_8 = com.Xillybus_fifo(2,4,"1",8)
-fifo_8.assign("rcv", "dummy_reg")
-fifo_8.assign("snd", "dummy_wire")
-
-
 sonic_sensor = Sonic_sensor("uut")
 sonic_sensor.assign("clk","clk")
 sonic_sensor.assign("rst","rst")
@@ -63,7 +56,7 @@ sonic_sensor.assign("out_data","sensor_data")
 
 cp.add_ul(sonic_sensor)
 cp.add_com(fifo_32)
-cp.add_com(fifo_8)
+
 cp.ros_packaging()
 
 cp.componentize()

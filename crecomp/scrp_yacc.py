@@ -194,5 +194,3 @@ class PaseScrp(object):
 
 if __name__ == '__main__':
 	test = PaseScrp()
-	test.parse_scrp("sample.scrp")
-	test.show_info()
