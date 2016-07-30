@@ -33,10 +33,11 @@ def genrate_userlogic_inst(ul):
 							'signals': ul.assignlist.keys(), 'portname': ul.assignlist })
 	return instance
 
-def generate_ports(module, compname):
+def generate_ports(module, compname, component):
 	env = Environment(loader=FileSystemLoader(TEMPLATE, encoding='utf8'))
 	tpl = env.get_template('ports.jinja2')
 	ports = tpl.render({'compname': compname,
+						'component':component,
 						'input_ports': module["input"],
 						'output_ports': module["output"],
 						'inout_ports': module["inout"]})
@@ -147,18 +148,17 @@ def generate_xillybus(com, module):
 	xillybus = xillybus + tpl.render({'fifobit': com.fifo_width, 'fsm': fsm})
 
 	# ======================= generate state machine for xillybus =============================
+	rst_ports = ""
 	if com.rcv_cycle > 0:
 		rcvlist = com.rcvlist
 		tpl = env.get_template('xillybus/xillybus_rcvfsm_rstport.jinja2')
-		rst_ports = ""
 		for port in rcvlist:
 			rst_ports = rst_ports + tpl.render({'fifobit': com.fifo_width, 'port': port})
-
+	ports = ""
 	if com.rcv_cycle > 0:
 		tpl = env.get_template('xillybus/xillybus_rcvfsm_assign.jinja2')
 		msb = 0
 		lsb = 0
-		ports = ""
 		for port in com.rcvlist:
 			for reg in module["reg"]:
 				if reg.name == port:

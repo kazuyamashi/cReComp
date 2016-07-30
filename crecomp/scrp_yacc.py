@@ -1,5 +1,7 @@
 # -*- coding: utf-8 -*-
+import sys
 import ply.yacc as yacc
+
 from scrp_lex import tokens
 from scrp_lex import lexer
 

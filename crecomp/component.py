@@ -6,10 +6,15 @@ import verilog as vl
 import userlogic
 import communication
 import software as sw
+CLOCK = "clk"
+RESET = "rst"
+
 
 TEMPLATE = os.path.dirname(os.path.abspath(__file__)) + '/template/'
 class Component(object):
 	def __init__(self, compname):
+		self.clock = "clk"
+		self.reset = "rst"
 		self.module = {
 			"input": [],	# class object input
 			"output": [],	# class object output
@@ -64,7 +69,20 @@ class Component(object):
 		print "\n===== ROS package generation ====="
 		print self.ros_package
 
+	def add_clk(self, name):
+		self.clock = name
+		# input = vl.Input(self.clock, 1)
+		# self.module["input"].append(input)
+
+	def add_rst(self, name):
+		self.reset = name
+		# input = vl.Input(self.reset, 1)
+		# self.module["input"].append(input)
+
 	def add_input(self, name, bit):
+		if name == CLOCK or name == RESET:
+			print "pre defined signal %s"%name
+			return
 		input = vl.Input(name, bit)
 		self.module["input"].append(input)
 
@@ -110,6 +128,8 @@ class Component(object):
 		self.ros_package = True
 
 	def componentize(self):
+		self.module['input'].append(vl.Input(self.clock, 1))
+		self.module['input'].append(vl.Input(self.reset, 1))
 		compname = self.name
 		module = self.module
 		self.generate_hardware()
@@ -129,7 +149,7 @@ class Component(object):
 		fo = open("%s/hardware/%s.v"%(compname, compname), "w")
 
 		# generater in out ports
-		fo.write(vl.generate_ports(module, compname))
+		fo.write(vl.generate_ports(module, compname, self))
 
 		#generate user register and wire
 		fo.write(vl.generate_regwire(module))
@@ -160,7 +180,7 @@ class Component(object):
 		shutil.copy("%ssoftware/lib_cpp.h"%TEMPLATE, "%s/software/lib_cpp.h"%compname)
 		# generate software interface
 		fo = open("%s/software/%s.cpp"%(compname, compname), "w")
-		fo.write(sw.generate_cpp_xillybus_interface(module,compname))
+		fo.write(sw.generate_cpp_xillybus_interface(self))
 		fo.close()
 
 		fo = open("%s/software/Makefile"%(compname), "w")

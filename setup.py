@@ -32,9 +32,12 @@ setup(
         packages=find_packages(),
         package_data={ 'crecomp.template' : ['*.*'],
                        'crecomp.template.xillybus' : ['*.*'],
-                       'crecomp.template.software' : ['*.*'],},
+                       'crecomp.template.software' : ['*.*'],
+                       'crecomp.ply' : ['*.*'],
+                       'crecomp.template.hls' : ['*.*'],
+                       },
         long_description=read('README.rst'),
-        install_requires=["jinja2", "veriloggen", "pyverilog", "ply"],
+        install_requires=["jinja2", "veriloggen", "pyverilog"],
         entry_points = """
         [console_scripts]
         %s = crecomp.crecomp:main

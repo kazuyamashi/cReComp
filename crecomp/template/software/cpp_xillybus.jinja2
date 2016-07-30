@@ -1,82 +1,96 @@
 #include "lib_cpp.h"
 #include <iostream>
 using namespace std;
-{% for com in communication %}
-class {{compname}}_{{com.fifo_width}} :public If_module{
-	{% if com.snd_cycle > 0 %}unsigned int {{compname}}_dout_{{com.fifo_width}}{% if com.snd_cycle > 1 %}[{{com.snd_cycle}}]{% endif %}{% endif %};
-	{% if com.rcv_cycle > 0 %}unsigned int {{compname}}_din_{{com.fifo_width}}{% if com.rcv_cycle > 1 %}[{{com.rcv_cycle}}]{% endif %}{% endif %};
-public:
-	{{compname}}_{{com.fifo_width}}(){}
-	~{{compname}}_{{com.fifo_width}}(){}
-	{% if com.snd_cycle > 0 %}unsigned int {% if com.snd_cycle > 1 %}*{% endif %}get_{{compname}}_{{com.fifo_width}}();{% endif %}
-	{% if com.rcv_cycle > 0 %}void set_{{compname}}_{{com.fifo_width}}(unsigned int {% if com.rcv_cycle > 1 %}*{% endif %}argv);{% endif %}
-};
-unsigned int{% if com.snd_cycle > 1 %}*{% endif %} {{compname}}_{{com.fifo_width}}::get_{{compname}}_{{com.fifo_width}}(){
-	int rc = 0;
-	{% if com.snd_cycle > 1 %}
-	for (int i = 0; i < {{com.snd_cycle}}; i++ ){
-		while(1){
-			rc = read(fr, &{{compname}}_dout_{{com.fifo_width}}[i], sizeof({{compname}}_dout_{{com.fifo_width}}[i]));
-			if(rc < 0){
-				cout << "fail read from fifo" << endl;
-				continue;
-			}
-			else if(rc == sizeof({{compname}}_dout_{{com.fifo_width}}[i])) break;
-		}
-	}
-	return {{compname}}_dout_{{com.fifo_width}};
-	{% else %}while(1){
-		rc = read(fr, &{{compname}}_dout_{{com.fifo_width}}, sizeof({{compname}}_dout_{{com.fifo_width}}));
-		if(rc < 0){
-			cout << "fail read from fifo" << endl;
-			continue;
-			}
-		else if(rc == sizeof({{compname}}_dout_{{com.fifo_width}})) break;
-		}
-	return {{compname}}_dout_{{com.fifo_width}};{% endif %}
-}
 
-void {{compname}}_{{com.fifo_width}}::set_{{compname}}_{{com.fifo_width}}(unsigned int{% if com.rcv_cycle > 1 %}*{% endif %} argv){
+{% for com in xillybus%}
+class {{comp.name}}_{{com.fifo_width}} :public If_module{
+public:
+{%- if com.fifo_width == 32 %}
+{%- if com.rcv_cycle != 0 %}
+	void get_{{comp.name}}_{{com.fifo_width}} (int *buff, int size);
+{% endif %}
+{%- if com.snd_cycle != 0 %}
+	void set_{{comp.name}}_{{com.fifo_width}} (int *buff, int size);
+{%- endif -%}
+{% elif com.fifo_width == 8 %}
+{%- if com.rcv_cycle != 0 %}
+	void get_{{comp.name}}_{{com.fifo_width}} (char *buff, int size);
+{% endif %}
+{%- if com.snd_cycle != 0 %}
+	void set_{{comp.name}}_{{com.fifo_width}} (char *buff, int size);
+{%- endif -%}
+{% endif %}
+};
+{% if com.rcv_cycle != 0 %}
+{%- if com.fifo_width == 32 %}
+void {{comp.name}}_{{com.fifo_width}}::get_{{comp.name}}_{{com.fifo_width}}(int *buff, int size){
+{% elif com.fifo_width == 8 -%}
+void {{comp.name}}_{{com.fifo_width}}::get_{{comp.name}}_{{com.fifo_width}}(char *buff, int size){
+{% endif %}
 	int rc = 0;
-	{% if com.rcv_cycle > 1 %}for(int i = 0; i < {{com.rcv_cycle}}; i++){
-		{{compname}}_din_{{com.fifo_width}}[i] = argv[i];
-	}
-	for(int i = 0; i < {{com.rcv_cycle}}; i++){
-		while(1){
-			rc = write(fw, &{{compname}}_din_{{com.fifo_width}}[i], sizeof({{compname}}_din_{{com.fifo_width}}[i]));
-			if(rc < 0){
-				cout << "fail write to fifo" << endl;
-				continue;
-			}
-			else if (rc == sizeof({{compname}}_din_{{com.fifo_width}}[i])) break;
-		}
-	}
-	{% else %}{{compname}}_din_{{com.fifo_width}} = argv;
+	int len = sizeof(int) * size;
 	while(1){
-		rc = write(fw, &{{compname}}_din_{{com.fifo_width}}, sizeof({{compname}}_din_{{com.fifo_width}}));
+		rc += read(fr, &buff[rc], len);
 		if(rc < 0){
-			cout << "fail write to fifo" << endl;
+			cerr << fail to read << endl;
 			continue;
 		}
-		else if (rc == sizeof({{compname}}_din_{{com.fifo_width}})) break;
-	}{% endif %}
-	return;
+		else
+		{
+			len -= rc;
+			if(len == 0) break;
+		}
+	}
 }
+{%- endif %}
+
+{%- if com.snd_cycle != 0 %}
+{% if com.fifo_width == 32 %}
+void {{comp.name}}_{{com.fifo_width}}::set_{{comp.name}}_{{com.fifo_width}}(int *buff, int size){
+{% elif com.fifo_width == 8 -%}
+void {{comp.name}}_{{com.fifo_width}}::set_{{comp.name}}_{{com.fifo_width}}(char *buff, int size){
+{% endif %}
+	int rc = 0;
+	int len;
+	len = sizeof(int) * size;
+	rc = 0;
+	while(1){
+		rc += write(fw, &buff[rc], len);
+		if(rc < 0){
+			cerr << "fail to write" << endl;
+			continue;
+		}
+		else{
+			len -= rc;
+			if (len == 0) break;
+		}
+	}
+}
+{%- endif -%}
 {% endfor %}
 
 int main(int argc, char const *argv[]){
-{% for com in communication %}
-	{{compname}}_{{com.fifo_width}} cp_{{com.fifo_width}};
-	cp_{{com.fifo_width}}.set_devfile_read("/dev/xillybus_read_{{com.fifo_width}}");
-	cp_{{com.fifo_width}}.open_devfile_read();
-	cp_{{com.fifo_width}}.set_devfile_write("/dev/xillybus_write_{{com.fifo_width}}");
-	cp_{{com.fifo_width}}.open_devfile_write();
+{% for com in xillybus %}
+	{{comp.name}} fifo_{{com.fifo_width}};
+{%- if com.rcv_cycle != 0 %}
+	fifo_{{com.fifo_width}}.set_devfile_read("/dev/xillybus_read_{{com.fifo_width}}");
+	fifo_{{com.fifo_width}}.open_devfile_read();
+{%- endif %}
+{%- if com.snd_cycle != 0 %}
+	fifo_{{com.fifo_width}}.set_devfile_write("/dev/xillybus_write_{{com.fifo_width}}");
+	fifo_{{com.fifo_width}}.open_devfile_write();
+{%- endif -%}
+{% endfor %}
+	///Please deicribe your code///
+
+{% for com in xillybus %}
+{%- if com.rcv_cycle != 0 %}
+	fifo_{{com.fifo_width}}.close_devfile_read();
+{%- endif -%}
+{%- if com.snd_cycle != 0 %}
+	fifo_{{com.fifo_width}}.close_devfile_write();
+{%- endif -%}
 {% endfor %}
 
-	///Please deicribe your code///
-{% for com in communication %}
-	cp_{{com.fifo_width}}.close_devfile_read();
-	cp_{{com.fifo_width}}.close_devfile_write();
-{% endfor %}
 	return 0;
 }

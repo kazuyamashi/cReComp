@@ -56,7 +56,8 @@ sonic_sensor.assign("out_data","sensor_data")
 
 cp.add_ul(sonic_sensor)
 cp.add_com(fifo_32)
-
+fifo_8 = com.Xillybus_fifo(1,1,"1",8)
+cp.add_com(fifo_8)
 cp.ros_packaging()
 
 cp.componentize()
