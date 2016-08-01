@@ -91,8 +91,9 @@ class Util():
 			ret.append(port.name)
 		return ret
 
-	def assign(self, signame_u, signame_c):
+	def assign(self, signame_u, signame_c, reset = 1):
 		self.assignlist.update({signame_u: signame_c})
+
 
 class UserlogicBase(Util):
 	def __init__(self,name,uut):
@@ -104,10 +105,6 @@ class UserlogicBase(Util):
 
 
 def check_ulassign(ul, module):
-
-	# raise Exception("Wrong bit width %s %s"%(moduleport.bit, ulport.bit))
-	# raise Exception("Wrong signal type %s %s"%(moduleport.__class__.__name__, ulport.__class__.__name__))
-
 	ul_assign = ul.assignlist
 	ul_ports = ul.ports
 

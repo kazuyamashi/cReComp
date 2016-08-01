@@ -105,10 +105,13 @@ def generate_xillybus(com, module):
 			xillybus = xillybus + tpl.render({'fifobit': com.fifo_width, 'num': x, 'state': state})
 			state = state + 1
 
-	if (com.rcv_cycle > 0) and (com.snd_cycle > 0):
-		tpl = env.get_template('xillybus/xillybus_para_pose.jinja2')
+		tpl = env.get_template('xillybus/xillybus_para_rcvend.jinja2')
 		xillybus = xillybus + tpl.render({'fifobit': com.fifo_width, 'state': state})
 		state = state + 1
+
+	tpl = env.get_template('xillybus/xillybus_para_pose.jinja2')
+	xillybus = xillybus + tpl.render({'fifobit': com.fifo_width, 'state': state})
+	state = state + 1
 
 	if com.snd_cycle > 0:
 		tpl = env.get_template('xillybus/xillybus_para_readysnd.jinja2')
@@ -136,9 +139,9 @@ def generate_xillybus(com, module):
 		tpl = env.get_template('xillybus/xillybus_fsm_rcv.jinja2')
 		fsm = fsm + tpl.render({'fifobit': com.fifo_width, 'rcv_cycle': com.rcv_cycle, 'snd_cycle': com.snd_cycle})
 
-	if ((com.rcv_cycle > 0) and (com.snd_cycle > 0)):
-		tpl = env.get_template('xillybus/xillybus_fsm_pose.jinja2')
-		fsm = fsm + tpl.render({'fifobit': com.fifo_width, 'rcv_cycle': com.rcv_cycle, 'snd_cycle': com.snd_cycle, 'condition':com.rs_cond})
+	# if ((com.rcv_cycle > 0) and (com.snd_cycle > 0)):
+	tpl = env.get_template('xillybus/xillybus_fsm_pose.jinja2')
+	fsm = fsm + tpl.render({'fifobit': com.fifo_width, 'rcv_cycle': com.rcv_cycle, 'snd_cycle': com.snd_cycle, 'condition':com.rs_cond})
 
 	if com.snd_cycle > 0:
 		tpl = env.get_template('xillybus/xillybus_fsm_snd.jinja2')

@@ -71,34 +71,30 @@ class Component(object):
 
 	def add_clk(self, name):
 		self.clock = name
-		# input = vl.Input(self.clock, 1)
-		# self.module["input"].append(input)
 
 	def add_rst(self, name):
 		self.reset = name
-		# input = vl.Input(self.reset, 1)
-		# self.module["input"].append(input)
 
-	def add_input(self, name, bit):
+	def add_input(self, name, bit=1):
 		if name == CLOCK or name == RESET:
 			print "pre defined signal %s"%name
 			return
 		input = vl.Input(name, bit)
 		self.module["input"].append(input)
 
-	def add_output(self, name, bit):
+	def add_output(self, name, bit=1):
 		output = vl.Output(name, bit)
 		self.module["output"].append(output)
 
-	def add_inout(self, name, bit):
+	def add_inout(self, name, bit=1):
 		inout = vl.Inout(name, bit)
 		self.module["inout"].append(inout)
 
-	def add_reg(self, name, bit):
+	def add_reg(self, name, bit=1):
 		reg = vl.Reg(name, bit)
 		self.module["reg"].append(reg)
 
-	def add_wire(self, name, bit):
+	def add_wire(self, name, bit=1):
 		wire = vl.Wire(name, bit)
 		self.module["wire"].append(wire)
 
@@ -110,18 +106,15 @@ class Component(object):
 			for port in com.signals:
 				if port.__class__.__name__ == "Input":
 					self.module["input"].append(port)
-
 				if port.__class__.__name__ == "Output":
 					self.module["output"].append(port)
-
 				if port.__class__.__name__ == "Inout":
 					self.module["inout"].append(port)
-
 				if port.__class__.__name__ == "Reg":
 					self.module["reg"].append(port)
-
 				if port.__class__.__name__ == "Wire":
 					self.module["wire"].append(port)
+
 		self.module["communication"].append(com)
 
 	def ros_packaging(self):
@@ -148,7 +141,7 @@ class Component(object):
 
 		fo = open("%s/hardware/%s.v"%(compname, compname), "w")
 
-		# generater in out ports
+		# generate in or out ports
 		fo.write(vl.generate_ports(module, compname, self))
 
 		#generate user register and wire
