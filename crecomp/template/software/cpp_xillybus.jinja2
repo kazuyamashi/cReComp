@@ -32,7 +32,7 @@ void {{comp.name}}_{{com.fifo_width}}::get_{{comp.name}}_{{com.fifo_width}}(char
 	while(1){
 		rc += read(fr, &buff[rc], len);
 		if(rc < 0){
-			cerr << fail to read << endl;
+			cerr << "fail to read" << endl;
 			continue;
 		}
 		else

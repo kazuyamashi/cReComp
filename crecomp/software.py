@@ -60,8 +60,16 @@ def generate_ros_package(component):
 
 	# generate src
 	env = Environment(loader=FileSystemLoader(TEMPLATE, encoding='utf8'))
+	xillybus = []
+	for com in component.module["communication"]:
+		if com.__class__.__name__ == "Xillybus_fifo":
+			xillybus.append(com)
 	tpl = env.get_template('software/ros_src.jinja2')
-	tmp = tpl.render({'compname': compname, 'communication': module["communication"]})
+	tmp = tpl.render({'comp': component, 'xillybus': xillybus})
+
+	# env = Environment(loader=FileSystemLoader(TEMPLATE, encoding='utf8'))
+	# tpl = env.get_template('software/ros_src.jinja2')
+	# tmp = tpl.render({'compname': compname, 'communication': module["communication"]})
 	cpp.write(tmp)
 	cpp.close()
 
