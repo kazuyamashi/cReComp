@@ -68,9 +68,11 @@ def generate_ros_package(component):
 	# generate message file
 	for com in module["communication"]:
 		for rcv in com.rcvlist:
-			msg_file.write("uint32 %s\n"%rcv)
+			(signame,reset) = rcv
+			msg_file.write("uint32 %s\n"%signame)
 		for snd in com.sndlist:
-			msg_file.write("uint32 %s\n"%snd)
+			(signame,reset) = snd
+			msg_file.write("uint32 %s\n"%signame)
 
 if __name__ == '__main__':
 	pass

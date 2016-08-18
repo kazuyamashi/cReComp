@@ -63,21 +63,28 @@ class Xillybus_fifo(object):
 					vl.Wire("data_full_%s"%(self.fifo_width),1)
 				]
 
-	def assign(self, action, sig):
+	def assign(self, action, sig, reset = 0):
 
 		if action == "rcv":
-			self.rcvlist.append(sig)
+			self.rcvlist.append((sig, reset))
 
 		if action == "snd":
-			self.sndlist.append(sig)
+			self.sndlist.append((sig, reset))
 
 	def show_fifo_signals(self):
 		for sig in self.signals:
 			print "%s %s"%(sig.__class__.__name__, sig.name)
 
 def check_xillybus_assign(com, module):
-	rcvlist = com.rcvlist
-	sndlist = com.sndlist
+	rcvlist = []
+	for rcv in com.rcvlist:
+		(sig, reset) = rcv
+		rcvlist.append(sig)
+
+	sndlist = []
+	for snd in com.sndlist:
+		(sig, reset) = snd
+		sndlist.append(sig)
 
 	checked_reg = False
 	checked_wire = False

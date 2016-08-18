@@ -91,8 +91,8 @@ class Util():
 			ret.append(port.name)
 		return ret
 
-	def assign(self, signame_u, signame_c, reset = 1):
-		self.assignlist.update({signame_u: signame_c})
+	def assign(self, signame_u, signame_c):
+		self.assignlist.append((signame_u, signame_c))
 
 
 class UserlogicBase(Util):
@@ -101,11 +101,14 @@ class UserlogicBase(Util):
 		self.filepath = ""
 		self.uut = uut
 		self.ports =[]
-		self.assignlist = {}
+		self.assignlist = []
 
 
 def check_ulassign(ul, module):
-	ul_assign = ul.assignlist
+	ul_assign = {}
+	for assign in ul.assignlist:
+		(signame_u, signame_c) = assign
+		ul_assign.update({signame_u: signame_c})
 	ul_ports = ul.ports
 
 	checked_input = False

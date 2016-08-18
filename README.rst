@@ -7,7 +7,7 @@ creator for Reconfigurable hw Component
 | **Author**: Kazushi Yamashina (Utsunomiya University)
 | **Copyright**: 2016, Kazushi Yamashina
 | **License**: new BSD License
-| **Latest Version**: 1.4.1
+| **Latest Version**: 1.4.2
 | **Contact**: kazushi\_at\_virgo.is.utsunomiya-u.ac.jp or
   `Twitter <https://twitter.com/KazushihsuzaK>`__ or
   `Facebook <https://www.facebook.com/kazushi.yamashina?fref=nf>`__
@@ -22,6 +22,16 @@ the cReComp is HW/SW co-system that is connected between CPU and FPGA
 hardware with software in a user development phase. When the development
 of a each hardware have been finished, the cReComp generates one of the
 HW/SW co-system by integrating the each of the hardware.
+
+cReComp supports ROS
+====================
+
+`ROS <http://www.ros.org/>`__ is an open source project by OSRF (Open
+Source Robotics Foundation). It is not an operating system but a
+software platform for component-oriented development of robotic
+application software on an OS. Communication library and a build system
+for robotic application software are provided in ROS. cReComp can
+generated ROS-compliant component which is included FPGA processing.
 
 Update
 ======
@@ -77,13 +87,6 @@ Mac
 ::
 
     brew install icarus-verilog
-
-PLY (Python-Lex-Yacc)
-^^^^^^^^^^^^^^^^^^^^^
-
-::
-
-    pip install ply
 
 Jinja2
 ^^^^^^
@@ -152,3 +155,21 @@ Getting Started
   English <https://kazuyamashi.github.io/crecomp_doc/getting_started_en.html>`__
 | `Getting Started
   Japanese <https://kazuyamashi.github.io/crecomp_doc/getting_started_jp.html>`__
+
+Publication
+===========
+
+1. Kazushi Yamashina, Takeshi Ohkawa, Kanemitsu Ootsu, Takashi Yokota,
+   \`\`cReComp: Automated Design Tool for ROS-Compliant FPGA
+   Component,'' IEEE 10th International Symposium on Embedded
+   Multicore/Many-core Systems-on-Chip (MCSoC-16) @ Lyon, France, 2016.9
+
+-  Kazushi Yamashina, Takeshi Ohkawa, Kanemitsu Ootsu, Takashi Yokota,
+   \`\`Functional improvement of cReComp Design tool for
+   software-component generation of FPGA processing, RECONF @ Toyama,
+   Japan, 2016.9
+-  Kazushi Yamashina, Hitomi Kimura, Takeshi Ohkawa, Kanemitsu Ootsu,
+   Takashi Yokota, \`\`Automatic Design Environment for Componentization
+   of an FPGA Processing in ROS,'' Annual Conference of the Institute of
+   Systems, Control and Information Engineers, SCI'16 @ Kyoto, Japan,
+   2016.5

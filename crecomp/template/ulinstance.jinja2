@@ -1,6 +1,6 @@
 
 
 {{userlogicname}} {{uut}}(
-{% for signal in signals %}.{{signal}}({{portname[signal]}}){% if signals|length > loop.index %},{% endif %}
-{% endfor %}
+{% for signal in signals %}.{{signal}}({{portname[loop.index0]}}){% if signals|length > loop.index %},{% endif %}
+{% endfor -%}
 );

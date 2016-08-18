@@ -82,11 +82,6 @@ def parse_scrp(path, debug = False):
 				(signame_u, signame_c) = elem
 				if signame_u != "userlogic_path" and signame_u != "instance_name":
 					ul_obj.assign(signame_u, signame_c)
-
-			# print ul_obj.name, ul_obj.uut, ul_obj.filepath
-			# for port in ul_obj.ports:
-			# 	print port.__class__.__name__, port.bit, port.name
-			# print ul_obj.assignlist
 			component.add_ul(ul_obj)
 
 		if temp_component['generate_ros_package']:

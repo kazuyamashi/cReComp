@@ -29,8 +29,14 @@ class Wire(Sig):
 def genrate_userlogic_inst(ul):
 	env = Environment(loader=FileSystemLoader(TEMPLATE, encoding='utf8'))
 	tpl = env.get_template('ulinstance.jinja2')
+	signals = []
+	portnames = []
+	for assign in ul.assignlist:
+		(signal, portname) = assign
+		signals.append(signal)
+		portnames.append(portname)
 	instance = tpl.render({'userlogicname': ul.name, 'uut': ul.uut,
-							'signals': ul.assignlist.keys(), 'portname': ul.assignlist })
+							'signals': signals, 'portname': portnames })
 	return instance
 
 def generate_ports(module, compname, component):

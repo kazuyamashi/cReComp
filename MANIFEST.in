@@ -3,3 +3,4 @@ include README.rst
 include LICENSE.txt
 recursive-include verilog *
 recursive-include example *
+recursive-include documentation *

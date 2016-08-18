@@ -16,7 +16,7 @@ class {{ ul_in.classname }}(ul.Util):
 		self.ports = {%- set ports = ul_in.ports -%}[
 		{% for port in ports %}vl.{{port.__class__.__name__}}("{{port.name}}", {{port.bit}}){% if ports|length > loop.index %},{% endif %}
 		{% endfor %}]
-		self.assignlist = {}
+		self.assignlist = []
 {% endfor %}
 
 # Please describe your component

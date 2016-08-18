@@ -21,7 +21,7 @@ class Sonic_sensor(ul.Util):
 		vl.Output("finish", 1),
 		vl.Output("out_data", 32)
 		]
-		self.assignlist = {}
+		self.assign_list = []
 
 
 # Please describe your component
