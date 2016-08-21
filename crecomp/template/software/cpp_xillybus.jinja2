@@ -71,7 +71,7 @@ void {{comp.name}}_{{com.fifo_width}}::set_{{comp.name}}_{{com.fifo_width}}(char
 
 int main(int argc, char const *argv[]){
 {% for com in xillybus %}
-	{{comp.name}} fifo_{{com.fifo_width}};
+	{{comp.name}}_{{com.fifo_width}} fifo_{{com.fifo_width}};
 {%- if com.rcv_cycle != 0 %}
 	fifo_{{com.fifo_width}}.set_devfile_read("/dev/xillybus_read_{{com.fifo_width}}");
 	fifo_{{com.fifo_width}}.open_devfile_read();

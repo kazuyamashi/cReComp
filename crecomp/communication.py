@@ -63,7 +63,7 @@ class Xillybus_fifo(object):
 					vl.Wire("data_full_%s"%(self.fifo_width),1)
 				]
 
-	def assign(self, action, sig, reset = 0):
+	def assign(self, action, sig, reset = 1):
 
 		if action == "rcv":
 			self.rcvlist.append((sig, reset))

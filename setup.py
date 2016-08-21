@@ -1,6 +1,6 @@
 import os
 from setuptools import setup, find_packages  
-version = '1.4.3'
+version = '1.4.4'
 script_name = 'crecomp'
 def read(filename):
     return open(os.path.join(os.path.dirname(__file__),filename)).read()

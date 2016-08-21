@@ -72,19 +72,24 @@ void {{comp.name}}_{{com.fifo_width}}::set_{{comp.name}}_{{com.fifo_width}}(char
 {% endfor %}
 
 //************ for output ************
-void callbackFunction(const {{comp.name}}::{{comp.name}} msg){
-	cout << msg << endl;
-}
+// void callbackFunction(const {{comp.name}}::{{comp.name}} msg){
+// 	cout << msg << endl;
+// }
 //***********************************
 
 int main(int argc, char *argv[]){
-{% for com in communication %}
-	{{comp.name}}_{{com.fifo_width}} cp_{{com.fifo_width}};
-	cp_{{com.fifo_width}}.set_devfile_read("/dev/xillybus_read_{{com.fifo_width}}");
-	cp_{{com.fifo_width}}.open_devfile_read();
-	cp_{{com.fifo_width}}.set_devfile_write("/dev/xillybus_write_{{com.fifo_width}}");
-	cp_{{com.fifo_width}}.open_devfile_write();
+{% for com in xillybus %}
+	{{comp.name}}_{{com.fifo_width}} fifo_{{com.fifo_width}};
+{%- if com.rcv_cycle != 0 %}
+	fifo_{{com.fifo_width}}.set_devfile_read("/dev/xillybus_read_{{com.fifo_width}}");
+	fifo_{{com.fifo_width}}.open_devfile_read();
+{%- endif %}
+{%- if com.snd_cycle != 0 %}
+	fifo_{{com.fifo_width}}.set_devfile_write("/dev/xillybus_write_{{com.fifo_width}}");
+	fifo_{{com.fifo_width}}.open_devfile_write();
+{%- endif -%}
 {% endfor %}
+
 
 	ros::init(argc, argv, "{{comp.name}}");
 	ros::NodeHandle n_pub;
@@ -95,21 +100,25 @@ int main(int argc, char *argv[]){
 	{{comp.name}}::{{comp.name}} input_msg;
 	{{comp.name}}::{{comp.name}} output_msg;
 
-	/************ for input ************
-	ros::spin()
-	***********************************/
+	//************ for input ************
+	// ros::spin()
+	//***********************************
 
-	/************ for output ************
-	ros::Rate loop_rate(100)
-	while(ros::ok()){
-		{{comp.name}}_pub.publish(output_msg)
-		ros::spinOnce();
-	}
-	***********************************/
+	//************ for output ************
+	// ros::Rate loop_rate(100)
+	// while(ros::ok()){
+	// 	{{comp.name}}_pub.publish(output_msg)
+	// 	ros::spinOnce();
+	// }
+	//***********************************
 
-{% for com in communication %}
-	cp_{{com.fifo_width}}.close_devfile_read();
-	cp_{{com.fifo_width}}.close_devfile_write();
+{% for com in xillybus %}
+{%- if com.rcv_cycle != 0 %}
+	fifo_{{com.fifo_width}}.close_devfile_read();
+{%- endif -%}
+{%- if com.snd_cycle != 0 %}
+	fifo_{{com.fifo_width}}.close_devfile_write();
+{%- endif -%}
 {% endfor %}
 	return 0;
 }

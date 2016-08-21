@@ -52,14 +52,12 @@ def generate_ros_package(component):
 	package_xml.close()
 
 	# generate CMakeLists.txt
-	env = Environment(loader=FileSystemLoader(TEMPLATE, encoding='utf8'))
 	tpl = env.get_template('software/ros_cmakelists.jinja2')
 	tmp = tpl.render({'compname': compname})
 	cmakelists.write(tmp)
 	cmakelists.close()
 
 	# generate src
-	env = Environment(loader=FileSystemLoader(TEMPLATE, encoding='utf8'))
 	xillybus = []
 	for com in component.module["communication"]:
 		if com.__class__.__name__ == "Xillybus_fifo":
@@ -67,9 +65,6 @@ def generate_ros_package(component):
 	tpl = env.get_template('software/ros_src.jinja2')
 	tmp = tpl.render({'comp': component, 'xillybus': xillybus})
 
-	# env = Environment(loader=FileSystemLoader(TEMPLATE, encoding='utf8'))
-	# tpl = env.get_template('software/ros_src.jinja2')
-	# tmp = tpl.render({'compname': compname, 'communication': module["communication"]})
 	cpp.write(tmp)
 	cpp.close()
 
@@ -77,10 +72,11 @@ def generate_ros_package(component):
 	for com in module["communication"]:
 		for rcv in com.rcvlist:
 			(signame,reset) = rcv
-			msg_file.write("uint32 %s\n"%signame)
+			msg_file.write("int32 %s\n"%signame)
 		for snd in com.sndlist:
 			(signame,reset) = snd
-			msg_file.write("uint32 %s\n"%signame)
+			msg_file.write("int32 %s\n"%signame)
+		msg_file.write("int32 id\n")
 
 if __name__ == '__main__':
 	pass

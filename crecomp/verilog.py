@@ -61,6 +61,7 @@ def generate_inst4top(compname, module):
 //%s %s('''%(compname,compname)
 
 	env = Environment(loader=FileSystemLoader(TEMPLATE, encoding='utf8'))
+
 	for com in module["communication"]:
 		if com.__class__.__name__ == "Xillybus_fifo":
 			tpl = env.get_template('xillybus/xillybus_inst4top.jinja2')
@@ -77,6 +78,7 @@ def generate_inst4top(compname, module):
 				instance_top = instance_top + tpl.render({'port': port, 'module': module})
 				if module["output"] != [] or len(module["input"]) > module["input"].index(port) + 1:
 					instance_top = instance_top + ","
+
 	for port in module["output"]:
 		if module["communication"] != []:
 			if ("dout_" in port.name or 
@@ -87,10 +89,12 @@ def generate_inst4top(compname, module):
 				instance_top = instance_top + tpl.render({'port': port, 'module': module})
 				if module["inout"] != [] or len(module["output"]) > module["output"].index(port) + 1:
 					instance_top = instance_top + ",\n"
+
 	for port in module["inout"]:
 		instance_top = instance_top + tpl.render({'port': port, 'module': module})
 		if len(module["inout"]) > module["inout"].index(port) + 1:
 					instance_top = instance_top + ",\n"
+
 	instance_top = instance_top + ");\n"
 	return instance_top
 
@@ -158,26 +162,37 @@ def generate_xillybus(com, module):
 
 	# ======================= generate state machine for xillybus =============================
 	rst_ports = ""
+	no_rst_ports = ""
 	if com.rcv_cycle > 0:
-		rcvlist = com.rcvlist
+		rcvlist = []
+		for rcv in com.rcvlist:
+			(sig, reset) = rcv
+			rcvlist.append(sig)
+
 		tpl = env.get_template('xillybus/xillybus_rcvfsm_rstport.jinja2')
 		for port in rcvlist:
 			rst_ports = rst_ports + tpl.render({'fifobit': com.fifo_width, 'port': port})
+
+		for rcv in com.rcvlist:
+			sig, reset = rcv
+			print sig, reset
+			if int(reset) == 1:
+				no_rst_ports = no_rst_ports + tpl.render({'fifobit': com.fifo_width, 'port': sig})
 	ports = ""
 	if com.rcv_cycle > 0:
 		tpl = env.get_template('xillybus/xillybus_rcvfsm_assign.jinja2')
 		msb = 0
 		lsb = 0
-		for port in com.rcvlist:
+		for port in rcvlist:
 			for reg in module["reg"]:
 				if reg.name == port:
-					msb = lsb + reg.bit -1
+					msb = lsb + reg.bit - 1
 					break
 			ports = ports + tpl.render({'fifobit': com.fifo_width, 'port': port, 'msb': msb, 'lsb': lsb})
 			lsb = msb + 1
 
 	tpl = env.get_template('xillybus/xillybus_rcvfsm.jinja2')
-	xillybus = xillybus + tpl.render({'fifobit': com.fifo_width, 'rst_ports': rst_ports, 'assign_dataport': ports})
+	xillybus = xillybus + tpl.render({'fifobit': com.fifo_width, 'no_rst_ports': no_rst_ports, 'rst_ports': rst_ports, 'assign_dataport': ports})
 
 	# ======================= generate enable signal control for xillybus =============================
 	tpl = env.get_template('xillybus/xillybus_enablectl.jinja2')
@@ -190,7 +205,13 @@ def generate_xillybus(com, module):
 		msb = 0
 		lsb = 0
 		port = ""
-		for port in com.sndlist:
+
+		sndlist = []
+		for snd in com.sndlist:
+			(sig, reset) = snd
+			sndlist.append(sig)
+
+		for port in sndlist:
 			for wire in module["wire"]:
 				if wire.name == port:
 					msb = lsb + wire.bit - 1

@@ -1,4 +1,3 @@
-#!/usr/bin/python
 # -*- coding: utf-8 -*-
 # NAME
 #         "cReComp"
@@ -11,8 +10,7 @@
 # (c) Kazushi Yamashina
 
 # requirements
-# jinja2, veriloggen, pyverilog,
-# iverilog, ply(python-lex-yacc)
+# jinja2, veriloggen, pyverilog, iverilog
 
 import os
 import sys
@@ -71,9 +69,11 @@ def main():
 	if options.python_templatename != False:
 		userlogic.generate_ulpyclass(options.python_templatename,userlogic_list)
 		print "Generate %s successfully"%options.python_templatename
+
 	elif options.scrp_templatename != False:
 		scrp_parser.generate_scrptemplate(options.scrp_templatename, userlogic_list)
 		print "Generate %s successfully"%options.scrp_templatename
+
 	elif options.scrp_path != False:
 		parser = scrp_parser.parse_scrp(options.scrp_path)
 

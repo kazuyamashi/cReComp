@@ -1,12 +1,12 @@
 # cReComp
 
 creator for Reconfigurable hw Component  
-	
+
 **Git**:         https://github.com/kazuyamashi/cReComp.git  
 **Author**:      Kazushi Yamashina (Utsunomiya University)  
 **Copyright**:   2016, Kazushi Yamashina  
 **License**:      new BSD License   
-**Latest Version**: 1.4.3  
+**Latest Version**: 1.4.4  
 **Contact**: 	 kazushi_at_virgo.is.utsunomiya-u.ac.jp  or [Twitter](https://twitter.com/KazushihsuzaK) or [Facebook](https://www.facebook.com/kazushi.yamashina?fref=nf)
 
 
@@ -120,4 +120,4 @@ Options:
 # Publication
 1. Kazushi Yamashina, Takeshi Ohkawa, Kanemitsu Ootsu, Takashi Yokota, ``cReComp: Automated Design Tool for ROS-Compliant FPGA Component,'' IEEE 10th International Symposium on Embedded Multicore/Many-core Systems-on-Chip (MCSoC-16) @ Lyon, France, 2016.9
 - Kazushi Yamashina, Takeshi Ohkawa, Kanemitsu Ootsu, Takashi Yokota, ``Functional improvement of cReComp Design tool for software-component generation of FPGA processing, RECONF @ Toyama, Japan, 2016.9
- - Kazushi Yamashina, Hitomi Kimura, Takeshi Ohkawa, Kanemitsu Ootsu, Takashi Yokota, ``Automatic Design Environment for Componentization of an FPGA Processing in ROS,'' Annual Conference of the Institute of Systems, Control and Information Engineers, SCI'16 @ Kyoto, Japan, 2016.5
+- Kazushi Yamashina, Hitomi Kimura, Takeshi Ohkawa, Kanemitsu Ootsu, Takashi Yokota, ``Automatic Design Environment for Componentization of an FPGA Processing in ROS,'' Annual Conference of the Institute of Systems, Control and Information Engineers, SCI'16 @ Kyoto, Japan, 2016.5
