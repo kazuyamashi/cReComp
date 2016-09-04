@@ -23,6 +23,13 @@ def generate_cpp_xillibus_makefile(module, compname):
 	makefille = tpl.render({'compname': compname})
 	return makefille
 
+# def generate_msg_info(component):
+
+# 	for com in component.module['communication']:
+# 		rcv_list = com.rcvlist
+# 		snd_list = com.sndlist
+
+
 def generate_ros_package(component):
 	compname = component.name
 	module = component.module
@@ -57,26 +64,49 @@ def generate_ros_package(component):
 	cmakelists.write(tmp)
 	cmakelists.close()
 
+	# generate message file
+	input_var_list = []
+	output_var_list = []
+	for com in module["communication"]:
+		for rcv in com.rcvlist:
+			(signame,reset) = rcv
+			for reg in component.module['reg']:
+				if reg.name == signame:
+					if reg.bit <= 8:
+						bitwidth = 8
+					elif reg.bit <= 16:
+						bitwidth = 16
+					elif reg.bit <= 32:
+						bitwidth = 32
+					input_var_list.append(("input_%s"%signame, bitwidth, reg.bit))
+					msg_file.write("int%d input_%s\n"%(bitwidth,signame))
+
+		for snd in com.sndlist:
+			(signame,reset) = snd
+			for wire in component.module['wire']:
+				if wire.name == signame:
+					if wire.bit <= 8:
+						bitwidth = 8
+					elif wire.bit <= 16:
+						bitwidth = 16
+					elif wire.bit <= 32:
+						bitwidth = 32
+					output_var_list.append(("output_%s"%signame, bitwidth, reg.bit))
+					msg_file.write("int32 output_%s\n"%signame)
+	msg_file.write("int32 id\n")
+
 	# generate src
 	xillybus = []
 	for com in component.module["communication"]:
 		if com.__class__.__name__ == "Xillybus_fifo":
 			xillybus.append(com)
 	tpl = env.get_template('software/ros_src.jinja2')
-	tmp = tpl.render({'comp': component, 'xillybus': xillybus})
+	tmp = tpl.render({'comp': component, 'xillybus': xillybus,
+					'input_var_list': input_var_list, 'output_var_list': output_var_list,})
 
 	cpp.write(tmp)
 	cpp.close()
 
-	# generate message file
-	for com in module["communication"]:
-		for rcv in com.rcvlist:
-			(signame,reset) = rcv
-			msg_file.write("int32 %s\n"%signame)
-		for snd in com.sndlist:
-			(signame,reset) = snd
-			msg_file.write("int32 %s\n"%signame)
-		msg_file.write("int32 id\n")
 
 if __name__ == '__main__':
 	pass

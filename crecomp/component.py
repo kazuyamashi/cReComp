@@ -29,6 +29,7 @@ class Component(object):
 		}
 		self.name = compname
 		self.ros_package = False
+		self.assginlist = []
 
 	def show_info(self):
 		module = self.module
@@ -116,6 +117,9 @@ class Component(object):
 					self.module["wire"].append(port)
 
 		self.module["communication"].append(com)
+
+	def assgin(self, to_sig="", to_lsb=0, to_msb=0, from_sig="", from_lsb=0, from_msb=0):
+		self.assginlist.append()
 
 	def ros_packaging(self):
 		self.ros_package = True

@@ -149,7 +149,6 @@ def generate_xillybus(com, module):
 		tpl = env.get_template('xillybus/xillybus_fsm_rcv.jinja2')
 		fsm = fsm + tpl.render({'fifobit': com.fifo_width, 'rcv_cycle': com.rcv_cycle, 'snd_cycle': com.snd_cycle})
 
-	# if ((com.rcv_cycle > 0) and (com.snd_cycle > 0)):
 	tpl = env.get_template('xillybus/xillybus_fsm_pose.jinja2')
 	fsm = fsm + tpl.render({'fifobit': com.fifo_width, 'rcv_cycle': com.rcv_cycle, 'snd_cycle': com.snd_cycle, 'condition':com.rs_cond})
 
@@ -175,7 +174,6 @@ def generate_xillybus(com, module):
 
 		for rcv in com.rcvlist:
 			sig, reset = rcv
-			print sig, reset
 			if int(reset) == 1:
 				no_rst_ports = no_rst_ports + tpl.render({'fifobit': com.fifo_width, 'port': sig})
 	ports = ""
