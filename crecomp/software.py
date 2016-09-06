@@ -23,13 +23,6 @@ def generate_cpp_xillibus_makefile(module, compname):
 	makefille = tpl.render({'compname': compname})
 	return makefille
 
-# def generate_msg_info(component):
-
-# 	for com in component.module['communication']:
-# 		rcv_list = com.rcvlist
-# 		snd_list = com.sndlist
-
-
 def generate_ros_package(component):
 	compname = component.name
 	module = component.module
@@ -69,7 +62,7 @@ def generate_ros_package(component):
 	output_var_list = []
 	for com in module["communication"]:
 		for rcv in com.rcvlist:
-			(signame,reset) = rcv
+			(signame,reset, depth) = rcv
 			for reg in component.module['reg']:
 				if reg.name == signame:
 					if reg.bit <= 8:
@@ -78,11 +71,11 @@ def generate_ros_package(component):
 						bitwidth = 16
 					elif reg.bit <= 32:
 						bitwidth = 32
-					input_var_list.append(("input_%s"%signame, bitwidth, reg.bit))
+					input_var_list.append(("input_%s"%signame, bitwidth, reg.bit, depth))
 					msg_file.write("int%d input_%s\n"%(bitwidth,signame))
 
 		for snd in com.sndlist:
-			(signame,reset) = snd
+			(signame,reset, depth) = snd
 			for wire in component.module['wire']:
 				if wire.name == signame:
 					if wire.bit <= 8:
@@ -91,8 +84,8 @@ def generate_ros_package(component):
 						bitwidth = 16
 					elif wire.bit <= 32:
 						bitwidth = 32
-					output_var_list.append(("output_%s"%signame, bitwidth, reg.bit))
-					msg_file.write("int32 output_%s\n"%signame)
+					output_var_list.append(("output_%s"%signame, bitwidth, reg.bit, depth))
+					msg_file.write("int%d output_%s\n"%(bitwidth, signame))
 	msg_file.write("int32 id\n")
 
 	# generate src

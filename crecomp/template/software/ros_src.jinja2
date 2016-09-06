@@ -5,7 +5,7 @@
 using namespace std;
 
 {% for input_var in input_var_list %}
-{%- set (signame, bitwidth, sigwidth) = input_var -%}
+{%- set (signame, bitwidth, sigwidth, depth) = input_var -%}
 {%- if bitwidth == 8 %}char {{signame}};
 {%- elif bitwidth == 16 %}short int {{signame}};
 {%- elif bitwidth == 32 %}int {{signame}};
@@ -13,7 +13,7 @@ using namespace std;
 {% endfor %}
 
 {%- for output_var in output_var_list %}
-{%- set (signame, bitwidth, sigwidth) = output_var -%}
+{%- set (signame, bitwidth, sigwidth, depth) = output_var -%}
 {%- if bitwidth == 8 %}char {{signame}};
 {%- elif bitwidth == 16 %}short int {{signame}};
 {%- elif bitwidth == 32 %}int {{signame}};
@@ -21,7 +21,7 @@ using namespace std;
 {% endfor -%}
 
 int msg_id;
-int index = 0;
+int index_id = 0;
 
 {% for com in xillybus%}
 {%- if com.rcv_cycle != 0 %}
@@ -99,18 +99,18 @@ void {{comp.name}}_{{com.fifo_width}}::set_{{comp.name}}_{{com.fifo_width}}(char
 //************ for output ************
 void callbackFunction(const {{comp.name}}::{{comp.name}} msg){
 	{% for input_var in input_var_list %}
-	{%- set (signame, bitwidth, sigwidth) = input_var -%}
+	{%- set (signame, bitwidth, sigwidth, depth) = input_var -%}
 	{{signame}} = msg.{{signame}};
 	{% endfor -%}
 	msg_id = msg.id;
 	{% set  total_bit = 0 -%}
 	{% for input_var in input_var_list %}
-	{%- set (signame, bitwidth, sigwidth) = input_var -%}
-	data_input_32[index] = data_input_32[index] + ({{signame}} << {% if total_bit == 0 %}0);{% else %}{{total_bit+1}});{% endif %}
+	{%- set (signame, bitwidth, sigwidth, depth) = input_var -%}
+	data_input_32[index_id] = data_input_32[index_id] + ({{signame}} << {% if total_bit == 0 %}0);{% else %}{{total_bit+1}});{% endif %}
 	{% set  total_bit = total_bit + sigwidth -%}
 	{% endfor -%}
-	index++;
-	if (index == 9) index = 0;
+	index_id++;
+	if (index_id == 9) index_id = 0;
 }
 //***********************************
 
