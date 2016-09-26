@@ -1,0 +1,5 @@
+int8 input_dir_in_left
+int16 input_para_in_left
+int8 input_dir_in_right
+int16 input_para_in_right
+int32 id

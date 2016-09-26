@@ -10,6 +10,14 @@ CLOCK = "clk"
 RESET = "rst"
 
 
+start = True
+
+if start == True:
+	print "True"
+else:
+	print "False"
+
+
 TEMPLATE = os.path.dirname(os.path.abspath(__file__)) + '/template/'
 class Component(object):
 	def __init__(self, compname):

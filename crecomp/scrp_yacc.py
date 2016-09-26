@@ -22,7 +22,7 @@ class ScrpInfo(object):
 			'generate_ros_package' : False
 			}
 
-class PaseScrp(object):
+class ParseScrp(object):
 	def __init__(self):
 		self.parser = None
 		self.component_list = []

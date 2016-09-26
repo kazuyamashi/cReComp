@@ -18,7 +18,7 @@ def generate_scrptemplate(templatename, userlogic_list):
 	fo.write(scrp)
 
 def parse_scrp(path, debug = False):
-	parser = scrp_yacc.PaseScrp()
+	parser = scrp_yacc.ParseScrp()
 	parser.parse_scrp(path)
 
 	component_list = parser.component
