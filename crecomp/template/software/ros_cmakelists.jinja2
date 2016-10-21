@@ -5,6 +5,7 @@ find_package(catkin REQUIRED COMPONENTS
   roscpp
   sensor_msgs
   std_msgs
+  rospy
   message_generation
 )
 
@@ -22,10 +23,10 @@ generate_messages(
 )
 
 catkin_package(
-#  INCLUDE_DIRS include
-#  LIBRARIES sample
-#  CATKIN_DEPENDS roscpp sensor_msgs std_msgs
-#  DEPENDS system_lib
+  INCLUDE_DIRS include
+  LIBRARIES sample
+  CATKIN_DEPENDS roscpp rospy sensor_msgs std_msgs
+  DEPENDS system_lib
 )
 
 include_directories(

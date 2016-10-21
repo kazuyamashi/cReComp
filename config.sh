@@ -31,6 +31,12 @@ case $1 in
 		rm -rf build
 		;;
 	*)
-		echo "argument error"
+		echo "option list"
+		echo "=========="
+		echo "install"
+		echo "uninstall"
+		echo "publish"
+		echo "release"
+		echo "clean"
 		;;
 esac
