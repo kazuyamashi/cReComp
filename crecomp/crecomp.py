@@ -27,7 +27,7 @@ import scrp_parser
 
 def main():
 
-	USAGE = "Usage: crecomp [option] [file path] [-u user logic]+"
+	USAGE = "Usage: crecomp [option] [file name] [-u user logic path]+"
 
 	argvs = sys.argv
 	argc = len(argvs)
@@ -57,14 +57,11 @@ def main():
 	userlogic_pathlist = options.userlogic
 
 	userlogic_list = []
-	ul_in = None
 
 	for x in xrange(0,len(userlogic_pathlist)):
 		ul_in = userlogic.Info()
 		ul_in.get_userlogicinfo(userlogic_pathlist[x])
 		userlogic_list.append(ul_in)
-	if ul_in != None:
-		userlogic_ports = ul_in.ports
 
 	if options.python_templatename != False:
 		userlogic.generate_ulpyclass(options.python_templatename,userlogic_list)

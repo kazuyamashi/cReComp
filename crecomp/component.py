@@ -10,12 +10,12 @@ CLOCK = "clk"
 RESET = "rst"
 
 
-start = True
+# start = True
 
-if start == True:
-	print "True"
-else:
-	print "False"
+# if start == True:
+# 	print "True"
+# else:
+# 	print "False"
 
 
 TEMPLATE = os.path.dirname(os.path.abspath(__file__)) + '/template/'

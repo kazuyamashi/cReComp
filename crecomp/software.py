@@ -86,6 +86,7 @@ def generate_ros_package(component):
 						bitwidth = 32
 					output_var_list.append(("output_%s"%signame, bitwidth, reg.bit, depth))
 					msg_file.write("int%d output_%s\n"%(bitwidth, signame))
+
 	msg_file.write("int32 id\n")
 
 	# generate src

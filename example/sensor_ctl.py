@@ -27,36 +27,31 @@ class Sonic_sensor(ul.Util):
 cp = cp.Component("sensor_ctl")
 
 cp.add_inout("sig_out",1)
-
 cp.add_input("clk",1)
 cp.add_input("rst",1)
-
-cp.add_wire("finish_flag",1)
-cp.add_wire("busy_flag",1)
-
+cp.add_wire("finish",1)
+cp.add_wire("busy",1)
+cp.add_reg("req",1)
+cp.add_wire("out_data",32)
 cp.add_reg("dummy",31)
-cp.add_reg("req_reg",1)
-
-cp.add_wire("sensor_data",32)
 
 fifo_32 = com.Xillybus_fifo(1,1,"finish_flag && busy_flag != 1",32)
-fifo_32.assign("rcv","req_reg")
+fifo_32.assign("rcv","req")
 fifo_32.assign("rcv", "dummy")
-fifo_32.assign("snd", "sensor_data")
+fifo_32.assign("snd", "out_data")
 
 sonic_sensor = Sonic_sensor("uut")
 sonic_sensor.assign("clk","clk")
 sonic_sensor.assign("rst","rst")
-sonic_sensor.assign("req","req_reg")
+sonic_sensor.assign("req","req")
 sonic_sensor.assign("busy","busy_flag")
 sonic_sensor.assign("sig","sig_out")
 sonic_sensor.assign("finish","finish_flag")
-sonic_sensor.assign("out_data","sensor_data")
+sonic_sensor.assign("out_data","out_data")
 
 cp.add_ul(sonic_sensor)
 cp.add_com(fifo_32)
-fifo_8 = com.Xillybus_fifo(1,1,"1",8)
-cp.add_com(fifo_8)
+
 cp.ros_packaging()
 
 cp.componentize()
