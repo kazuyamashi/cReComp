@@ -38,7 +38,7 @@ def main():
 
 	optparser = OptionParser(USAGE)
 
-	optparser.add_option("-u", "--userlogic", type="string", action="append", 
+	optparser.add_option("-u", "--userlogic", type="string", action="append",
 									dest="userlogic", help="specifier your user logic name",
 									default=[])
 	optparser.add_option("-p", "--python_template", action="store",
