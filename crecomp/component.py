@@ -9,15 +9,6 @@ import software as sw
 CLOCK = "clk"
 RESET = "rst"
 
-
-# start = True
-
-# if start == True:
-# 	print "True"
-# else:
-# 	print "False"
-
-
 TEMPLATE = os.path.dirname(os.path.abspath(__file__)) + '/template/'
 class Component(object):
 	def __init__(self, compname):
@@ -182,14 +173,21 @@ class Component(object):
 		module = self.module
 		if os.path.isdir("%s/software"%compname) == False:
 			os.makedirs("%s/software"%compname)
-		shutil.copy("%ssoftware/lib_cpp.h"%TEMPLATE, "%s/software/lib_cpp.h"%compname)
-		# generate software interface
-		fo = open("%s/software/%s.cpp"%(compname, compname), "w")
-		fo.write(sw.generate_cpp_xillybus_interface(self))
-		fo.close()
+		# shutil.copy("%ssoftware/lib_cpp.h"%TEMPLATE, "%s/software/lib_cpp.h"%compname)
+		shutil.copy("%ssoftware/bridge.py"%TEMPLATE, "%s/software/bridge.py"%compname)
 
-		fo = open("%s/software/Makefile"%(compname), "w")
-		fo.write(sw.generate_cpp_xillibus_makefile(module,compname))
+		# generate software interface
+		# fo = open("%s/software/%s.cpp"%(compname, compname), "w")
+		# fo.write(sw.generate_cpp_xillybus_interface(self))
+		# fo.close()
+
+		# fo = open("%s/software/Makefile"%(compname), "w")
+		# fo.write(sw.generate_cpp_xillibus_makefile(module,compname))
+		# fo.close()
+
+		# generate software on python
+		fo = open("%s/software/%s.py"%(compname, compname), "w")
+		fo.write(sw.generate_py_xillybus_interface(self))
 		fo.close()
 
 		if self.ros_package == True:

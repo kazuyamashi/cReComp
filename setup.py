@@ -1,6 +1,6 @@
 import os
 from setuptools import setup, find_packages  
-version = '1.4.4'
+version = '1.5.0'
 script_name = 'crecomp'
 def read(filename):
     return open(os.path.join(os.path.dirname(__file__),filename)).read()
@@ -34,7 +34,6 @@ setup(
                        'crecomp.template.xillybus' : ['*.*'],
                        'crecomp.template.software' : ['*.*'],
                        'crecomp.ply' : ['*.*'],
-                       'crecomp.template.hls' : ['*.*'],
                        },
         long_description=read('README.rst'),
         install_requires=["jinja2", "veriloggen", "pyverilog"],

@@ -6,7 +6,7 @@ creator for Reconfigurable hw Component
 **Author**:      Kazushi Yamashina (Utsunomiya University)  
 **Copyright**:   2016, Kazushi Yamashina  
 **License**:      new BSD License   
-**Latest Version**: 1.4.4  
+**Latest Version**: 1.5.0  
 **Contact**: 	 kazushi_at_virgo.is.utsunomiya-u.ac.jp  or [Twitter](https://twitter.com/KazushihsuzaK) or [Facebook](https://www.facebook.com/kazushi.yamashina?fref=nf)
 
 
@@ -18,6 +18,9 @@ The cReComp is a **code generator and framework for componentization of a single
 [ROS](http://www.ros.org/) is an open source project by OSRF (Open Source Robotics Foundation). It is not an operating system but a software platform for component-oriented development of robotic application software on an OS. Communication library and a build system for robotic application software are provided in ROS. cReComp can generated ROS-compliant component which is included FPGA processing.
 
 # Update
+- 2016/11/29 version 1.5.0
+	- cReComp can generate a ROS package with Python code. So, you can use the component more easy.
+	- The Component generation with C++ is unable, since the function is debugging now.
 - 2016/07/25 version 1.4.0
 	- scrp_parser was improved functionally and become to be able to parse more accurately
 - 2016/07/05 version 1.3.0
@@ -28,13 +31,14 @@ The cReComp is a **code generator and framework for componentization of a single
 - 2016/06/30 version 1.0.0
 	- Released first version
 	
-# Install
+# Installation
 
 ## Requirements
 
 #### Platform
 
 Ubuntu or OSX (Mac)  
+Bash on Ubuntu on Windows may be OK.  
 
 #### Python (2.7 later, not 3.0)  
 
