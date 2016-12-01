@@ -48,7 +48,9 @@ def main():
 									dest="scrp_templatename", help="specifier for template name",
 									default=False)
 	optparser.add_option("-b", "--build", type="string", action="store", dest="scrp_path",
-								default=None, help="specifier target scrp file to build for componentize")
+								default=False, help="specifier target scrp file to build for componentize")
+	optparser.add_option("-t", "--test", type="string", action="store", dest="test_path",
+								default=False, help="generate testbench of target user logic")
 
 
 	(options, args) = optparser.parse_args()
@@ -73,6 +75,12 @@ def main():
 
 	elif options.scrp_path != False:
 		parser = scrp_parser.parse_scrp(options.scrp_path)
+
+	elif options.test_path != False:
+		for a_userlogic in userlogic_list:
+			userlogic.generate_testbench(options.test_path, a_userlogic.filepath)
+			print "Generate %s successfully"%options.test_path
+
 
 if __name__ == '__main__':
 	main()

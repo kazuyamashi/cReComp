@@ -30,9 +30,14 @@ cp_{{ul_in.name}} = cp.Component("component_{{ul_in.name}}")
 # adding signal for connection to user logic
 {%- set ports = ul_in.ports -%}
 {% for port in ports %}
-cp_{{ul_in.name}}.{% if port.__class__.__name__ == "Input" %}add_reg("{{port.name}}",{{port.bit}})
-{%- elif port.__class__.__name__ == "Output" %}add_wire("{{port.name}}",{{port.bit}})
+cp_{{ul_in.name}}.{% if port.__class__.__name__ == "Input" %}add_input("{{port.name}}",{{port.bit}})
+{%- elif port.__class__.__name__ == "Output" %}add_output("{{port.name}}",{{port.bit}})
 {%- elif port.__class__.__name__ == "Inout" %}add_inout("{{port.name}}",{{port.bit}})
+{%- endif %}
+{%- endfor %}
+{% for port in ports %}
+# cp_{{ul_in.name}}.{% if port.__class__.__name__ == "Input" %}add_reg("{{port.name}}",{{port.bit}})
+{%- elif port.__class__.__name__ == "Output" %}add_wire("{{port.name}}",{{port.bit}})
 {%- endif %}
 {%- endfor %}
 

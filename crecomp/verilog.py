@@ -2,6 +2,7 @@
 # This module contained definition of data structure for verilog
 from jinja2 import Environment, FileSystemLoader
 import os
+
 TEMPLATE = os.path.dirname(os.path.abspath(__file__)) + '/template/'
 class Sig(object):
 	def __init__(self, name, bit):
@@ -26,7 +27,7 @@ class Wire(Sig):
 
 # ------------------------ verilog generation functon ------------------------
 
-def genrate_userlogic_inst(ul):
+def generate_userlogic_inst(ul):
 	env = Environment(loader=FileSystemLoader(TEMPLATE, encoding='utf8'))
 	tpl = env.get_template('ulinstance.jinja2')
 	signals = []
@@ -95,7 +96,7 @@ def generate_inst4top(compname, module):
 		if len(module["inout"]) > module["inout"].index(port) + 1:
 					instance_top = instance_top + ",\n"
 
-	instance_top = instance_top + ");\n"
+	instance_top = instance_top + "//);\n"
 	return instance_top
 
 def generate_xillybus(com, module):

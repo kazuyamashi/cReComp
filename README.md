@@ -6,7 +6,7 @@ creator for Reconfigurable hw Component
 **Author**:      Kazushi Yamashina (Utsunomiya University)  
 **Copyright**:   2016, Kazushi Yamashina  
 **License**:      new BSD License   
-**Latest Version**: 1.5.0  
+**Latest Version**: 1.5.1  
 **Contact**: 	 kazushi_at_virgo.is.utsunomiya-u.ac.jp  or [Twitter](https://twitter.com/KazushihsuzaK) or [Facebook](https://www.facebook.com/kazushi.yamashina?fref=nf)
 
 
@@ -18,6 +18,8 @@ The cReComp is a **code generator and framework for componentization of a single
 [ROS](http://www.ros.org/) is an open source project by OSRF (Open Source Robotics Foundation). It is not an operating system but a software platform for component-oriented development of robotic application software on an OS. Communication library and a build system for robotic application software are provided in ROS. cReComp can generated ROS-compliant component which is included FPGA processing.
 
 # Update
+- 2016/11/29 version 1.5.1
+	- Added testbench generation. You can generate a testbench with option "-t".
 - 2016/11/29 version 1.5.0
 	- cReComp can generate a ROS package with Python code. So, you can use the component more easy.
 	- The Component generation with C++ is unable, since the function is debugging now.
@@ -102,18 +104,21 @@ pip install crecomp
 # Command usage
 
 ```
-Usage: crecomp [option] [file path] [-u user logic]+
+Options:
+Usage: crecomp [option] [file name] [-u user logic path]+
 
 Options:
-	-h, --help            show this help message and exit
-	-u USERLOGIC, --userlogic=USERLOGIC
-												specifier your user logic name
-	-p PYTHON_TEMPLATENAME, --python_template=PYTHON_TEMPLATENAME
-												specifier for template name
-	-s SCRP_TEMPLATENAME, --scrp_template=SCRP_TEMPLATENAME
-												specifier for template name
-	-b SCRP_PATH, --build=SCRP_PATH
-												specifier target scrp file to build for componentize
+  -h, --help            show this help message and exit
+  -u USERLOGIC, --userlogic=USERLOGIC
+                        specifier your user logic name
+  -p PYTHON_TEMPLATENAME, --python_template=PYTHON_TEMPLATENAME
+                        specifier for template name
+  -s SCRP_TEMPLATENAME, --scrp_template=SCRP_TEMPLATENAME
+                        specifier for template name
+  -b SCRP_PATH, --build=SCRP_PATH
+                        specifier target scrp file to build for componentize
+  -t TEST_PATH, --test=TEST_PATH
+                        generate testbench of target user logic
 ```
 
 # Getting Started

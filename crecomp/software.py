@@ -129,6 +129,7 @@ def generate_ros_package(component):
 
 	# cpp.write(tmp)
 	# cpp.close()
+
 	del input_var_list[:]
 	del output_var_list[:]
 	for com in component.module["communication"]:

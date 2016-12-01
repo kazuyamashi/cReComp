@@ -185,7 +185,16 @@ def generate_ulpyclass(filename, userlogic):
 	gen = tpl.render({'userlogicmodule': userlogic, 'component_name': filename.replace(".py","") })
 	template.write(gen)
 
-
+def generate_testbench(module_name, userlogicfile_path):
+	fd = open(module_name, "w")
+	module_name = os.path.basename(module_name).replace(".v","")
+	ul = Info()
+	ul.get_userlogicinfo(userlogicfile_path)
+	env = Environment(loader=FileSystemLoader(TEMPLATE))
+	tpl = env.get_template('testbench.jinja2')
+	gen = tpl.render({'ul' : ul, 'module_name' : module_name})
+	fd.write(gen)
+	return gen
 
 if __name__ == '__main__':
 	ui = Info()

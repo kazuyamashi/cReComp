@@ -156,7 +156,7 @@ class Component(object):
 		if module["userlogic"] != []:
 			for x in xrange(0,len(module["userlogic"])):
 				userlogic.check_ulassign(module["userlogic"][x], module)
-				fo.write(vl.genrate_userlogic_inst(module["userlogic"][x]))
+				fo.write(vl.generate_userlogic_inst(module["userlogic"][x]))
 				fo.write("\n")
 
 		#generate communication logic

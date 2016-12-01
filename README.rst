@@ -7,7 +7,7 @@ creator for Reconfigurable hw Component
 | **Author**: Kazushi Yamashina (Utsunomiya University)
 | **Copyright**: 2016, Kazushi Yamashina
 | **License**: new BSD License
-| **Latest Version**: 1.4.4
+| **Latest Version**: 1.5.0
 | **Contact**: kazushi\_at\_virgo.is.utsunomiya-u.ac.jp or
   `Twitter <https://twitter.com/KazushihsuzaK>`__ or
   `Facebook <https://www.facebook.com/kazushi.yamashina?fref=nf>`__
@@ -36,6 +36,13 @@ generated ROS-compliant component which is included FPGA processing.
 Update
 ======
 
+-  2016/11/29 version 1.5.0
+
+   -  cReComp can generate a ROS package with Python code. So, you can
+      use the component more easy.
+   -  The Component generation with C++ is unable, since the function is
+      debugging now.
+
 -  2016/07/25 version 1.4.0
 
    -  scrp\_parser was improved functionally and become to be able to
@@ -55,8 +62,8 @@ Update
 
    -  Released first version
 
-Install
-=======
+Installation
+============
 
 Requirements
 ------------
@@ -64,7 +71,8 @@ Requirements
 Platform
 ^^^^^^^^
 
-Ubuntu or OSX (Mac)
+| Ubuntu or OSX (Mac)
+| Bash on Ubuntu on Windows may be OK.
 
 Python (2.7 later, not 3.0)
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^
