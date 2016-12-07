@@ -1,11 +1,25 @@
 component_name "compoent"
 {
+	# please describe your interface signals
 	# in_out_signals{
-	# 	input 1 clk,
-	# 	input 1 rst
+		{%- set  ul = ul_list[0] -%}{%- set ports = ul.ports -%}
+		{% for port in ports %}
+		# {% if port.__class__.__name__ == "Input" %}input {{port.bit}} {{port.name}}
+		{%- elif port.__class__.__name__ == "Output" %}output {{port.bit}} {{port.name}}
+		{%- elif port.__class__.__name__ == "Inout" %}inout {{port.bit}} {{port.name}}
+		{%- endif %}{% if loop.index < (ul.ports|length) %},{% endif %}
+		{%- endfor %}
 	# }
 
-	# option_signals{}
+	# please describe your opsion signals
+	# option_signals{
+		{%- set  ul = ul_list[0] -%}{%- set ports = ul.ports -%}
+		{% for port in ports %}
+		# {% if port.__class__.__name__ == "Input" %}reg {{port.bit}} {{port.name}}
+		{%- elif port.__class__.__name__ == "Output" %}wire {{port.bit}} {{port.name}}
+		{%- endif %}{% if loop.index < (ul.ports|length) %},{% endif %}
+		{%- endfor %}
+	# }
 
 	# communication xillybus
 	# {
@@ -21,8 +35,8 @@ component_name "compoent"
 	userlogic_path "{{ul.filepath}}" instance_name "uut"
 	{
 	{%- for port in ul.ports %}
-		{{port.__class__.__name__[0].lower() + port.__class__.__name__[1:]}} {{port.bit}} {{port.name}} =
-		{%- if loop.index < ul.ports | length %} ,{% endif %}{% endfor %}
+		{{port.__class__.__name__[0].lower() + port.__class__.__name__[1:]}} {{port.bit}} {{port.name}} = {{port.name}}
+		{%- if loop.index < ul.ports | length %},{% endif %}{% endfor %}
 	}
 	{% endfor %}
 	# generate_ros_package

@@ -55,7 +55,7 @@ class {{comp.name[0].upper()+comp.name[1:]}}(object):
 		# please describe message data to publish
 		# self.msg.your_msg_elem = self.if_{{com.fifo_width}}.read()
 		{% endfor %}
-		pub.publish(self.msg)
+		# self.pub.publish(self.msg)
 
 	def {{comp.name}}(self):
 		rospy.init_node('{{comp.name}}', anonymous=True)

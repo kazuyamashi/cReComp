@@ -8,7 +8,7 @@ XILLYBUS_WRITE_32 = "/dev/xillybus_write_32"
 XILLYBUS_READ_8 = "/dev/xillybus_read_8"
 XILLYBUS_WRITE_8 = "/dev/xillybus_write_8"
 
-debug = True
+debug = False
 DUMMYPATH_READ = "dummy_read"
 DUMMYPATH_WRITE = "dummy_write"
 
