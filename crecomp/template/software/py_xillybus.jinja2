@@ -13,7 +13,7 @@ class {{(comp.name[0]).upper() + comp.name[1:]}}_{{com.fifo_width}}(Xillybus):
 		{%- set (signame, bitwidth, sigwidth, depth) = output_var -%}{% if bitwidth == com.fifo_width%}
 		# self.{{signame}} = 0{% endif %}
 		{% endfor %}
-	def pack(self):
+	def pack_{{com.fifo_width}}((self):
 		data = 0
 		{%- set  total_bit = 0 -%}
 		{%- set  once = False -%}

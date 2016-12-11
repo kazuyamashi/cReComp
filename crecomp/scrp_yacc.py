@@ -30,6 +30,7 @@ class ParseScrp(object):
 		self.temp_element = []
 		# ====================Parsing definition====================
 		# element < elements < expression < comp
+
 		# ==========================element=========================
 		def p_element_signals(p):
 			'''element : INPUT NUMBER VARIABLE

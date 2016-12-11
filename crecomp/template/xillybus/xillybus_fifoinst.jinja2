@@ -1,7 +1,7 @@
 
 
 ////fifo {{fifobit}}bit
-fifo_{{fifobit}}x512 input_fifo_{{fifobit}}(
+fifo_{{fifobit}}x{% if fifobit == 32 %}512{% else %}2048{% endif %} input_fifo_{{fifobit}}(
 	.clk(clk),
 	.srst(rst),
 	.din(din_{{fifobit}}),
@@ -12,7 +12,7 @@ fifo_{{fifobit}}x512 input_fifo_{{fifobit}}(
 	.empty(data_empty_{{fifobit}})
 	);
 
-fifo_{{fifobit}}x512 output_fifo_{{fifobit}}(
+fifo_{{fifobit}}x{% if fifobit == 32 %}512{% else %}2048{% endif %} output_fifo_{{fifobit}}(
 	.clk(clk),
 	.srst(rst),
 	.din(snd_data_{{fifobit}}),
