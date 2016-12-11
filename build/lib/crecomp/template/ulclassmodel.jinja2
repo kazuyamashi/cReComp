@@ -1,0 +1,65 @@
+
+# -*- coding: utf-8 -*-
+
+import crecomp.userlogic as ul
+import crecomp.component as cp
+import crecomp.verilog as vl
+import crecomp.communication as com
+
+{% for ul_in in userlogicmodule %}
+class {{ ul_in.classname }}(ul.Util):
+
+	def __init__(self,uut):
+		self.name = "{{ul_in.name}}"
+		self.filepath = "{{ul_in.filepath}}"
+		self.uut = uut
+		self.ports = {%- set ports = ul_in.ports -%}[
+		{% for port in ports %}vl.{{port.__class__.__name__}}("{{port.name}}", {{port.bit}}){% if ports|length > loop.index %},{% endif %}
+		{% endfor %}]
+		self.assignlist = []
+{% endfor %}
+
+{%- for ul_in in userlogicmodule %}
+cp_{{ul_in.name}} = cp.Component("component_{{ul_in.name}}")
+{%- endfor %}
+
+{% for ul_in in userlogicmodule %}
+# ==================== for userlogic {{ul_in.name}}.v ====================
+{{ul_in.name}} = {{ul_in.classname}}("uut")
+
+# adding signal for connection to user logic
+{%- set ports = ul_in.ports -%}
+{% for port in ports %}
+cp_{{ul_in.name}}.{% if port.__class__.__name__ == "Input" %}add_input("{{port.name}}",{{port.bit}})
+{%- elif port.__class__.__name__ == "Output" %}add_output("{{port.name}}",{{port.bit}})
+{%- elif port.__class__.__name__ == "Inout" %}add_inout("{{port.name}}",{{port.bit}})
+{%- endif %}
+{%- endfor %}
+{% for port in ports %}
+# cp_{{ul_in.name}}.{% if port.__class__.__name__ == "Input" %}add_reg("{{port.name}}",{{port.bit}})
+{%- elif port.__class__.__name__ == "Output" %}add_wire("{{port.name}}",{{port.bit}})
+{%- endif %}
+{%- endfor %}
+
+# communication setting
+fifo_32 = com.Xillybus_fifo(1,1,"1",32)
+# fifo_32.assign(action = "rcv", sig = "signal_name")
+# fifo_32.assign(action = "snd", sig = "signal_name")
+cp_{{ul_in.name}}.add_com(fifo_32)
+
+# fifo_8 = com.Xillybus_fifo(1,1,"1",8)
+
+# fifo_8.assign(action = "rcv", sig = "signal_name")
+# fifo_8.assign(action = "snd", sig = "signal_name")
+# cp_{{ul_in.name}}.add_com(fifo_8)
+
+{% set ports = ul_in.ports -%}
+# connection between software and user logic
+{%- for port in ports %}
+{{ul_in.name}}.assign("{{port.name}}","{{port.name}}"){% endfor %}
+
+cp_{{ul_in.name}}.add_ul({{ul_in.name}})
+cp_{{ul_in.name}}.ros_packaging()
+
+cp_{{ul_in.name}}.componentize()
+{% endfor %}

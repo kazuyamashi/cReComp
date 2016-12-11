@@ -1,6 +1,7 @@
 import os
 from setuptools import setup, find_packages  
-version = '1.5.1'
+import crecomp.crecomp as crecomp
+version = crecomp.VERSION
 script_name = 'crecomp'
 def read(filename):
     return open(os.path.join(os.path.dirname(__file__),filename)).read()

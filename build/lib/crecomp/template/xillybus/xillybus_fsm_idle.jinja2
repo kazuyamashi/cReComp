@@ -1,0 +1,1 @@
+IDLE_{{fifobit}}:		state_{{fifobit}} <={% if rcv_cycle > 0 %} READY_RCV_{% else %} POSE_{% endif %}{{fifobit}};

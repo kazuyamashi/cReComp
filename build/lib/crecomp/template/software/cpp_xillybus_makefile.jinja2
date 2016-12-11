@@ -1,0 +1,11 @@
+CXX = g++
+TARGET = {{compname}}
+CXXFLAGS = -Wall -O2 -pipe
+SRCS = {{compname}}.cpp
+OBJS := $(SRCS:.cpp=.o)
+
+$(TARGET): $(OBJS)
+	$(CXX) -o $@ $(OBJS)
+
+clean:
+	rm -f $(TARGET) $(OBJS)

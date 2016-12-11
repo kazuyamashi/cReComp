@@ -1,0 +1,34 @@
+`timescale 1ns / 1ps
+{% set RTN = "\n"%}
+module {{module_name}};
+
+	// Inputs
+{% for a_port in ul.ports %}{% if a_port.__class__.__name__ == "Input" %}	reg [{{a_port.bit}}-1:0] {{a_port.name}};{{RTN}}{% endif %}{% endfor %}
+	// Outputs
+{% for a_port in ul.ports %}{% if a_port.__class__.__name__ == "Output" %}	wire [{{a_port.bit}}-1:0] {{a_port.name}};{{RTN}}{% endif %}{% endfor %}
+	// Inouts
+{% for a_port in ul.ports %}{% if a_port.__class__.__name__ == "Inout" %}	wire [{{a_port.bit}}-1:0] {{a_port.name}};{{RTN}}{% endif %}{% endfor %}
+
+	// Instantiate the Unit Under Test (UUT)
+	{{ul.name}} uut (
+	{%- for a_port in ul.ports %}
+	.{{a_port.name}}({{a_port.name}}){% if loop.index < (ul.ports|length) %},{% endif %}
+	{%- endfor %}
+	);
+
+	initial begin
+		// Initialize Inputs
+		{%- for a_port in ul.ports %}
+		{{a_port.name}} = 0;
+		{%- endfor %}
+
+		// Wait 100 ns for global reset to finish
+		#100;
+
+		// Add stimulus here
+
+	end
+
+
+endmodule
+
