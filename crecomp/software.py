@@ -147,16 +147,6 @@ def generate_ros_package(component):
 					bitwidth = com.fifo_width
 					output_var_list.append(("output_%s"%signame, bitwidth, reg.bit, depth))
 
-	print "signame", "bitwidth", "sigwidth", "depth"
-	for input_var in input_var_list:
-		(signame, bitwidth, sigwidth, depth) = input_var
-		print signame, bitwidth, sigwidth, depth
-
-	# for output_var in output_var_list:
-	# 	(signame, bitwidth, sigwidth, depth) = output_var
-	# 	print signame, bitwidth, sigwidth, depth
-
-
 	tpl = env.get_template('software/ros_scripts_py.jinja2')
 	tmp = tpl.render({'comp': component, 'input_var_list': input_var_list, 'output_var_list': output_var_list,})
 	py.write(tmp)

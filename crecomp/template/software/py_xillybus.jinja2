@@ -19,8 +19,7 @@ class {{(comp.name[0]).upper() + comp.name[1:]}}_{{com.fifo_width}}(Xillybus):
 		{%- set  once = False -%}
 		{% for input_var in input_var_list %}
 		{%- set (signame, bitwidth, sigwidth, depth) = input_var -%}{% if bitwidth == com.fifo_width %}
-		data = data + (self.{{signame}} << {% if not once %}0){% else %}{{total_bit}}){% endif %}{% endif %}
-		{%- set  total_bit = total_bit + sigwidth -%}
+		data = data + (self.{{signame}} << {% if not once %}0){% else %}{{total_bit}}){% endif %}{%- set  total_bit = total_bit + sigwidth -%}{% endif %}
 		{%- set  once = True -%}
 		{% endfor %}
 		data = self.adjust(data, mode = {% if com.fifo_width == 32 %}32{% else%}8{% endif %})
