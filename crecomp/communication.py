@@ -76,10 +76,40 @@ class Xillybus_fifo(object):
 			print "%s %s"%(sig.__class__.__name__, sig.name)
 
 def check_xillybus_assign(com, module):
+	if len(com.rcvlist) == 0:
+		while True:
+			print "The configuration about data receiving is nothing."
+			print "Would current configuration is okay with you? [y/n]"
+			answer = raw_input("> ")
+			if answer == "":
+				continue
+			elif answer == "y":
+				break
+			elif answer == "n":
+				print "componentization was terminated."
+				quit()
+			else:
+				"please type \"y\" or \"n\""
+
 	rcvlist = []
 	for rcv in com.rcvlist:
 		(sig, reset, depth) = rcv
 		rcvlist.append(sig)
+
+	if len(com.sndlist) == 0:
+		while True:
+			print "The configuration about data sending is nothing."
+			print "Would current configuration is okay with you? [y/n]"
+			answer = raw_input("> ")
+			if answer == "":
+				continue
+			if answer == "y":
+				break
+			elif answer == "n":
+				print "componentization was terminated."
+				quit()
+			else:
+				"please type \"y\" or \"n\""
 
 	sndlist = []
 	for snd in com.sndlist:
@@ -88,7 +118,7 @@ def check_xillybus_assign(com, module):
 
 	checked_reg = False
 	checked_wire = False
-	index = 0
+
 	bit_max = 0
 
 	for assign in rcvlist:
@@ -96,7 +126,6 @@ def check_xillybus_assign(com, module):
 		checked_wire = False
 
 		fifo_width = com.fifo_width
-		index = index + 1
 
 		for sig in module["reg"]:
 			if sig.name == assign:
@@ -115,7 +144,6 @@ def check_xillybus_assign(com, module):
 		checked_wire = False
 
 		fifo_width = com.fifo_width
-		index = index + 1
 
 		for sig in module["wire"]:
 			if sig.name == assign:

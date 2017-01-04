@@ -64,6 +64,15 @@ class Component(object):
 		print "\n===== communication ====="
 		for com in module["communication"]:
 			print com.__class__.__name__, com.fifo_width
+			print "rcv cycle",com.rcv_cycle
+			print "rcv signal list:"
+			for rcv in com.rcvlist:
+				print rcv[0]
+			print "snd cycle",com.snd_cycle
+			print "snd signal list:",
+			for snd in com.sndlist:
+				print snd[0]
+			print "switch condition", com.rs_cond
 			print "\n"
 
 		print "\n===== ROS package generation ====="
@@ -130,6 +139,7 @@ class Component(object):
 		module = self.module
 		self.generate_hardware()
 		self.generate_software()
+		self.show_info()
 		print "Generate component successfully"
 
 	def generate_hardware(self):

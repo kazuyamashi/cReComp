@@ -6,7 +6,7 @@ creator for Reconfigurable hw Component
 **Author**:      Kazushi Yamashina (Utsunomiya University)  
 **Copyright**:   2016, Kazushi Yamashina  
 **License**:      new BSD License   
-**Latest Version**: 1.5.1  
+**Latest Version**: 1.5.2  
 **Contact**: 	 kazushi_at_virgo.is.utsunomiya-u.ac.jp  or [Twitter](https://twitter.com/KazushihsuzaK) or [Facebook](https://www.facebook.com/kazushi.yamashina?fref=nf)
 
 
