@@ -1,0 +1,48 @@
+component_name "compoent_sonic_sensor"
+{
+	# please describe your interface signals
+	in_out_signals{
+		# input 1 clk,
+		# input 1 rst,
+		# input 1 req,
+		# output 1 busy,
+		inout 1 sig
+		# output 1 finish,
+		# output 32 out_data
+	}
+
+	# please describe your opsion signals
+	option_signals{
+		# reg 1 clk,
+		# reg 1 rst,
+		reg 1 req,
+		wire 1 busy,
+		wire 1 finish,
+		wire 32 out_data
+	 }
+
+	communication xillybus
+	{
+	 	rcv_cycle 1,
+	 	snd_cycle 1,
+	 	condition "finish && busy!=1",
+	 	fifo_width 32,
+	 	rcv = req,
+	 	snd = out_data
+	 }
+
+	
+	userlogic_path "verilog/sonic_sensor.v" instance_name "uut"
+	{
+		input 1 clk = clk,
+		input 1 rst = rst,
+		input 1 req = req,
+		output 1 busy = busy,
+		inout 1 sig = sig,
+		output 1 finish = finish,
+		output 32 out_data = out_data
+	}
+	
+	# generate_ros_package
+
+}

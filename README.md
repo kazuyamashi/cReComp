@@ -3,12 +3,11 @@
 creator for Reconfigurable hw Component  
 
 **Git**:         https://github.com/kazuyamashi/cReComp.git  
-**Author**:      Kazushi Yamashina (Utsunomiya University)  
-**Copyright**:   2016, Kazushi Yamashina  
-**License**:      new BSD License   
+**Author**:      Kazushi Yamashina  
+**Copyright**:   2017, Kazushi Yamashina  
+**License**:     new BSD License   
 **Latest Version**: 1.5.2  
-**Contact**: 	 kazushi_at_virgo.is.utsunomiya-u.ac.jp  or [Twitter](https://twitter.com/KazushihsuzaK) or [Facebook](https://www.facebook.com/kazushi.yamashina?fref=nf)
-
+**Contact**: 	 kazushiyamashi_at_gmail.com or [Twitter](https://twitter.com/KazushihsuzaK)
 
 # What is the cReComp?
 

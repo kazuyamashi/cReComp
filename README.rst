@@ -4,13 +4,12 @@ cReComp
 creator for Reconfigurable hw Component
 
 | **Git**: https://github.com/kazuyamashi/cReComp.git
-| **Author**: Kazushi Yamashina (Utsunomiya University)
-| **Copyright**: 2016, Kazushi Yamashina
+| **Author**: Kazushi Yamashina
+| **Copyright**: 2017, Kazushi Yamashina
 | **License**: new BSD License
-| **Latest Version**: 1.5.0
-| **Contact**: kazushi\_at\_virgo.is.utsunomiya-u.ac.jp or
-  `Twitter <https://twitter.com/KazushihsuzaK>`__ or
-  `Facebook <https://www.facebook.com/kazushi.yamashina?fref=nf>`__
+| **Latest Version**: 1.5.2
+| **Contact**: kazushiyamashi\_at\_gmail.com or
+  `Twitter <https://twitter.com/KazushihsuzaK>`__
 
 What is the cReComp?
 ====================
@@ -35,6 +34,11 @@ generated ROS-compliant component which is included FPGA processing.
 
 Update
 ======
+
+-  2016/11/29 version 1.5.1
+
+   -  Added testbench generation. You can generate a testbench with
+      option "-t".
 
 -  2016/11/29 version 1.5.0
 
@@ -143,18 +147,21 @@ Command usage
 
 ::
 
-    Usage: crecomp [option] [file path] [-u user logic]+
+    Options:
+    Usage: crecomp [option] [file name] [-u user logic path]+
 
     Options:
-        -h, --help            show this help message and exit
-        -u USERLOGIC, --userlogic=USERLOGIC
-                                                    specifier your user logic name
-        -p PYTHON_TEMPLATENAME, --python_template=PYTHON_TEMPLATENAME
-                                                    specifier for template name
-        -s SCRP_TEMPLATENAME, --scrp_template=SCRP_TEMPLATENAME
-                                                    specifier for template name
-        -b SCRP_PATH, --build=SCRP_PATH
-                                                    specifier target scrp file to build for componentize
+      -h, --help            show this help message and exit
+      -u USERLOGIC, --userlogic=USERLOGIC
+                            specifier your user logic name
+      -p PYTHON_TEMPLATENAME, --python_template=PYTHON_TEMPLATENAME
+                            specifier for template name
+      -s SCRP_TEMPLATENAME, --scrp_template=SCRP_TEMPLATENAME
+                            specifier for template name
+      -b SCRP_PATH, --build=SCRP_PATH
+                            specifier target scrp file to build for componentize
+      -t TEST_PATH, --test=TEST_PATH
+                            generate testbench of target user logic
 
 Getting Started
 ===============

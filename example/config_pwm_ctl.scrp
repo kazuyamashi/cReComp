@@ -1,0 +1,47 @@
+component_name "compoent_pwm_ctl"
+{
+	# please describe your interface signals
+	in_out_signals{
+		# input 1 clk,
+		# input 1 rst,
+		# input 15 para_in,
+		# input 1 dir_in,
+		output 1 dir_out,
+		output 1 en_out
+	}
+
+	# please describe your opsion signals
+	option_signals{
+		# reg 1 clk,
+		# reg 1 rst,
+		reg 15 para_in,
+		reg 1 dir_in
+		# wire 1 dir_out,
+		# wire 1 en_out
+	}
+
+	communication xillybus
+	{
+		rcv_cycle 1,
+	 	snd_cycle 0,
+	 	condition "1",
+	 	fifo_width 32,
+	 	rcv = para_in,
+	 	rcv = dir_in
+	# 	snd = dummy
+	 }
+
+	
+	userlogic_path "verilog/pwm_ctl.v" instance_name "uut"
+	{
+		input 1 clk = clk,
+		input 1 rst = rst,
+		input 15 para_in = para_in,
+		input 1 dir_in = dir_in,
+		output 1 dir_out = dir_out,
+		output 1 en_out = en_out
+	}
+	
+	# generate_ros_package
+
+}

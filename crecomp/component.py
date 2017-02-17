@@ -183,17 +183,17 @@ class Component(object):
 		module = self.module
 		if os.path.isdir("%s/software"%compname) == False:
 			os.makedirs("%s/software"%compname)
-		# shutil.copy("%ssoftware/lib_cpp.h"%TEMPLATE, "%s/software/lib_cpp.h"%compname)
+		shutil.copy("%ssoftware/lib_cpp.h"%TEMPLATE, "%s/software/lib_cpp.h"%compname)
 		shutil.copy("%ssoftware/bridge.py"%TEMPLATE, "%s/software/bridge.py"%compname)
 
 		# generate software interface
-		# fo = open("%s/software/%s.cpp"%(compname, compname), "w")
-		# fo.write(sw.generate_cpp_xillybus_interface(self))
-		# fo.close()
+		fo = open("%s/software/%s.cpp"%(compname, compname), "w")
+		fo.write(sw.generate_cpp_xillybus_interface(self))
+		fo.close()
 
-		# fo = open("%s/software/Makefile"%(compname), "w")
-		# fo.write(sw.generate_cpp_xillibus_makefile(module,compname))
-		# fo.close()
+		fo = open("%s/software/Makefile"%(compname), "w")
+		fo.write(sw.generate_cpp_xillibus_makefile(module,compname))
+		fo.close()
 
 		# generate software on python
 		fo = open("%s/software/%s.py"%(compname, compname), "w")
