@@ -7,7 +7,7 @@ creator for Reconfigurable hw Component
 **Copyright**:   2017, Kazushi Yamashina  
 **License**:     new BSD License   
 **Latest Version**: 1.5.2  
-**Contact**: 	 kazushiyamashi_at_gmail.com or [Twitter](https://twitter.com/KazushihsuzaK)
+**Contact**: 	 kazuyamashi_at_gmail.com or [Twitter](https://twitter.com/KazushihsuzaK)
 
 # What is the cReComp?
 
@@ -122,8 +122,10 @@ Options:
 
 # Getting Started
 
-[Getting Started English](https://kazuyamashi.github.io/crecomp_doc/getting_started_en.html)  
-[Getting Started Japanese](https://kazuyamashi.github.io/crecomp_doc/getting_started_jp.html)  
+Coming soon
+
+<!-- [Getting Started English](https://kazuyamashi.github.io/crecomp_doc/getting_started_en.html)  
+[Getting Started Japanese](https://kazuyamashi.github.io/crecomp_doc/getting_started_jp.html) -->  
 
 # Publication
 1. Kazushi Yamashina, Takeshi Ohkawa, Kanemitsu Ootsu, Takashi Yokota, ``cReComp: Automated Design Tool for ROS-Compliant FPGA Component,'' IEEE 10th International Symposium on Embedded Multicore/Many-core Systems-on-Chip (MCSoC-16) @ Lyon, France, 2016.9
