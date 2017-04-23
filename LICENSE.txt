@@ -1,4 +1,4 @@
-Copyright (c) 2016, Kazushi Yamashina, Utsunomiya University
+Copyright (c) 2017, Kazushi Yamashina, 
 All rights reserved.
 
 Redistribution and use in source and binary forms, with or without modification,
