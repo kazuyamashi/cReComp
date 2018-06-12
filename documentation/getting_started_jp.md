@@ -5,7 +5,7 @@
 [Github repositry kazuyamashi/cReComp](https://github.com/kazuyamashi/cReComp.git)
 
 ### 1. 確認
-クローンしたディレクトリの中に`verilog/sonic_sensor.v`があるか確認してください．このファイルはハードウェア記述言語である**Verilog HDL**で記述されています。cReCompによる開発では，このようなコンポーネント化対象のVerilogによって記述されたハードウェアを**ユーザロジック**と呼びます．
+クローンしたディレクトリの中に`example/verilog/sonic_sensor.v`があるか確認してください．このファイルはハードウェア記述言語である**Verilog HDL**で記述されています。cReCompによる開発では，このようなコンポーネント化対象のVerilogによって記述されたハードウェアを**ユーザロジック**と呼びます．
 
 ```verilog
 //  verilog/sonic_sensor.v
@@ -101,7 +101,7 @@ sonic_sensor.assign("out_data","")
 
 コンポーネント化のための設定記述はcReCompが提供するフレームワークを用いて行うことができます．このチュートリアルでは先ほど生成したテンプレートファイルのsensor_ctl.pyを用いて説明します．
 
-##### 3.1 `Component`クラスのオブジェクトを宣言する
+#### 3.1 `Component`クラスのオブジェクトを宣言する
 
 Componentクラスのオブジェクトを宣言します．この際，コンストラクタへの引数として任意のコンポーネントの名前（プロジェクト名）を指定してください．
 
@@ -109,7 +109,7 @@ Componentクラスのオブジェクトを宣言します．この際，コン�
 cp = cp.Component("sensor_ctl")
 ```
 
-##### 3.2 ユーザロジックへ配線するための信号を宣言する
+#### 3.2 ユーザロジックへ配線するための信号を宣言する
 
 ```python
 # add functions add_*(name, bit) usage
@@ -130,7 +130,7 @@ cp.add_wire("busy_flag",1)
 
 `req`と`out_data`はまだ宣言していません．HWとSW間の通信の設定を行う際に改めて宣言します．従ってここではソフトウェアとデータ通信が必要なポート以外のポートのための信号を宣言します．
 
-##### 3.3 使用する通信ロジックの選択と信号の宣言
+#### 3.3 使用する通信ロジックの選択と信号の宣言
 
 このチュートリアルでは通信ロジックとして**Xillinux**の試用版を使用します．Xillinuxは[Xillybus](http://xillybus.com)からリリースされており，ZynqやCyclone VなどのCPUとFPGAを搭載した**Programmable SoC**を対象としたUbuntu OSです．XillinuxではFPGAとCPUがFIFOをバッファを介してデータ通信が行えるIPを提供しています．Xillinuxの試用版がサポートしているFIFOバッファのビット幅は32ビットと8ビットです．このFIFOバッファの制御をFPGA上において行うことによってFPGAとCPU間のデータ通信が実現できます．  
 
@@ -166,7 +166,7 @@ fifo_32.assign("rcv", "dummy")
 fifo_32.assign("snd", "sensor_data")
 ```
 
-##### 3.4 ユーザロジックへ信号のアサインをする
+#### 3.4 ユーザロジックへ信号のアサインをする
 
 ユーザロジックへの信号をアサインするための関数はcReCompによってテンプレートファイルを生成した際に，自動的に記述されてあります．
 
@@ -205,7 +205,7 @@ sonic_sensor.assign("finish","finish_flag")
 sonic_sensor.assign("out_data","sensor_data")
 ```
 
-##### 3.5 各設定をComponentクラスへ追加し，自動生成に反映させる
+#### 3.5 各設定をComponentクラスへ追加し，自動生成に反映させる
 
 各オブジェクトをComponentクラスのオブジェクトへ追加しましょう．
 
@@ -214,7 +214,7 @@ cp.add_ul(sonic_sensor)
 cp.add_com(fifo_32)
 ```
 
-##### 3.6 コンポーネント化
+#### 3.6 コンポーネント化
 
 コンポーネント化を実行するために以下の関数を追加してください．
 
@@ -297,8 +297,6 @@ $ python sensor_ctl.py
 
 生成に成功すると指定したコンポーネントの名前のディレクトリができます．  
 `hardware`にはFPGA上において動作する回路記述が，`software`にはCPU上で動作するインターフェイスが入っています．
-
-[Download sensor_ctl.zip](sensor_ctl.zip)
 
 ```
 sensor_ctl/

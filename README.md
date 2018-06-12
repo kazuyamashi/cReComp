@@ -121,8 +121,7 @@ Options:
 ```
 
 # Getting Started
-
-Coming soon
+[Simple direction](documentation/simple_direction.md)  
 
 <!-- [Getting Started English](https://kazuyamashi.github.io/crecomp_doc/getting_started_en.html)  
 [Getting Started Japanese](https://kazuyamashi.github.io/crecomp_doc/getting_started_jp.html) -->  
